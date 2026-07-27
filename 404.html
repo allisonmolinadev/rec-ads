@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Página não encontrada | rec.ads</title>
+<meta name="description" content="A página que você procura não existe ou foi movida.">
+<meta name="theme-color" content="#0b0807">
+<meta name="robots" content="noindex, follow">
+
+<link rel="icon" href="assets/logo/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Instrument+Sans:wght@400..700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="assets/css/tokens.css">
+<link rel="stylesheet" href="assets/css/style.css">
+
+<style>
+  /* A 404 nao carrega o main.js, entao os elementos com [data-reveal] ficariam
+     invisiveis para sempre. Aqui eles nascem visiveis. */
+  [data-reveal] { opacity: 1; transform: none; }
+
+  .erro {
+    min-height: 100svh;
+    display: grid; align-content: center;
+    position: relative; overflow: hidden; isolation: isolate;
+    padding-block: var(--sp-8);
+  }
+  .erro__code {
+    font-family: var(--font-display);
+    font-weight: 700; font-stretch: 125%;
+    font-size: clamp(6rem, 3rem + 18vw, 17rem);
+    line-height: 0.82;
+    letter-spacing: -0.05em;
+    color: var(--red);
+  }
+  .erro__t { font-size: var(--fs-2xl); font-stretch: 112%; margin-top: var(--sp-3); max-width: 18ch; }
+  .erro__p { color: var(--text-2); max-width: 46ch; margin-top: var(--sp-2); font-size: var(--fs-lg); }
+  .erro__acoes { display: flex; flex-wrap: wrap; gap: var(--sp-2); margin-top: var(--sp-5); }
+  .erro__mark {
+    position: absolute; z-index: -1; pointer-events: none;
+    right: -8%; bottom: -18%;
+    width: min(62vw, 620px); opacity: 0.05;
+  }
+  .erro__atalhos {
+    margin-top: var(--sp-8); padding-top: var(--sp-3);
+    border-top: 1px solid var(--line);
+    display: flex; flex-wrap: wrap; gap: var(--sp-1) var(--sp-3);
+  }
+  .erro__atalhos a {
+    font-family: var(--font-mono); font-size: var(--fs-mono);
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--text-3); padding-block: 0.35rem;
+    transition: color var(--dur-fast);
+  }
+  .erro__atalhos a:hover { color: var(--red); }
+</style>
+</head>
+
+<body>
+<a class="skip-link" href="#main">Pular para o conteúdo</a>
+
+<header class="header is-stuck">
+  <div class="wrap header__inner">
+    <a class="header__logo" href="index.html" aria-label="rec.ads — início">
+      <img src="assets/logo/recads-horizontal-branco.svg" alt="rec.ads" width="847" height="214">
+    </a>
+  </div>
+</header>
+
+<main id="main" class="erro">
+  <div class="hero__bg grid-bg" aria-hidden="true"></div>
+  <div class="hero__glow" aria-hidden="true"></div>
+  <img class="erro__mark" src="assets/logo/recads-c.svg" alt="" aria-hidden="true" width="185" height="166">
+
+  <div class="wrap">
+    <p class="eyebrow">Erro 404</p>
+    <p class="erro__code">404</p>
+    <h1 class="erro__t">Essa página saiu do ar.</h1>
+    <p class="erro__p">
+      O endereço que você acessou não existe ou foi movido. A operação continua
+      rodando — volte para o início ou vá direto para uma seção.
+    </p>
+
+    <div class="erro__acoes">
+      <a class="btn" href="index.html">
+        Voltar ao início
+        <svg class="btn__arrow" width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true">
+          <path d="M2 11 11 2M11 2H4M11 2v7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+      <a class="btn btn--ghost" href="index.html#fazemos">Ver o que fazemos</a>
+    </div>
+
+    <!-- Caminhos relativos, nao absolutos: assim a pagina funciona tanto num
+         dominio proprio quanto servida de uma subpasta (usuario.github.io/rec-ads/). -->
+    <nav class="erro__atalhos" aria-label="Atalhos">
+      <a href="index.html#sobre">Sobre</a>
+      <a href="index.html#numeros">Números</a>
+      <a href="index.html#marcas">Marcas</a>
+      <a href="index.html#tecnologia">Tecnologia</a>
+      <a href="index.html#galeria">Galeria</a>
+      <a href="index.html#equipe">Equipe</a>
+      <a href="index.html#manifesto">Manifesto</a>
+    </nav>
+  </div>
+</main>
+</body>
+</html>

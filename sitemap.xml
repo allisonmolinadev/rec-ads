@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  O site e' de pagina unica: as secoes sao ancoras dentro de /, e ancoras nao
+  entram em sitemap. Por isso ha' uma URL so. Trocar o dominio quando o
+  definitivo for definido (aqui, no robots.txt e nas meta tags do index.html).
+-->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://recads.com.br/</loc>
+    <lastmod>2026-07-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+</urlset>

@@ -5,6 +5,9 @@ basta abrir `index.html` no navegador ou servir a pasta em qualquer hospedagem.
 
 ```
 index.html
+404.html
+robots.txt
+sitemap.xml
 assets/
   css/tokens.css     variáveis de marca (cores, tipografia, espaçamento, movimento)
   css/style.css      estilos
@@ -12,7 +15,9 @@ assets/
   logo/              logo em SVG, derivado do manual oficial
   img/equipe/        fotos da equipe otimizadas
   og/recads-og.png   imagem de compartilhamento
+scripts/optimize.js  reprocessa as fotos da equipe
 docs/                material de origem (manual de marca, fotos originais)
+.github/workflows/   publicação no GitHub Pages
 ```
 
 ---
@@ -153,10 +158,41 @@ pessoa** (`Maria Eduarda.jpg` → "Maria Eduarda").
 - Imagens com `loading="lazy"`, `width`/`height` declarados (sem *layout shift*).
 - Sem dependências de JavaScript: nenhuma biblioteca externa.
 
+---
+
+## Publicação
+
+Há um workflow em `.github/workflows/pages.yml` que publica no GitHub Pages a
+cada push na `main`. **Ele só entra em vigor depois de habilitar o Pages** em
+*Settings › Pages › Source: GitHub Actions*; antes disso o job falha no passo de
+deploy, o que é esperado.
+
+O workflow **não publica o repositório inteiro** — monta um pacote só com
+`index.html`, `404.html`, `robots.txt`, `sitemap.xml` e `assets/`. A pasta
+`docs/` fica de fora de propósito: contém o manual de marca em PDF e as fotos
+originais em alta, que não devem ir para um servidor público.
+
+Para qualquer outra hospedagem, basta subir esses mesmos arquivos — não há build.
+
+### Domínio
+
+As meta tags, o `robots.txt` e o `sitemap.xml` estão com `https://recads.com.br/`
+como **suposição minha**, porque o domínio final ainda não foi definido. Ao
+fechar o domínio, atualizar nos três lugares:
+
+- `index.html` — `og:url` e `<link rel="canonical">`
+- `robots.txt` — linha `Sitemap:`
+- `sitemap.xml` — `<loc>`
+
+Enquanto estiver numa URL de projeto do Pages (`usuario.github.io/rec-ads/`),
+o site funciona: todos os caminhos internos são relativos, inclusive os do 404.
+
+---
+
 ## Pendências (dependem de material do cliente)
 
 - [ ] Cargos reais da equipe (hoje `Lorem ipsum`)
 - [ ] Arquivos de logo das 6 marcas do grupo
 - [ ] URLs dos canais (Instagram, YouTube, LinkedIn, TikTok, sites)
 - [ ] Fotos e vídeos dos projetos da galeria
-- [ ] Domínio final — atualizar `og:url` e `<link rel="canonical">` em `index.html`
+- [ ] Domínio final (ver acima)

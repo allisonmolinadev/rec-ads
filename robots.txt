@@ -1,0 +1,7 @@
+# rec.ads
+# Site institucional. Trocar o dominio abaixo quando o definitivo for definido.
+
+User-agent: *
+Allow: /
+
+Sitemap: https://recads.com.br/sitemap.xml
