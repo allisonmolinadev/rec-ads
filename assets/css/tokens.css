@@ -25,7 +25,6 @@
   --n-900: #100c0a;
   --n-850: #16110f;   /* superficie */
   --n-800: #1d1714;   /* card elevado */
-  --n-750: #26201c;
   --n-700: #2e2621;   /* borda forte */
   --n-600: #453a34;
   --n-500: #6b5c54;
@@ -123,18 +122,6 @@
   --z-header: 100;
   --z-menu: 200;
   --z-modal: 300;
-}
-
-/* ---- secoes claras: invertem os papeis, nao as cores de marca ---- */
-.theme-light {
-  --bg: var(--n-50);
-  --surface: var(--white);
-  --surface-2: var(--n-100);
-  --line: rgba(45, 26, 12, 0.12);
-  --line-strong: rgba(45, 26, 12, 0.24);
-  --text: var(--ink);
-  --text-2: #6d5a4c;
-  --text-3: #8d7c70;
 }
 
 /* ---- o site tem animacao de scroll pesada; quem pediu menos, recebe menos ---- */

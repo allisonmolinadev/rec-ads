@@ -66,10 +66,7 @@ p { text-wrap: pretty; }
   width: min(100% - var(--gutter) * 2, var(--wrap));
   margin-inline: auto;
 }
-.wrap-narrow { width: min(100% - var(--gutter) * 2, var(--wrap-narrow)); margin-inline: auto; }
-
 .section { padding-block: var(--section-y); position: relative; }
-.section--dark { background: var(--n-950); }
 .section--deep { background: var(--n-990); }
 .section--surface { background: var(--n-900); }
 
@@ -107,17 +104,6 @@ p { text-wrap: pretty; }
 .section-head__lead { font-size: var(--fs-lg); color: var(--text-2); max-width: 62ch; }
 
 .hl { color: var(--red); }
-/* palavra-chave dentro da pilula da marca */
-.pill-word {
-  display: inline-block;
-  background: var(--red);
-  color: var(--white);
-  padding: 0.02em 0.34em 0.1em;
-  border-radius: 0.34em;
-  font-stretch: 100%;
-}
-
-.rule { height: 1px; background: var(--line); border: 0; }
 
 /* ------------------------------------------------------------ movimento -- */
 [data-reveal] {
@@ -201,18 +187,6 @@ p { text-wrap: pretty; }
 
 .btn--sm { padding: 0.8em 1.35em; }
 
-/* --- cartao base --- */
-.card {
-  position: relative;
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
-  padding: var(--sp-4);
-  overflow: hidden;
-  transition: border-color var(--dur) var(--ease-out),
-              transform var(--dur) var(--ease-out),
-              background-color var(--dur) var(--ease-out);
-}
 /* halo vermelho que segue o cursor (coords vem do JS) */
 .card--glow::after {
   content: "";
@@ -225,7 +199,6 @@ p { text-wrap: pretty; }
   pointer-events: none;
 }
 .card--glow:hover::after { opacity: 1; }
-.card:hover { border-color: var(--line-strong); transform: translateY(-3px); }
 
 /* --- marquee --- */
 .marquee {
@@ -247,7 +220,6 @@ p { text-wrap: pretty; }
   animation: marquee var(--speed, 42s) linear infinite;
 }
 .marquee:hover .marquee__track { animation-play-state: paused; }
-.marquee--rev .marquee__track { animation-direction: reverse; }
 @keyframes marquee { to { transform: translateX(-100%); } }
 @media (prefers-reduced-motion: reduce) {
   .marquee__track { animation: none; }
@@ -877,8 +849,15 @@ p { text-wrap: pretty; }
   letter-spacing: var(--tr-mono); text-transform: uppercase;
   color: var(--text-3); margin-bottom: var(--sp-2);
 }
-.footer__col li + li { margin-top: 0.55rem; }
-.footer__col a { font-size: var(--fs-sm); color: var(--text-2); transition: color var(--dur-fast); }
+/* padding vertical para o alvo de toque chegar aos 24px minimos do WCAG 2.2
+   (as linhas tinham 18px de altura) */
+.footer__col a {
+  display: inline-block;
+  padding-block: 0.3rem;
+  font-size: var(--fs-sm);
+  color: var(--text-2);
+  transition: color var(--dur-fast);
+}
 .footer__col a:hover { color: var(--red); }
 .footer__bot {
   margin-top: var(--sp-8); padding-top: var(--sp-3);
