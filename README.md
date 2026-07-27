@@ -1,30 +1,37 @@
 # Site institucional — rec.ads
 
 Site estático em HTML, CSS e JavaScript puro. **Não tem build step**: para ver,
-basta abrir `index.html` no navegador ou servir a pasta em qualquer hospedagem.
+basta abrir `docs/index.html` no navegador ou servir a pasta `docs/` em qualquer
+hospedagem.
+
+**`docs/` é a raiz do site publicado.** Tudo que está lá dentro vai para o ar;
+tudo que está fora, não.
 
 ```
-index.html
-404.html
-robots.txt
-sitemap.xml
-assets/
-  css/tokens.css     variáveis de marca (cores, tipografia, espaçamento, movimento)
-  css/style.css      estilos
-  js/main.js         comportamento + os dados editáveis do site
-  logo/              logo em SVG, derivado do manual oficial
-  img/equipe/        fotos da equipe otimizadas
-  og/recads-og.png   imagem de compartilhamento
-scripts/optimize.js  reprocessa as fotos da equipe
-docs/                material de origem (manual de marca, fotos originais)
-.github/workflows/   publicação no GitHub Pages
+docs/                    <- o site (raiz de publicação)
+  index.html
+  404.html
+  robots.txt
+  sitemap.xml
+  .nojekyll              desliga o Jekyll do GitHub Pages
+  assets/
+    css/tokens.css       variáveis de marca (cores, tipografia, espaçamento, movimento)
+    css/style.css        estilos
+    js/main.js           comportamento + os dados editáveis do site
+    logo/                logo em SVG, derivado do manual oficial
+    img/equipe/          fotos da equipe otimizadas
+    og/recads-og.png     imagem de compartilhamento
+
+material/                <- NÃO publicado: manual de marca em PDF e fotos
+                            originais em alta. Não mover para dentro de docs/.
+scripts/optimize.js      reprocessa as fotos da equipe
 ```
 
 ---
 
 ## Onde editar o conteúdo
 
-Tudo que vai mudar com frequência está no topo de `assets/js/main.js`, em
+Tudo que vai mudar com frequência está no topo de `docs/assets/js/main.js`, em
 constantes nomeadas. Não é preciso mexer no HTML.
 
 ### Cargos da equipe
@@ -36,8 +43,9 @@ campo `cargo`:
 { id: 'allison', nome: 'Allison', cargo: 'Lorem ipsum' },
 ```
 
-Os nomes vieram dos nomes dos arquivos em `docs/img` (extensão removida). Para
-**adicionar** alguém: rode a otimização (abaixo) e acrescente uma linha em `EQUIPE`.
+Os nomes vieram dos nomes dos arquivos em `material/fotos-equipe-originais`
+(extensão removida). Para **adicionar** alguém: rode a otimização (abaixo) e
+acrescente uma linha em `EQUIPE`.
 
 ### Galeria de projetos
 
@@ -70,7 +78,7 @@ inerte; assim que receber uma URL vira link com `target="_blank"`.
 
 ### Logos das marcas do grupo
 
-Estão como cartões tipográficos em `index.html`, na seção `#marcas`. Quando os
+Estão como cartões tipográficos em `docs/index.html`, na seção `#marcas`. Quando os
 arquivos chegarem, troque
 
 ```html
@@ -87,8 +95,8 @@ por
 
 ## Identidade visual
 
-As cores e o logo saíram do manual em `docs/Identidade Visual - REC•ADS/` e estão
-em `assets/css/tokens.css`:
+As cores e o logo saíram do manual em `material/Identidade Visual - REC•ADS/` e
+estão em `docs/assets/css/tokens.css`:
 
 | token | valor | origem |
 |---|---|---|
@@ -101,7 +109,7 @@ paleta. **Use os tokens.**
 
 ### Logo
 
-`assets/logo/` foi vetorizado a partir do PDF do manual:
+`docs/assets/logo/` foi vetorizado a partir do PDF do manual:
 
 | arquivo | uso |
 |---|---|
@@ -138,11 +146,12 @@ trocar. Sistema em uso, via Google Fonts:
 As fotos da equipe foram reduzidas de **9,7 MB para 1,5 MB** (85% menor):
 recorte 4:5, WebP em 1x/2x e JPG de fallback via `<picture>`.
 
-Para reprocessar depois de adicionar fotos em `docs/img`, com Node instalado:
+Para reprocessar depois de adicionar fotos em `material/fotos-equipe-originais`,
+com Node instalado:
 
 ```bash
 npm install sharp
-node scripts/optimize.js docs/img assets/img/equipe
+node scripts/optimize.js material/fotos-equipe-originais docs/assets/img/equipe
 ```
 
 O nome do arquivo vira o nome exibido, então **nomeie os arquivos com o nome da
@@ -162,17 +171,20 @@ pessoa** (`Maria Eduarda.jpg` → "Maria Eduarda").
 
 ## Publicação
 
-Há um workflow em `.github/workflows/pages.yml` que publica no GitHub Pages a
-cada push na `main`. **Ele só entra em vigor depois de habilitar o Pages** em
-*Settings › Pages › Source: GitHub Actions*; antes disso o job falha no passo de
-deploy, o que é esperado.
+No GitHub, em *Settings › Pages*:
 
-O workflow **não publica o repositório inteiro** — monta um pacote só com
-`index.html`, `404.html`, `robots.txt`, `sitemap.xml` e `assets/`. A pasta
-`docs/` fica de fora de propósito: contém o manual de marca em PDF e as fotos
-originais em alta, que não devem ir para um servidor público.
+- **Source:** Deploy from a branch
+- **Branch:** `main` · pasta **`/docs`**
 
-Para qualquer outra hospedagem, basta subir esses mesmos arquivos — não há build.
+Não há build nem workflow: o GitHub serve `docs/` como está. O `404.html` é
+usado automaticamente em qualquer rota inexistente, e o `.nojekyll` impede o
+GitHub de processar a pasta com o Jekyll.
+
+**A regra que importa:** só entra em `docs/` o que pode ser público. O manual
+de marca e as fotos originais em alta ficam em `material/`, fora da pasta
+publicada, de propósito.
+
+Para qualquer outra hospedagem, suba o conteúdo de `docs/` — nada mais.
 
 ### Domínio
 
@@ -180,9 +192,9 @@ As meta tags, o `robots.txt` e o `sitemap.xml` estão com `https://recads.com.br
 como **suposição minha**, porque o domínio final ainda não foi definido. Ao
 fechar o domínio, atualizar nos três lugares:
 
-- `index.html` — `og:url` e `<link rel="canonical">`
-- `robots.txt` — linha `Sitemap:`
-- `sitemap.xml` — `<loc>`
+- `docs/index.html` — `og:url` e `<link rel="canonical">`
+- `docs/robots.txt` — linha `Sitemap:`
+- `docs/sitemap.xml` — `<loc>`
 
 Enquanto estiver numa URL de projeto do Pages (`usuario.github.io/rec-ads/`),
 o site funciona: todos os caminhos internos são relativos, inclusive os do 404.
