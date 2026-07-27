@@ -1,0 +1,13 @@
+# dependências (o site não tem build; sharp só é usado pelo script de imagens)
+node_modules/
+package-lock.json
+
+# lixo do Windows / macOS
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# editores
+.vscode/
+.idea/
+*.swp

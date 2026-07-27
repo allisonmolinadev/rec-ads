@@ -1,0 +1,147 @@
+/* ===========================================================================
+   REC.ADS — design tokens
+   Base: manual de identidade em docs/Identidade Visual - REC•ADS/
+   As cores de marca vem dos PNGs exportados (sRGB). O PDF, por ser CMYK,
+   renderiza #EE3316/#34312A — divergencia de perfil, nao uma segunda paleta.
+   =========================================================================== */
+
+:root {
+  /* ---- marca (oficial, nao alterar) ---- */
+  --red: #d22110;              /* CMYK 0/95/100/10 — pilula REC */
+  --ink: #2d1a0c;              /* CMYK 0/10/20/95  — palavra ADS */
+  --white: #ffffff;
+
+  /* estados de interface derivados do vermelho (uso funcional: hover, foco,
+     glow). Nao sao cores de marca e nao devem virar area chapada grande. */
+  --red-hi: #e8452f;
+  --red-lo: #a3190b;
+  --red-glow: rgba(210, 33, 16, 0.42);
+
+  /* ---- escala neutra quente, ancorada no --ink ----
+     Nao uso cinzas frios: o preto da marca puxa marrom e as fotos da equipe
+     tem fundo preto com contraluz vermelha. Cinza azulado brigaria. */
+  --n-990: #070505;
+  --n-950: #0b0807;   /* fundo da pagina */
+  --n-900: #100c0a;
+  --n-850: #16110f;   /* superficie */
+  --n-800: #1d1714;   /* card elevado */
+  --n-750: #26201c;
+  --n-700: #2e2621;   /* borda forte */
+  --n-600: #453a34;
+  --n-500: #6b5c54;
+  --n-400: #94847b;
+  --n-300: #b9aca4;
+  --n-200: #d8cfc9;
+  --n-150: #e8e2dd;
+  --n-100: #f1edea;
+  --n-50: #f8f6f4;    /* fundo das secoes claras */
+
+  /* ---- papeis semanticos: tema escuro (padrao) ---- */
+  --bg: var(--n-950);
+  --surface: var(--n-850);
+  --surface-2: var(--n-800);
+  --line: rgba(255, 255, 255, 0.09);
+  --line-strong: rgba(255, 255, 255, 0.17);
+  --text: #f4efec;
+  --text-2: var(--n-300);
+  --text-3: var(--n-400);
+  --accent: var(--red);
+
+  /* ---- tipografia ----
+     O manual especifica Myriad Variable (Adobe, sem licenca web) e o briefing
+     liberou trocar. Sistema escolhido:
+       Archivo        — display. Tem eixo de largura (62-125), o que permite
+                        titulos expandidos e editoriais sem distorcer a fonte.
+       Instrument Sans— texto. Contemporanea, alta legibilidade, com carater.
+       JetBrains Mono — rotulos, numeros de secao e dados. Reforca o eixo
+                        "tecnologia/P&D" que diferencia a REC.ADS.            */
+  --font-display: "Archivo", "Archivo Expanded", system-ui, sans-serif;
+  --font-sans: "Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  /* escala fluida */
+  --fs-mono: clamp(0.68rem, 0.64rem + 0.16vw, 0.78rem);
+  --fs-xs: clamp(0.8rem, 0.78rem + 0.1vw, 0.86rem);
+  --fs-sm: clamp(0.9rem, 0.87rem + 0.15vw, 1rem);
+  --fs-base: clamp(1rem, 0.95rem + 0.22vw, 1.15rem);
+  --fs-lg: clamp(1.15rem, 1.05rem + 0.5vw, 1.45rem);
+  --fs-xl: clamp(1.45rem, 1.25rem + 0.95vw, 2.1rem);
+  --fs-2xl: clamp(1.9rem, 1.45rem + 2.1vw, 3.2rem);
+  --fs-3xl: clamp(2.4rem, 1.6rem + 3.6vw, 4.75rem);
+  /* teto em 5.25rem: acima disso o titulo do hero passa de 5 linhas e empurra
+     os CTAs para fora da primeira dobra */
+  --fs-4xl: clamp(2.5rem, 1.3rem + 4.6vw, 5.25rem);
+  --fs-num: clamp(2.9rem, 1.6rem + 4.6vw, 6rem);
+
+  --lh-tight: 0.94;
+  --lh-snug: 1.12;
+  --lh-mid: 1.35;
+  --lh-body: 1.62;
+  --tr-tight: -0.035em;
+  --tr-snug: -0.02em;
+  --tr-mono: 0.14em;
+
+  /* ---- espacamento (base 8) ---- */
+  --sp-1: 0.5rem;
+  --sp-2: 1rem;
+  --sp-3: 1.5rem;
+  --sp-4: 2rem;
+  --sp-5: 2.5rem;
+  --sp-6: 3rem;
+  --sp-8: 4rem;
+  --sp-10: 5rem;
+  --sp-12: 6rem;
+  --sp-16: 8rem;
+  --sp-20: 10rem;
+  --section-y: clamp(4.5rem, 3rem + 7vw, 10rem);
+
+  /* ---- layout ---- */
+  --wrap: 1320px;
+  --wrap-narrow: 780px;
+  --gutter: clamp(1.25rem, 4.5vw, 4.5rem);
+  --header-h: 76px;
+
+  /* ---- forma da marca ----
+     A pilula do logo tem raio ~ 21% da altura. Reaproveito essa proporcao nos
+     componentes para o site herdar a linguagem do simbolo. */
+  --radius-pill: 999px;
+  --radius: 6px;
+  --radius-lg: 14px;
+  --radius-xl: 22px;
+
+  /* ---- movimento ---- */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-io: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast: 180ms;
+  --dur: 420ms;
+  --dur-slow: 900ms;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow: 0 18px 50px -18px rgba(0, 0, 0, 0.75);
+  --shadow-red: 0 20px 60px -22px var(--red-glow);
+
+  --z-header: 100;
+  --z-menu: 200;
+  --z-modal: 300;
+}
+
+/* ---- secoes claras: invertem os papeis, nao as cores de marca ---- */
+.theme-light {
+  --bg: var(--n-50);
+  --surface: var(--white);
+  --surface-2: var(--n-100);
+  --line: rgba(45, 26, 12, 0.12);
+  --line-strong: rgba(45, 26, 12, 0.24);
+  --text: var(--ink);
+  --text-2: #6d5a4c;
+  --text-3: #8d7c70;
+}
+
+/* ---- o site tem animacao de scroll pesada; quem pediu menos, recebe menos ---- */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-fast: 1ms;
+    --dur: 1ms;
+    --dur-slow: 1ms;
+  }
+}
