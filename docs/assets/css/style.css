@@ -396,9 +396,16 @@ p { text-wrap: pretty; }
 .hero__title {
   font-size: var(--fs-4xl);
   font-stretch: 118%;
+  font-weight: 300;              /* ligacoes em light */
   line-height: var(--lh-tight);
-  max-width: 17ch;
+  /* 19ch, nao 17ch: a unidade ch mede a largura do "0", que no peso light e'
+     mais estreito — manter 17ch encolhia a caixa e quebrava o titulo em 5
+     linhas. Com 19ch a composicao volta a 4 linhas:
+       A inteligência de / marketing e tecnologia / por trás das marcas /
+       do Grupo FAJ. */
+  max-width: 19ch;
 }
+.hero__title strong { font-weight: 700; }  /* palavras que carregam a mensagem */
 .hero__lead {
   font-size: var(--fs-lg);
   color: var(--text-2);
