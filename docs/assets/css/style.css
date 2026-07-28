@@ -938,95 +938,132 @@ p { text-wrap: pretty; }
   box-shadow: inset 0 0 0 1px var(--red);
 }
 /* --- rede das frentes de P&D ---
-   Nucleo ao centro, 7 nos numa elipse. As posicoes chegam por --x/--y e o
-   translate(-50%,-50%) centra o chip no ponto; as linhas ficam numa camada
-   SVG esticada, com vector-effect para a espessura nao distorcer. */
+   Disco escuro com halo, aneis tracejados e 7 nos sobre a circunferencia. As
+   posicoes chegam por --x/--y; como o disco e' quadrado, o viewBox 0-100 do
+   SVG mapeia 1:1 e os aneis saem redondos de verdade. */
 .rede {
   position: relative;
   margin-top: var(--sp-6);
-  min-height: clamp(420px, 46vw, 620px);
-  isolation: isolate;
+  display: grid; place-items: center;
+  padding-block: var(--sp-4);
 }
+.rede__disco {
+  position: relative;
+  width: min(100%, clamp(340px, 52vw, 660px));
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 50%, #100c0a 58%, #1a100e 100%);
+  /* halo: e' o que da' o volume do disco, como na referencia */
+  box-shadow:
+    0 0 0 1px rgba(210, 33, 16, 0.28),
+    0 0 90px 10px rgba(210, 33, 16, 0.3),
+    0 0 220px 60px rgba(210, 33, 16, 0.16);
+}
+
 .rede__linhas {
   position: absolute; inset: 0;
   width: 100%; height: 100%;
   z-index: 0; pointer-events: none;
+  overflow: visible;
 }
-.rede__linhas line {
-  stroke: var(--line-strong);
-  stroke-width: 1;
+.rede__linhas circle {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.13);
+  stroke-width: 0.9;
   vector-effect: non-scaling-stroke;
-  stroke-dasharray: 5 7;
-  animation: rede-fluxo 3.4s linear infinite;
+  stroke-dasharray: 1.4 2.6;
 }
-@keyframes rede-fluxo { to { stroke-dashoffset: -24; } }
+.rede__raios line {
+  stroke: rgba(210, 33, 16, 0.5);
+  stroke-width: 0.9;
+  vector-effect: non-scaling-stroke;
+  stroke-dasharray: 3 4;
+  animation: rede-fluxo 3.6s linear infinite;
+}
+@keyframes rede-fluxo { to { stroke-dashoffset: -14; } }
+.rede__brilhos path {
+  stroke: var(--red); stroke-width: 1; stroke-linecap: round;
+  vector-effect: non-scaling-stroke; opacity: 0.8;
+}
 
 .rede__nucleo {
   position: absolute; left: 50%; top: 50%;
   transform: translate(-50%, -50%);
   z-index: 2;
-  display: grid; justify-items: center; gap: 0.5rem;
-  padding: clamp(1.1rem, 2.4vw, 1.9rem);
-  border-radius: 50%;
-  aspect-ratio: 1;
-  background: radial-gradient(circle, rgba(210, 33, 16, 0.22), transparent 70%), var(--n-900);
-  box-shadow: inset 0 0 0 1px var(--red), 0 0 60px -12px var(--red-glow);
+  display: grid; justify-items: center; gap: 0.1rem;
+  text-align: center;
 }
-.rede__nucleo img { width: clamp(34px, 3.4vw, 50px); filter: brightness(0) invert(1); }
-.rede__nucleo span {
-  font-family: var(--font-mono); font-size: var(--fs-mono);
-  letter-spacing: 0.16em; color: var(--text-2);
+.rede__nucleo-t {
+  font-family: var(--font-display); font-weight: 700; font-stretch: 108%;
+  font-size: var(--fs-lg); letter-spacing: var(--tr-snug);
+}
+.rede__nucleo-d {
+  font-family: var(--font-display); font-weight: 300; font-stretch: 108%;
+  font-size: var(--fs-lg); letter-spacing: var(--tr-snug);
+  color: var(--text-2);
 }
 
 .rede__itens { position: absolute; inset: 0; z-index: 1; margin: 0; }
+/* o item e' ancorado no ponto do no; o rotulo desce logo abaixo dele */
 .rede__item {
   position: absolute;
   left: var(--x); top: var(--y);
   transform: translate(-50%, -50%);
-  display: inline-flex; align-items: center; gap: 0.6em;
-  max-width: min(15rem, 34%);
-  padding: 0.7em 1.1em;
-  border-radius: var(--radius-pill);
-  background: rgba(255, 255, 255, 0.04);
-  box-shadow: inset 0 0 0 1px var(--line);
-  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-  font-size: var(--fs-sm);
-  line-height: 1.25;
-  text-align: left;
-  transition: transform var(--dur) var(--ease-out),
+  display: grid; justify-items: center; gap: 0.5rem;
+  width: max-content; max-width: 13ch;
+}
+.rede__no {
+  width: 15px; height: 15px; border-radius: 50%;
+  background: var(--n-950);
+  box-shadow: inset 0 0 0 1.5px var(--red);
+  transition: background-color var(--dur) var(--ease-out),
               box-shadow var(--dur) var(--ease-out),
-              background-color var(--dur) var(--ease-out);
+              transform var(--dur) var(--ease-out);
 }
-.rede__item::before {
-  content: ""; width: 6px; height: 6px; border-radius: 50%;
-  background: var(--red); flex: none;
+.rede__rot {
+  font-family: var(--font-mono); font-size: 0.66rem;
+  letter-spacing: 0.06em; line-height: 1.35;
+  color: var(--text-2);
+  text-align: center;
+  text-decoration: underline;
+  text-decoration-color: rgba(255, 255, 255, 0.28);
+  text-underline-offset: 4px;
+  transition: color var(--dur) var(--ease-out), text-decoration-color var(--dur) var(--ease-out);
 }
-.rede__item:hover {
-  background: rgba(210, 33, 16, 0.12);
-  box-shadow: inset 0 0 0 1px var(--red);
-  transform: translate(-50%, -50%) scale(1.05);
+.rede__rot sup {
+  font-size: 0.7em; color: var(--red);
+  margin-right: 0.45em; vertical-align: super;
+  text-decoration: none;
 }
+.rede__item:hover .rede__no { background: var(--red); box-shadow: 0 0 0 5px rgba(210, 33, 16, 0.22); transform: scale(1.12); }
+.rede__item:hover .rede__rot { color: var(--text); text-decoration-color: var(--red); }
 
 @media (prefers-reduced-motion: reduce) {
-  .rede__linhas line { animation: none; }
-  .rede__item:hover { transform: translate(-50%, -50%); }
+  .rede__raios line { animation: none; }
+  .rede__item:hover .rede__no { transform: none; }
 }
 
 /* Abaixo de 780px a elipse fica apertada demais e os chips se sobrepoem:
    vira lista vertical com uma linha guia. */
 @media (max-width: 779px) {
-  .rede { min-height: 0; padding-left: var(--sp-3); }
+  .rede { padding-block: 0; }
+  .rede__disco {
+    width: 100%; aspect-ratio: auto; border-radius: 0;
+    background: none; box-shadow: none;
+    padding-left: var(--sp-3);
+  }
   .rede__linhas, .rede__nucleo { display: none; }
   .rede__itens {
-    position: static; display: grid; gap: var(--sp-2);
+    position: static; display: grid; gap: var(--sp-3);
     border-left: 1px solid var(--line-strong);
     padding-left: var(--sp-3);
   }
   .rede__item {
     position: static; transform: none; max-width: none;
-    justify-self: start;
+    grid-template-columns: auto 1fr; align-items: center;
+    justify-items: start; gap: 0.8rem;
   }
-  .rede__item:hover { transform: none; }
+  .rede__rot { text-align: left; font-size: var(--fs-sm); }
 }
 
 /* --- fecho da secao --- */
@@ -1425,26 +1462,69 @@ a.rede-btn:hover { background: var(--red); color: var(--white); transform: scale
   color: var(--white);
   position: relative; overflow: hidden;
 }
+/* centrada e bem apagada: vira o eixo da composicao, nao um adorno de canto */
 .manifesto__mark {
-  position: absolute; right: -6%; bottom: -22%;
-  width: min(58vw, 640px); opacity: 0.09; pointer-events: none;
+  position: absolute; left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  width: min(78vw, 820px);
+  opacity: 0.07;
+  filter: brightness(0) invert(1);
+  pointer-events: none;
 }
+
+.manifesto__conteudo {
+  position: relative; z-index: 1;
+  text-align: center;
+  display: grid; justify-items: center;
+  gap: var(--sp-4);
+}
+.manifesto__eyebrow { color: rgba(255, 255, 255, 0.78); }
+.manifesto__eyebrow::before { background: var(--white); }
+
 .manifesto__t {
   font-size: var(--fs-3xl); font-stretch: 118%;
-  line-height: 1.02; max-width: 16ch;
+  line-height: 1.02;
+  max-width: 20ch;
+  margin: 0;
 }
+/* a segunda frase e' o ponto de virada: fica em light para o contraste de peso
+   destacar a primeira, como no titulo do hero */
+.manifesto__t em { font-style: normal; font-weight: 300; }
+
 .manifesto__p {
   font-size: var(--fs-lg);
-  max-width: 58ch;
-  color: rgba(255, 255, 255, 0.9);
+  max-width: 60ch;
+  color: rgba(255, 255, 255, 0.88);
+  margin: 0;
+}
+
+.manifesto__fecho {
+  display: grid; justify-items: center; gap: var(--sp-3);
+  margin-top: var(--sp-4);
+  padding-top: var(--sp-6);
+  position: relative;
+  width: 100%;
+}
+/* losango no lugar da regua cheia: fecha a secao sem cortar a largura toda */
+.manifesto__losango {
+  position: absolute; top: 0; left: 50%;
+  translate: -50% -50%;
+  width: 10px; height: 10px;
+  background: var(--white);
+  rotate: 45deg;
+}
+.manifesto__fecho::before {
+  content: ""; position: absolute; top: 0; left: 50%; translate: -50% 0;
+  width: min(340px, 60%); height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
 }
 .manifesto__end {
-  margin-top: var(--sp-8); padding-top: var(--sp-4);
-  border-top: 1px solid rgba(255, 255, 255, 0.28);
   font-family: var(--font-display); font-weight: 700; font-stretch: 112%;
   font-size: var(--fs-xl); letter-spacing: var(--tr-snug);
-  max-width: 30ch;
+  max-width: 34ch;
+  margin: 0;
 }
+.manifesto__assinatura { width: clamp(112px, 11vw, 152px); opacity: 0.92; }
 
 /* -------------------------------------------------------------- footer --- */
 .footer { background: var(--n-990); padding-block: var(--sp-10) var(--sp-4); }

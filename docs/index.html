@@ -594,30 +594,45 @@
          As posicoes vem de --x/--y (porcentagem), calculadas sobre uma elipse;
          as linhas ficam numa camada SVG atras. -->
     <div class="rede" data-reveal>
-      <svg class="rede__linhas" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-        <line x1="50" y1="50" x2="50"   y2="15" />
-        <line x1="50" y1="50" x2="78.1" y2="28.8" />
-        <line x1="50" y1="50" x2="85.1" y2="57.6" />
-        <line x1="50" y1="50" x2="65.6" y2="80.6" />
-        <line x1="50" y1="50" x2="34.4" y2="80.6" />
-        <line x1="50" y1="50" x2="14.9" y2="57.6" />
-        <line x1="50" y1="50" x2="21.9" y2="28.8" />
-      </svg>
+      <div class="rede__disco">
+        <!-- aneis e raios. O disco e' quadrado, entao o viewBox 0-100 mapeia
+             1:1 e nada distorce. -->
+        <svg class="rede__linhas" viewBox="0 0 100 100" aria-hidden="true">
+          <circle cx="50" cy="50" r="15" />
+          <circle cx="50" cy="50" r="24" />
+          <circle cx="50" cy="50" r="31.5" />
+          <circle cx="50" cy="50" r="38" />
+          <g class="rede__raios">
+            <line x1="50" y1="50" x2="50"   y2="12" />
+            <line x1="50" y1="50" x2="79.7" y2="26.3" />
+            <line x1="50" y1="50" x2="87"   y2="58.5" />
+            <line x1="50" y1="50" x2="66.5" y2="84.2" />
+            <line x1="50" y1="50" x2="33.5" y2="84.2" />
+            <line x1="50" y1="50" x2="13"   y2="58.5" />
+            <line x1="50" y1="50" x2="20.3" y2="26.3" />
+          </g>
+          <g class="rede__brilhos">
+            <path d="M62 40.5v4M60 42.5h4" />
+            <path d="M36.5 62v3M35 63.5h3" />
+            <path d="M41 36.5v2.4M39.8 37.7h2.4" />
+          </g>
+        </svg>
 
-      <div class="rede__nucleo">
-        <img src="assets/logo/recads-c.svg" alt="" aria-hidden="true" width="46" height="41">
-        <span>P&amp;D</span>
+        <div class="rede__nucleo">
+          <span class="rede__nucleo-t">As 7 frentes</span>
+          <span class="rede__nucleo-d">de P&amp;D</span>
+        </div>
+
+        <ul class="rede__itens">
+          <li class="rede__item" style="--x: 50%;   --y: 12%"><span class="rede__no"></span><span class="rede__rot"><sup>01</sup>Inteligência Artificial</span></li>
+          <li class="rede__item" style="--x: 79.7%; --y: 26.3%"><span class="rede__no"></span><span class="rede__rot"><sup>02</sup>Automações internas</span></li>
+          <li class="rede__item" style="--x: 87%;   --y: 58.5%"><span class="rede__no"></span><span class="rede__rot"><sup>03</sup>Sistemas e integrações</span></li>
+          <li class="rede__item" style="--x: 66.5%; --y: 84.2%"><span class="rede__no"></span><span class="rede__rot"><sup>04</sup>Dashboards</span></li>
+          <li class="rede__item" style="--x: 33.5%; --y: 84.2%"><span class="rede__no"></span><span class="rede__rot"><sup>05</sup>Landing pages</span></li>
+          <li class="rede__item" style="--x: 13%;   --y: 58.5%"><span class="rede__no"></span><span class="rede__rot"><sup>06</sup>Fluxos digitais</span></li>
+          <li class="rede__item" style="--x: 20.3%; --y: 26.3%"><span class="rede__no"></span><span class="rede__rot"><sup>07</sup>Otimização de processos</span></li>
+        </ul>
       </div>
-
-      <ul class="rede__itens">
-        <li class="rede__item" style="--x: 50%;   --y: 15%">Inteligência Artificial</li>
-        <li class="rede__item" style="--x: 78.1%; --y: 28.8%">Automações internas</li>
-        <li class="rede__item" style="--x: 85.1%; --y: 57.6%">Sistemas e integrações</li>
-        <li class="rede__item" style="--x: 65.6%; --y: 80.6%">Dashboards</li>
-        <li class="rede__item" style="--x: 34.4%; --y: 80.6%">Landing pages</li>
-        <li class="rede__item" style="--x: 14.9%; --y: 57.6%">Fluxos digitais</li>
-        <li class="rede__item" style="--x: 21.9%; --y: 28.8%">Otimização de processos</li>
-      </ul>
     </div>
 
     <!-- fecho da secao: ancorado por uma regra e pelo ponto da marca, em vez
@@ -689,21 +704,31 @@
 
 <!-- ==================================================== MANIFESTO ======= -->
 <section class="section manifesto" id="manifesto">
+  <!-- marca da casa ao centro, bem apagada, servindo de eixo para o texto -->
   <img class="manifesto__mark" src="assets/logo/recads-c.svg" alt="" aria-hidden="true"
-       style="filter: brightness(0) invert(1)" width="185" height="166">
-  <div class="wrap">
-    <p class="eyebrow" data-reveal style="color: rgba(255,255,255,.75)">10 — Manifesto</p>
-    <h2 class="manifesto__t" data-split style="margin-top: var(--sp-3)">
-      Nós não comunicamos apenas marcas. Construímos presença.
+       width="185" height="166">
+
+  <div class="wrap manifesto__conteudo">
+    <p class="eyebrow manifesto__eyebrow" data-reveal>10 — Manifesto</p>
+
+    <h2 class="manifesto__t" data-split>
+      Nós não comunicamos apenas marcas. <em>Construímos presença.</em>
     </h2>
-    <p class="manifesto__p" data-reveal style="--reveal-delay: 200ms; margin-top: var(--sp-4)">
+
+    <p class="manifesto__p" data-reveal style="--reveal-delay: 180ms">
       Por trás de cada campanha, lançamento, vídeo, evento e resultado existe uma operação
       conectada ao negócio. A REC ADS existe para transformar estratégia em ação,
       criatividade em performance e tecnologia em crescimento para as marcas do Grupo FAJ.
     </p>
-    <p class="manifesto__end" data-reveal style="--reveal-delay: 300ms">
-      REC ADS. Estratégia, tecnologia e criatividade a serviço do crescimento do Grupo FAJ.
-    </p>
+
+    <div class="manifesto__fecho" data-reveal style="--reveal-delay: 300ms">
+      <span class="manifesto__losango" aria-hidden="true"></span>
+      <p class="manifesto__end">
+        REC ADS. Estratégia, tecnologia e criatividade a serviço do crescimento do Grupo FAJ.
+      </p>
+      <img class="manifesto__assinatura" src="assets/logo/recads-horizontal-branco.svg"
+           alt="rec.ads" width="847" height="214" loading="lazy">
+    </div>
   </div>
 </section>
 
