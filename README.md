@@ -76,6 +76,26 @@ o card usa o símbolo da marca como arte de fundo.
 Em `CANAIS`, o campo `url` está `null` em todos. Com `null` o card é uma `<div>`
 inerte; assim que receber uma URL vira link com `target="_blank"`.
 
+### Imagens dos cards de pilares (seção Sobre)
+
+Em `docs/assets/img/pilares/` há seis imagens **provisórias**: composições
+abstratas geradas na paleta da marca, uma por pilar. Não são banco de imagens —
+foram geradas para não trazer dependência externa nem material de licença
+incerta para o repositório.
+
+Para trocar por foto real, substitua os arquivos mantendo os mesmos nomes e a
+proporção **3:4** (900×1200 é suficiente):
+
+```
+estrategia.webp / .jpg      criatividade.webp / .jpg
+tecnologia.webp / .jpg      dados.webp / .jpg
+producao.webp / .jpg        performance.webp / .jpg
+```
+
+O HTML não precisa mudar. Vale lembrar que a imagem aparece a 5% em repouso e
+60% no hover, sob um véu escuro — então **fotos com bastante contraste e um
+ponto de luz funcionam melhor** do que fotos claras e uniformes.
+
 ### Logos das marcas do grupo
 
 Estão como cartões tipográficos em `docs/index.html`, na seção `#marcas`. Quando os

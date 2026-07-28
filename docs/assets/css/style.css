@@ -443,27 +443,103 @@ p { text-wrap: pretty; }
 
 /* --------------------------------------------------------------- sobre --- */
 .about__grid {
-  display: grid; gap: var(--sp-6);
+  display: grid; gap: var(--sp-4);
   grid-template-columns: 1fr;
+  margin-bottom: var(--sp-8);
 }
-.about__text { display: grid; gap: var(--sp-3); }
 .about__body { font-size: var(--fs-lg); color: var(--text-2); }
 .about__note {
   border-left: 2px solid var(--red);
   padding-left: var(--sp-3);
   font-size: var(--fs-base);
   color: var(--text);
+  align-self: start;
 }
-.pillars { display: grid; gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: var(--radius-lg); overflow: hidden; }
-.pillar {
-  background: var(--bg);
-  padding: var(--sp-3) var(--sp-3) var(--sp-4);
-  display: grid; gap: 0.4rem; align-content: start;
-  transition: background-color var(--dur) var(--ease-out);
+
+/* --- vitrine de pilares --------------------------------------------------
+   Cada card e' uma pilha: imagem (z 0), veu escuro (z 1), texto (z 2). O
+   fundo do proprio .pilar pinta abaixo de tudo, entao nao precisa de
+   z-index negativo. */
+/* Mobile: carrossel horizontal com snap. Sangra ate' as bordas da viewport
+   (o .wrap ja' recolhe a calha), e o card parcial na direita e' a dica de que
+   ha' mais. O overflow fica contido no container, sem gerar rolagem na
+   pagina. Acima de 720px vira grade e tudo isso e' desfeito. */
+.pilares {
+  display: grid;
+  gap: var(--sp-2);
+  grid-auto-flow: column;
+  grid-auto-columns: min(78%, 300px);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--gutter);
+  margin-inline: calc(var(--gutter) * -1);
+  padding: 0 var(--gutter) var(--sp-2);
+  scrollbar-width: thin;
+  scrollbar-color: var(--n-700) transparent;
 }
-.pillar:hover { background: var(--surface); }
-.pillar__n { font-family: var(--font-mono); font-size: 0.68rem; color: var(--red); letter-spacing: 0.1em; }
-.pillar__t { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-lg); font-stretch: 108%; letter-spacing: var(--tr-snug); }
+.pilares > * { scroll-snap-align: start; }
+.pilares::-webkit-scrollbar { height: 4px; }
+.pilares::-webkit-scrollbar-thumb { background: var(--n-700); border-radius: 2px; }
+.pilares::-webkit-scrollbar-track { background: transparent; }
+
+.pilar {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  min-height: clamp(300px, 30vw, 400px);
+  padding: var(--sp-4) var(--sp-3) var(--sp-3);
+  display: flex; flex-direction: column; justify-content: flex-end;
+  background: var(--n-900);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  transition: border-color 0.5s var(--ease-out),
+              transform 0.5s var(--ease-out),
+              box-shadow 0.5s var(--ease-out);
+}
+.pilar picture { position: absolute; inset: 0; z-index: 0; }
+.pilar__bg {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  opacity: 0.05;
+  transform: scale(1);
+  transition: opacity 0.5s ease, transform 0.6s ease;
+}
+.pilar__veu {
+  position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(
+    180deg,
+    rgba(8, 6, 5, 0.3) 0%,
+    rgba(8, 6, 5, 0.62) 46%,
+    rgba(8, 6, 5, 0.9) 100%);
+}
+.pilar__body { position: relative; z-index: 2; display: grid; gap: 0.5rem; }
+
+.pilar:hover { transform: translateY(-4px); border-color: var(--line-strong); box-shadow: var(--shadow-red); }
+.pilar:hover .pilar__bg { opacity: 0.6; transform: scale(1.05); }
+/* No hover o veu abre no topo (onde a imagem aparece) e continua fechado na
+   base, que e' onde o texto vive — o contraste do texto nao muda. */
+.pilar:hover .pilar__veu { background: linear-gradient(180deg, rgba(8, 6, 5, 0.14) 0%, rgba(8, 6, 5, 0.52) 44%, rgba(8, 6, 5, 0.93) 78%); }
+
+.pilar__n {
+  font-family: var(--font-mono); font-size: 0.7rem;
+  letter-spacing: 0.16em; color: var(--red);
+}
+.pilar__t {
+  font-family: var(--font-display); font-weight: 700; font-stretch: 112%;
+  font-size: var(--fs-xl); letter-spacing: var(--tr-snug); line-height: 1.08;
+}
+.pilar__d { font-size: var(--fs-sm); color: var(--text-2); max-width: 34ch; }
+
+/* Sem hover (toque), a imagem nunca apareceria: deixa parcialmente visivel. */
+@media (hover: none) {
+  .pilar__bg { opacity: 0.3; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pilar__bg, .pilar { transition: opacity 0.5s ease; }
+  .pilar:hover { transform: none; }
+  .pilar:hover .pilar__bg { transform: none; }
+}
 
 /* ------------------------------------------------------------- numeros --- */
 /* 2x2 em vez de 4 colunas: com o display em ~90px, quatro colunas exigiriam
@@ -865,10 +941,23 @@ p { text-wrap: pretty; }
 /* ------------------------------------------------------------ responsivo -*/
 /* minmax(0, 1fr) em vez de 1fr: o minimo automatico de uma coluna 1fr e' o
    min-content, e com tipografia display grande isso estoura a linha. */
+/* acima disto os pilares deixam de ser carrossel e viram grade */
+@media (min-width: 720px) {
+  .pilares {
+    grid-auto-flow: row;
+    grid-auto-columns: auto;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    overflow-x: visible;
+    scroll-snap-type: none;
+    margin-inline: 0;
+    padding: 0;
+    gap: var(--sp-3);
+  }
+}
+
 @media (min-width: 560px) {
   .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .brands { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .pillars { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .team { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .channels { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -876,14 +965,14 @@ p { text-wrap: pretty; }
 @media (min-width: 860px) {
   .services { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .brands { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .pillars { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .team { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .channels { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .about__grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; gap: var(--sp-8); }
+  .about__grid { grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); align-items: start; gap: var(--sp-6); }
   .tech__grid { grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr); align-items: center; }
   .footer__grid { grid-template-columns: minmax(0, 1.4fr) repeat(3, minmax(0, 1fr)); }
 }
 @media (min-width: 1080px) {
+  .pilares { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .services { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .gallery { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .team { grid-template-columns: repeat(4, minmax(0, 1fr)); }
