@@ -177,17 +177,22 @@ paleta. **Use os tokens.**
 
 ### Logo
 
-`docs/assets/logo/` foi vetorizado a partir do PDF do manual:
-
 | arquivo | uso |
 |---|---|
+| `logotipo-rec-ads.png` / `.webp` | **lockup oficial enviado pelo cliente** — header e rodapé |
+| `recads-horizontal-branco.svg` | lockup todo branco: assinatura do manifesto e imagem OG |
 | `recads-horizontal.svg` | lockup em cores, fundo claro |
-| `recads-horizontal-branco.svg` | fundo escuro (usado no site) |
 | `recads-horizontal-mono.svg` | herda a cor via `currentColor` |
 | `recads-empilhado.svg` | versão empilhada |
 | `recads-simbolo.svg` | só a pílula REC |
 | `recads-c.svg` / `-mono` | símbolo C• (manual, pág. 6) |
 | `favicon.svg` | C• branco sobre quadrado vermelho |
+
+Os SVGs foram vetorizados do PDF do manual. **Cuidado ao mexer neles:** o
+miolo do "R" é um path separado, não um subpath do compound. Como as letras
+são furos na pílula, esse miolo é uma ilha que precisa ser repintada com a cor
+da pílula — sem ele o R fica aberto. Está documentado em
+`scripts/` e no gerador; se um dia forem regerados, o path tem que voltar.
 
 **Atenção:** o logo é *knockout* — as letras "REC" são furos na pílula, não
 formas brancas. É o comportamento oficial (na pág. 5 do manual elas ficam

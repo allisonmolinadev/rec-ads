@@ -1066,12 +1066,14 @@ p { text-wrap: pretty; }
   .rede__rot { text-align: left; font-size: var(--fs-sm); }
 }
 
-/* --- fecho da secao --- */
+/* --- fecho da secao ---
+   Centrado para seguir o eixo do disco logo acima. */
 .tech__fecho {
   margin: var(--sp-8) 0 0;
   padding-top: var(--sp-4);
   border-top: 1px solid var(--line);
   display: grid; gap: var(--sp-2);
+  justify-items: center; text-align: center;
 }
 .tech__quote {
   margin: 0;
@@ -1087,7 +1089,9 @@ p { text-wrap: pretty; }
   color: var(--text-3);
   display: inline-flex; align-items: center; gap: 0.7em;
 }
-.tech__fecho-cap::before {
+/* fio dos dois lados, para o rotulo ficar simetrico quando centrado */
+.tech__fecho-cap::before,
+.tech__fecho-cap::after {
   content: ""; width: 26px; height: 2px; background: var(--red); flex: none;
 }
 
@@ -1547,6 +1551,24 @@ a.rede-btn:hover { background: var(--red); color: var(--white); transform: scale
   transition: color var(--dur-fast);
 }
 .footer__col a:hover { color: var(--red); }
+/* --- marca gigante fechando a pagina ---
+   O arquivo tem 10,3% de margem transparente de cada lado, entao a imagem e'
+   ampliada a 126,3% e recuada 13% para o desenho encostar nas bordas da tela.
+   A altura do contentor mostra so' a parte de cima: o resto e' cortado, como
+   na referencia. */
+.footer__marca {
+  margin-top: var(--sp-8);
+  height: clamp(52px, 17vw, 250px);
+  overflow: hidden;
+  line-height: 0;
+}
+.footer__marca img {
+  width: 126.3%;
+  max-width: none;
+  margin-left: -13.2%;
+  display: block;
+}
+
 .footer__bot {
   margin-top: var(--sp-8); padding-top: var(--sp-3);
   border-top: 1px solid var(--line);

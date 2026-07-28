@@ -320,7 +320,7 @@
      A pista precisa de duas copias identicas para o translateX(-50%) emendar
      sem salto; a copia e' escondida de leitores de tela. Sem JS, o CSS deixa
      a pista rolavel na mao — nada some. */
-  const VELOCIDADE = 34; // px por segundo
+  const VELOCIDADE = 52; // px por segundo
 
   function fitas() {
     $$('[data-fita]').forEach((caixa) => {
