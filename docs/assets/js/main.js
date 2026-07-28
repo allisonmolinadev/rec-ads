@@ -49,6 +49,9 @@
     { id: 'bastidores',     nome: 'Bastidores' },
   ];
 
+  /* `arte` e' o fundo do card (provisorio, gerado — trocar os arquivos em
+     assets/img/galeria/). `placeholder: true` continua marcando que ainda nao
+     ha' projeto real ali, e a tarja "Em breve" aparece por causa disso. */
   const GALERIA = [
     {
       titulo: 'Rodeo Country Bulls + FAJ',
@@ -57,16 +60,24 @@
       descricao: 'Cobertura, stand, camarote, ativações, vídeos, carrosséis, mídia paga e conteúdo em tempo real.',
       objetivo: null,
       resultado: null,
+      arte: 'rodeo-country-bulls',
       img: null,
       placeholder: false,
     },
-    { titulo: 'Lançamentos imobiliários', cat: 'lancamentos',    placeholder: true },
-    { titulo: 'Entregas de chaves',       cat: 'chaves',         placeholder: true },
-    { titulo: 'Eventos de patrocínio',    cat: 'patrocinio',     placeholder: true },
-    { titulo: 'Eventos corporativos',     cat: 'corporativos',   placeholder: true },
-    { titulo: 'Campanhas institucionais', cat: 'institucionais', placeholder: true },
-    { titulo: 'Produções audiovisuais',   cat: 'audiovisual',    placeholder: true },
-    { titulo: 'Bastidores',               cat: 'bastidores',     placeholder: true },
+    { titulo: 'Lançamentos imobiliários', cat: 'lancamentos',    arte: 'lancamentos',    placeholder: true,
+      descricao: 'Campanhas de lançamento, stand de vendas, conteúdo e mídia para novos empreendimentos.' },
+    { titulo: 'Entregas de chaves',       cat: 'chaves',         arte: 'chaves',         placeholder: true,
+      descricao: 'Registro das entregas, depoimentos de clientes e conteúdo de relacionamento.' },
+    { titulo: 'Eventos de patrocínio',    cat: 'patrocinio',     arte: 'patrocinio',     placeholder: true,
+      descricao: 'Ativações de marca, camarote, stand e cobertura em tempo real.' },
+    { titulo: 'Eventos corporativos',     cat: 'corporativos',   arte: 'corporativos',   placeholder: true,
+      descricao: 'Convenções, encontros internos e apresentações do grupo.' },
+    { titulo: 'Campanhas institucionais', cat: 'institucionais', arte: 'institucionais', placeholder: true,
+      descricao: 'Peças de posicionamento e autoridade para as marcas do grupo.' },
+    { titulo: 'Produções audiovisuais',   cat: 'audiovisual',    arte: 'audiovisual',    placeholder: true,
+      descricao: 'Vídeos institucionais, documentários, highlights e entrevistas.' },
+    { titulo: 'Bastidores',               cat: 'bastidores',     arte: 'bastidores',     placeholder: true,
+      descricao: 'Os bastidores da operação: captação, montagem e time em campo.' },
   ];
 
   /* --- Canais ----------------------------------------------------------
@@ -345,17 +356,31 @@
 
     const nomeCat = (id) => CATEGORIAS.find((c) => c.id === id)?.nome || '';
 
+    const fundo = (g) => g.img
+      ? `<img class="shot__img" src="${esc(g.img)}" alt="" aria-hidden="true" loading="lazy" decoding="async">`
+      : `<picture>
+           <source type="image/webp" srcset="assets/img/galeria/${g.arte}.webp">
+           <img class="shot__img" src="assets/img/galeria/${g.arte}.jpg" alt="" aria-hidden="true"
+                width="800" height="1100" loading="lazy" decoding="async">
+         </picture>`;
+
     grid.innerHTML = GALERIA.map((g, i) => `
       <button class="shot" data-cat="${g.cat}" data-i="${i}"
               aria-label="Abrir ${esc(g.titulo)}">
-        ${g.img
-          ? `<img class="shot__img" src="${esc(g.img)}" alt="${esc(g.titulo)}" loading="lazy" decoding="async">`
-          : `<span class="shot__ph"><img src="assets/logo/recads-c.svg" alt="" aria-hidden="true"></span>`}
-        ${g.placeholder ? '<span class="shot__tag">Em breve</span>' : ''}
-        <span class="shot__body">
+        ${fundo(g)}
+        <span class="shot__veu" aria-hidden="true"></span>
+        <span class="shot__topo">
           <span class="shot__cat">${esc(nomeCat(g.cat))}</span>
+          ${g.placeholder ? '<span class="shot__tag">Em breve</span>' : ''}
+        </span>
+        <span class="shot__body">
           <span class="shot__t">${esc(g.titulo)}</span>
           ${g.descricao ? `<span class="shot__d">${esc(g.descricao)}</span>` : ''}
+          <span class="shot__acao">Ver detalhes
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true">
+              <path d="M2 11 11 2M11 2H4M11 2v7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
         </span>
       </button>`).join('') + '<p class="gallery-empty" hidden>Nenhum projeto nesta categoria ainda.</p>';
 

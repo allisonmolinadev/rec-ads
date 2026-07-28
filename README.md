@@ -86,12 +86,19 @@ não trazer dependência externa nem material de licença incerta ao repositóri
 |---|---|---|
 | `docs/assets/img/pilares/` | 3:4 (900×1200) | 5% → 60% |
 | `docs/assets/img/servicos/` | 4:3 (1000×750) | 14% → 62% |
+| `docs/assets/img/galeria/` | 8:11 (800×1100) | 50% → 90% |
 
 ```
 pilares/    estrategia · criatividade · tecnologia · dados · producao · performance
 servicos/   estrategia-branding · performance-midia · conteudo-social ·
             audiovisual-eventos · tecnologia-ia · web-crm
+galeria/    rodeo-country-bulls · lancamentos · chaves · patrocinio ·
+            corporativos · institucionais · audiovisual · bastidores
 ```
+
+Na galeria, o arquivo usado por cada card vem do campo `arte` em `GALERIA`
+(`docs/assets/js/main.js`). Para uma foto real de projeto, preencha `img` com o
+caminho — ele tem precedência sobre `arte`.
 
 Para trocar por foto real, substitua os arquivos mantendo nome e proporção — o
 HTML não muda. Como a imagem aparece sob um véu escuro, **fotos contrastadas
