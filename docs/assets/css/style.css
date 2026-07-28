@@ -1042,6 +1042,29 @@ p { text-wrap: pretty; }
 .channel__p { display: block; margin-top: 0.15rem; font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-3); }
 
 /* -------------------------------------------------------------- equipe --- */
+/* --- equipe, agrupada por area --- */
+.equipe-grupo + .equipe-grupo { margin-top: var(--sp-8); }
+.equipe-grupo__cab {
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: var(--sp-3); flex-wrap: wrap;
+  padding-bottom: var(--sp-2);
+  margin-bottom: var(--sp-3);
+  border-bottom: 1px solid var(--line);
+}
+.equipe-grupo__t {
+  font-family: var(--font-display); font-weight: 700; font-stretch: 110%;
+  font-size: var(--fs-xl); letter-spacing: var(--tr-snug);
+  display: flex; align-items: baseline; gap: 0.6rem;
+}
+.equipe-grupo__t::before {
+  content: ""; width: 8px; height: 8px; border-radius: 50%;
+  background: var(--red); flex: none; align-self: center;
+}
+.equipe-grupo__n {
+  font-family: var(--font-mono); font-size: var(--fs-mono);
+  letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-3);
+}
+
 /* 2 colunas ja' no mobile: em coluna unica os 14 retratos passavam de 8000px
    de rolagem. A 390px cada card fica com ~165px, largura confortavel para o
    recorte 4:5. */

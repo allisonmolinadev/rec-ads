@@ -13,24 +13,34 @@
 
   /* =========================================================== DADOS ==== */
 
-  /* --- Equipe: nomes derivados dos arquivos de docs/img -----------------
-     Os cargos ainda nao foram enviados: todos ficam "Lorem ipsum" ate la.
-     Para preencher, trocar apenas o campo `cargo`.                        */
+  /* --- Equipe, agrupada por area e na ordem definida pelo cliente --------
+     `id` e o nome do arquivo de foto em assets/img/equipe/ e nao muda;
+     `nome` e o que aparece no card. Para reordenar, mover a linha.        */
   const EQUIPE = [
-    { id: 'allison',        nome: 'Allison',         cargo: 'Lorem ipsum' },
-    { id: 'devanir',        nome: 'Devanir',         cargo: 'Lorem ipsum' },
-    { id: 'edu-souza',      nome: 'Edu Souza',       cargo: 'Lorem ipsum' },
-    { id: 'eduardo-duarte', nome: 'Eduardo Duarte',  cargo: 'Lorem ipsum' },
-    { id: 'fer-dourado',    nome: 'Fer Dourado',     cargo: 'Lorem ipsum' },
-    { id: 'guilherme',      nome: 'Guilherme',       cargo: 'Lorem ipsum' },
-    { id: 'henrique',       nome: 'Henrique',        cargo: 'Lorem ipsum' },
-    { id: 'lorena-pereira', nome: 'Lorena Pereira',  cargo: 'Lorem ipsum' },
-    { id: 'maria-eduarda',  nome: 'Maria Eduarda',   cargo: 'Lorem ipsum' },
-    { id: 'maria',          nome: 'Maria',           cargo: 'Lorem ipsum' },
-    { id: 'nathalia',       nome: 'Nathalia',        cargo: 'Lorem ipsum' },
-    { id: 'rafa',           nome: 'Rafa',            cargo: 'Lorem ipsum' },
-    { id: 'rodrigo',        nome: 'Rodrigo',         cargo: 'Lorem ipsum' },
-    { id: 'vinicius',       nome: 'Vinicius',        cargo: 'Lorem ipsum' },
+    {
+      area: 'Marketing & Criação',
+      pessoas: [
+        { id: 'fer-dourado',    nome: 'Fernando Dourado', cargo: 'Diretor de Criação' },
+        { id: 'eduardo-duarte', nome: 'Eduardo Duarte',   cargo: 'Brand Designer' },
+        { id: 'allison',        nome: 'Allison Molina',   cargo: 'Web Designer' },
+        { id: 'nathalia',       nome: 'Nathalia Gomes',   cargo: 'Assessora de Imprensa' },
+        { id: 'maria',          nome: 'Maria Salles',     cargo: 'Analista de Conteúdo' },
+        { id: 'rodrigo',        nome: 'Rodrigo Dantas',   cargo: 'Motion Designer' },
+        { id: 'edu-souza',      nome: 'Eduardo Souza',    cargo: 'Videomaker' },
+        { id: 'maria-eduarda',  nome: 'Maria Eduarda',    cargo: 'Jovem Aprendiz' },
+      ],
+    },
+    {
+      area: 'Tecnologia & Desenvolvimento',
+      pessoas: [
+        { id: 'rafa',           nome: 'Rafael Gouveia',      cargo: 'Head de Marketing e Tecnologia' },
+        { id: 'devanir',        nome: 'Devanir Annovazzi',   cargo: 'Software Dev' },
+        { id: 'vinicius',       nome: 'Vinícius Jardinetti', cargo: 'TI' },
+        { id: 'henrique',       nome: 'Henrique Julio',      cargo: 'Analista de Dados' },
+        { id: 'guilherme',      nome: 'Guilherme Pomini',    cargo: 'TI' },
+        { id: 'lorena-pereira', nome: 'Lorena Pereira',      cargo: 'P&D' },
+      ],
+    },
   ];
 
   /* --- Galeria ---------------------------------------------------------
@@ -308,8 +318,9 @@
   function team() {
     const wrap = $('#team');
     if (!wrap) return;
-    wrap.innerHTML = EQUIPE.map((p, i) => `
-      <article class="member" data-reveal style="--reveal-delay: ${(i % 5) * 80}ms">
+
+    const cartao = (p, i) => `
+      <article class="member" data-reveal style="--reveal-delay: ${(i % 5) * 70}ms">
         <div class="member__ph">
           <picture>
             <source type="image/webp"
@@ -319,10 +330,19 @@
           </picture>
         </div>
         <div class="member__body">
-          <h3 class="member__n">${esc(p.nome)}</h3>
+          <h4 class="member__n">${esc(p.nome)}</h4>
           <p class="member__r">${esc(p.cargo)}</p>
         </div>
-      </article>`).join('');
+      </article>`;
+
+    wrap.innerHTML = EQUIPE.map((g) => `
+      <section class="equipe-grupo">
+        <div class="equipe-grupo__cab" data-reveal>
+          <h3 class="equipe-grupo__t">${esc(g.area)}</h3>
+          <span class="equipe-grupo__n">${String(g.pessoas.length).padStart(2, '0')} ${g.pessoas.length === 1 ? 'pessoa' : 'pessoas'}</span>
+        </div>
+        <div class="team">${g.pessoas.map(cartao).join('')}</div>
+      </section>`).join('');
   }
 
   /* ========================================================= CANAIS ===== */

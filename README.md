@@ -40,18 +40,28 @@ scripts/optimize.js      reprocessa as fotos da equipe
 Tudo que vai mudar com frequência está no topo de `docs/assets/js/main.js`, em
 constantes nomeadas. Não é preciso mexer no HTML.
 
-### Cargos da equipe
+### Equipe
 
-Todos estão como `Lorem ipsum`, conforme combinado. Em `EQUIPE`, troque só o
-campo `cargo`:
+`EQUIPE` é uma lista de grupos, e cada grupo tem sua ordem — a ordem do array é
+a ordem na tela:
 
 ```js
-{ id: 'allison', nome: 'Allison', cargo: 'Lorem ipsum' },
+{
+  area: 'Marketing & Criação',
+  pessoas: [
+    { id: 'fer-dourado', nome: 'Fernando Dourado', cargo: 'Diretor de Criação' },
+    ...
+  ],
+},
 ```
 
-Os nomes vieram dos nomes dos arquivos em `material/fotos-equipe-originais`
-(extensão removida). Para **adicionar** alguém: rode a otimização (abaixo) e
-acrescente uma linha em `EQUIPE`.
+`id` é o nome do arquivo de foto em `docs/assets/img/equipe/` e **não muda** —
+`nome` é o que aparece no card. Por isso o arquivo pode se chamar `fer-dourado`
+enquanto o card mostra "Fernando Dourado".
+
+Para **reordenar**, mova a linha. Para **mover alguém de grupo**, mova a linha
+para o outro array. Para **adicionar**, rode a otimização (abaixo) e acrescente
+a linha. Um grupo novo é só mais um `{ area, pessoas }` na lista.
 
 ### Galeria de projetos
 
@@ -249,7 +259,7 @@ o site funciona: todos os caminhos internos são relativos, inclusive os do 404.
 
 ## Pendências (dependem de material do cliente)
 
-- [ ] Cargos reais da equipe (hoje `Lorem ipsum`)
+- [x] ~~Cargos reais da equipe~~ — recebidos, com os dois grupos e a ordem definida
 - [x] ~~Arquivos de logo das 6 marcas do grupo~~ — recebidos e aplicados
 - [ ] URLs dos canais (Instagram, YouTube, LinkedIn, TikTok, sites)
 - [ ] Fotos e vídeos dos projetos da galeria
