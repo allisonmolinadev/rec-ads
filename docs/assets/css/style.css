@@ -400,23 +400,6 @@ p { text-wrap: pretty; }
 }
 @media (prefers-reduced-motion: reduce) { .hero__glow { animation: none; } }
 
-/* contornos da pilula da marca flutuando ao fundo */
-.hero__shapes { position: absolute; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
-.pill-outline {
-  position: absolute;
-  border: 1px solid var(--line-strong);
-  border-radius: 22% / 46%;
-  opacity: 0.5;
-  animation: float 18s var(--ease-io) infinite alternate;
-}
-.pill-outline:nth-child(1) { width: 340px; height: 167px; top: 16%; left: -90px; }
-.pill-outline:nth-child(2) { width: 220px; height: 108px; bottom: 22%; right: 6%; animation-delay: -6s; }
-.pill-outline:nth-child(3) { width: 520px; height: 255px; top: 42%; right: -180px; opacity: 0.25; animation-delay: -12s; }
-@keyframes float {
-  to { transform: translate3d(0, -34px, 0) rotate(-3deg); }
-}
-@media (prefers-reduced-motion: reduce) { .pill-outline { animation: none; } }
-
 .hero__grid { display: grid; gap: var(--sp-6); min-width: 0; }
 .hero__grid > * { min-width: 0; }
 .hero__title {
@@ -632,25 +615,6 @@ p { text-wrap: pretty; }
   /* retrato 9:16 num quadro mais baixo: centra no capacete */
   object-position: 50% 32%;
 }
-/* selo de vidro sobre a foto, como na referencia */
-.numeros__selo {
-  position: absolute; left: var(--sp-3); bottom: var(--sp-3);
-  display: grid; gap: 0.15rem;
-  padding: 0.85rem 1.15rem;
-  border-radius: var(--radius-lg);
-  background: rgba(7, 5, 5, 0.62);
-  box-shadow: inset 0 0 0 1px var(--line-strong);
-  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-}
-.numeros__selo-t {
-  font-family: var(--font-mono); font-size: 0.62rem;
-  letter-spacing: 0.14em; text-transform: uppercase; color: var(--text);
-}
-.numeros__selo-d {
-  font-family: var(--font-mono); font-size: 0.58rem;
-  letter-spacing: 0.12em; text-transform: uppercase; color: var(--red);
-}
-
 /* 2x2: com o display em ~90px, quatro colunas exigiriam ~1980px de min-content
    e estourariam a linha. */
 .stats { display: grid; gap: var(--sp-2); align-content: stretch; }
