@@ -11,7 +11,10 @@ fs.mkdirSync(OUT, { recursive: true });
 
 // altura alvo (@2x). Wordmarks muito largos recebem altura menor para nao
 // dominarem a parede optica.
-const ALTURA = { 'faj-log': 92, concrejota: 108, 'faj-empreendimentos': 104, 'grupo-faj': 150, utani: 118, 'energy-field': 150 };
+const ALTURA = {
+  'faj-log': 92, 'faj-invest': 100, concrejota: 108, 'faj-empreendimentos': 104,
+  'grupo-faj': 150, utani: 118, 'energy-field': 150,
+};
 
 (async () => {
   const itens = [];

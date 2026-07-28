@@ -699,14 +699,24 @@ p { text-wrap: pretty; }
 /* Parede de marcas: fixa, sem molduras de celula — os logos ficam parados
    lado a lado, distribuidos na largura da coluna de texto. */
 .brands { border-block: 1px solid var(--line); }
+/* base e espacamento calibrados para os 7 logos fecharem numa linha so' —
+   com 12vw o setimo caia sozinho na linha de baixo */
 .brands__linha {
   display: flex; flex-wrap: wrap;
   align-items: center; justify-content: space-between;
-  gap: var(--sp-3) clamp(1rem, 2.5vw, 2.5rem);
+  gap: var(--sp-3) clamp(0.75rem, 1.6vw, 1.75rem);
   padding-block: var(--sp-2);
 }
+/* quando nao couberem todos, a linha que sobra fica centrada em vez de
+   espalhada pelas bordas */
+@media (max-width: 860px) {
+  .brands__linha { justify-content: center; }
+}
 .brand {
-  flex: 1 1 clamp(120px, 12vw, 170px);
+  flex: 1 1 clamp(100px, 10.5vw, 150px);
+  /* sem isto o minimo automatico do item flex e' o min-content do logo, que
+     supera a base e derruba o setimo para a linha de baixo */
+  min-width: 0;
   min-height: clamp(110px, 12vw, 150px);
   display: flex; flex-direction: column;
   align-items: center; justify-content: center; gap: 0.6rem;
