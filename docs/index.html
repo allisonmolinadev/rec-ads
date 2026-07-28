@@ -578,43 +578,50 @@
       <h2 class="section-head__title" data-split>Pesquisa, desenvolvimento e inovação aplicados ao crescimento.</h2>
     </div>
 
-    <div class="tech__grid">
-      <div style="display: grid; gap: var(--sp-4)">
-        <p class="section-head__lead" data-reveal>
-          A REC ADS também é tecnologia. Nosso time de P&amp;D desenvolve soluções para
-          tornar os processos do grupo mais inteligentes, rápidos e integrados, unindo
-          dados, automação, IA e experiência digital.
-        </p>
+    <p class="section-head__lead" data-reveal style="max-width: 62ch">
+      A REC ADS também é tecnologia. Nosso time de P&amp;D desenvolve soluções para
+      tornar os processos do grupo mais inteligentes, rápidos e integrados, unindo
+      dados, automação, IA e experiência digital.
+    </p>
 
-        <div class="chips" data-reveal style="--reveal-delay: 140ms">
-          <span class="chip">Inteligência Artificial</span>
-          <span class="chip">Automações internas</span>
-          <span class="chip">Sistemas e integrações</span>
-          <span class="chip">Dashboards</span>
-          <span class="chip">Landing pages</span>
-          <span class="chip">Fluxos digitais</span>
-          <span class="chip">Otimização de processos</span>
-        </div>
+    <!-- As 7 frentes como rede: cada uma ligada ao nucleo, porque na pratica
+         elas se alimentam entre si. Substitui o mockup de pipeline, cujas
+         barras pela metade sugeriam algo incompleto.
+         As posicoes vem de --x/--y (porcentagem), calculadas sobre uma elipse;
+         as linhas ficam numa camada SVG atras. -->
+    <div class="rede" data-reveal>
+      <svg class="rede__linhas" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+        <line x1="50" y1="50" x2="50"   y2="15" />
+        <line x1="50" y1="50" x2="78.1" y2="28.8" />
+        <line x1="50" y1="50" x2="85.1" y2="57.6" />
+        <line x1="50" y1="50" x2="65.6" y2="80.6" />
+        <line x1="50" y1="50" x2="34.4" y2="80.6" />
+        <line x1="50" y1="50" x2="14.9" y2="57.6" />
+        <line x1="50" y1="50" x2="21.9" y2="28.8" />
+      </svg>
 
-        <p class="tech__quote" data-split>Criamos ferramentas para acelerar marcas, processos e decisões.</p>
+      <div class="rede__nucleo">
+        <img src="assets/logo/recads-c.svg" alt="" aria-hidden="true" width="46" height="41">
+        <span>P&amp;D</span>
       </div>
 
-      <!-- mockup de interface: elemento visual, não é um dado real -->
-      <div class="flow" data-reveal style="--reveal-delay: 200ms" aria-hidden="true">
-        <div class="flow__bar">
-          <span class="flow__dot"></span><span class="flow__dot"></span><span class="flow__dot"></span>
-          <span style="margin-left: 0.6rem; color: var(--text-3); font-size: 0.66rem; letter-spacing: 0.1em">rec.ads / pipeline</span>
-        </div>
-        <div class="flow__row"><span>captação de leads</span><span>auto</span></div>
-        <div class="flow__meter"><i style="--w: 82%"></i></div>
-        <div class="flow__row"><span>integração CRM</span><span>ok</span></div>
-        <div class="flow__meter"><i style="--w: 64%"></i></div>
-        <div class="flow__row"><span>dashboard de mídia</span><span>live</span></div>
-        <div class="flow__meter"><i style="--w: 91%"></i></div>
-        <div class="flow__row"><span>modelos de IA</span><span>beta</span></div>
-        <div class="flow__meter"><i style="--w: 47%"></i></div>
-      </div>
+      <ul class="rede__itens">
+        <li class="rede__item" style="--x: 50%;   --y: 15%">Inteligência Artificial</li>
+        <li class="rede__item" style="--x: 78.1%; --y: 28.8%">Automações internas</li>
+        <li class="rede__item" style="--x: 85.1%; --y: 57.6%">Sistemas e integrações</li>
+        <li class="rede__item" style="--x: 65.6%; --y: 80.6%">Dashboards</li>
+        <li class="rede__item" style="--x: 34.4%; --y: 80.6%">Landing pages</li>
+        <li class="rede__item" style="--x: 14.9%; --y: 57.6%">Fluxos digitais</li>
+        <li class="rede__item" style="--x: 21.9%; --y: 28.8%">Otimização de processos</li>
+      </ul>
     </div>
+
+    <!-- fecho da secao: ancorado por uma regra e pelo ponto da marca, em vez
+         de flutuar solto no meio da coluna -->
+    <figure class="tech__fecho" data-reveal>
+      <blockquote class="tech__quote" data-split>Criamos ferramentas para acelerar marcas, processos e decisões.</blockquote>
+      <figcaption class="tech__fecho-cap">rec.ads — P&amp;D e Tecnologia</figcaption>
+    </figure>
   </div>
 </section>
 
