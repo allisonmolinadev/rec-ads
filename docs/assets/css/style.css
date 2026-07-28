@@ -617,22 +617,69 @@ p { text-wrap: pretty; }
 }
 
 /* ------------------------------------------------------------- numeros --- */
-/* 2x2 em vez de 4 colunas: com o display em ~90px, quatro colunas exigiriam
-   ~1980px de min-content e estourariam a viewport. Em 2x2 o numero fica
-   maior, que era a intencao da secao. */
-.stats { display: grid; gap: 1px; background: var(--line); }
+/* Foto a esquerda, numeros a direita. Empilha abaixo de 900px. */
+.numeros { display: grid; gap: var(--sp-3); }
+
+.numeros__foto {
+  position: relative;
+  margin: 0;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  min-height: clamp(280px, 42vw, 520px);
+  background: var(--n-900);
+  border: 1px solid var(--line);
+}
+.numeros__foto img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  /* retrato: o rosto fica no terco superior */
+  object-position: 50% 22%;
+}
+/* selo de vidro sobre a foto, como na referencia */
+.numeros__selo {
+  position: absolute; left: var(--sp-3); bottom: var(--sp-3);
+  display: grid; gap: 0.15rem;
+  padding: 0.85rem 1.15rem;
+  border-radius: var(--radius-lg);
+  background: rgba(7, 5, 5, 0.62);
+  box-shadow: inset 0 0 0 1px var(--line-strong);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+}
+.numeros__selo-t {
+  font-family: var(--font-mono); font-size: 0.62rem;
+  letter-spacing: 0.14em; text-transform: uppercase; color: var(--text);
+}
+.numeros__selo-d {
+  font-family: var(--font-mono); font-size: 0.58rem;
+  letter-spacing: 0.12em; text-transform: uppercase; color: var(--red);
+}
+
+/* 2x2: com o display em ~90px, quatro colunas exigiriam ~1980px de min-content
+   e estourariam a linha. */
+.stats { display: grid; gap: var(--sp-2); align-content: stretch; }
 .stat {
-  background: var(--n-950);
-  padding: var(--sp-5) var(--sp-3) var(--sp-4);
+  background: var(--n-900);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xl);
+  padding: var(--sp-4) var(--sp-3);
+  display: flex; flex-direction: column; justify-content: center;
   position: relative;
   min-width: 0;
-  transition: background-color var(--dur) var(--ease-out);
+  /* o numero e' dimensionado pela largura do card, nao da viewport */
+  container: stat / inline-size;
+  transition: background-color var(--dur) var(--ease-out),
+              border-color var(--dur) var(--ease-out);
 }
-.stat:hover { background: var(--n-900); }
+.stat:hover { background: var(--n-850); border-color: var(--line-strong); }
+/* 18cqi = 18% da largura do card. A string mais longa ("+R$500M") ocupa cerca
+   de 5em nesta fonte, entao 18% da largura garante folga em qualquer card. Com
+   --fs-num (que media a viewport) o numero estourava o card e invadia o
+   vizinho no layout de 2x2 ao lado da foto. */
 .stat__v {
   font-family: var(--font-display);
   font-weight: 700; font-stretch: 118%;
-  font-size: var(--fs-num);
+  font-size: clamp(2rem, 18cqi, 4.6rem);
   line-height: 0.86;
   letter-spacing: -0.04em;
   display: flex; align-items: baseline;
@@ -1261,6 +1308,11 @@ p { text-wrap: pretty; }
 @media (min-width: 560px) {
   .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .channels { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+/* foto e numeros lado a lado; a foto ocupa um pouco menos que a metade */
+@media (min-width: 900px) {
+  .numeros { grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr); align-items: stretch; }
+  .numeros__foto { min-height: 0; }
 }
 @media (min-width: 860px) {
   .team { --cols: 3; }
