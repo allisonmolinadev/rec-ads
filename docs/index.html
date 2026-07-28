@@ -110,6 +110,17 @@
 
 <!-- ======================================================== HERO ======== -->
 <section class="hero" id="inicio">
+  <!-- Banner do hero. O sujeito esta' a direita e os dois tercos da esquerda
+       sao pretos: e' onde o titulo vive. O veu por cima garante o contraste
+       do texto e o degrade a direita costura a foto com o fundo da pagina. -->
+  <picture class="hero__banner" aria-hidden="true">
+    <source type="image/webp" media="(min-width: 1200px)" srcset="assets/img/hero/banner@2x.webp">
+    <source type="image/webp" srcset="assets/img/hero/banner.webp">
+    <img src="assets/img/hero/banner.jpg" alt="" width="1920" height="1080"
+         fetchpriority="high" decoding="async">
+  </picture>
+  <span class="hero__veu" aria-hidden="true"></span>
+
   <div class="hero__bg grid-bg" aria-hidden="true"></div>
   <div class="hero__glow" aria-hidden="true"></div>
   <div class="hero__shapes" aria-hidden="true">

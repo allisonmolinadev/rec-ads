@@ -67,9 +67,9 @@
   --fs-xl: clamp(1.45rem, 1.25rem + 0.95vw, 2.1rem);
   --fs-2xl: clamp(1.9rem, 1.45rem + 2.1vw, 3.2rem);
   --fs-3xl: clamp(2.4rem, 1.6rem + 3.6vw, 4.75rem);
-  /* teto em 5.25rem: acima disso o titulo do hero passa de 5 linhas e empurra
-     os CTAs para fora da primeira dobra */
-  --fs-4xl: clamp(2.5rem, 1.3rem + 4.6vw, 5.25rem);
+  /* teto em 4.5rem: acima disso o titulo do hero avanca sobre o rosto do
+     banner. O piso segura a presenca no mobile. */
+  --fs-4xl: clamp(2.3rem, 1.2rem + 3.9vw, 4.5rem);
   --fs-num: clamp(2.9rem, 1.6rem + 4.6vw, 6rem);
 
   --lh-tight: 0.94;

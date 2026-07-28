@@ -358,6 +358,32 @@ p { text-wrap: pretty; }
   overflow: hidden;
   isolation: isolate;
 }
+/* --- banner do hero ---
+   object-position a direita: e' onde esta' o sujeito da foto. Em telas
+   estreitas a composicao horizontal nao cabe, entao o banner recua para uma
+   presenca sutil e o texto manda. */
+.hero__banner {
+  position: absolute; inset: 0; z-index: -3;
+  pointer-events: none;
+  display: block;
+}
+.hero__banner img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: 78% center;
+}
+/* Veu em duas camadas: horizontal para proteger a coluna de texto a esquerda,
+   vertical para o banner morrer no fundo da pagina embaixo.
+   O horizontal chega a zero antes do rosto: ela aparece em 100%, sem nenhum
+   escurecimento por cima. */
+.hero__veu {
+  position: absolute; inset: 0; z-index: -2;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(11, 8, 7, 0.97) 0%, rgba(11, 8, 7, 0.92) 38%, rgba(11, 8, 7, 0.45) 56%, transparent 68%),
+    linear-gradient(180deg, rgba(11, 8, 7, 0.62) 0%, transparent 20%, transparent 66%, rgba(11, 8, 7, 0.9) 100%);
+}
+
 .hero__bg { position: absolute; inset: 0; z-index: -2; pointer-events: none; }
 /* brilho vermelho da marca, mesmo recurso do contraluz das fotos da equipe */
 .hero__glow {
@@ -402,8 +428,10 @@ p { text-wrap: pretty; }
      mais estreito — manter 17ch encolhia a caixa e quebrava o titulo em 5
      linhas. Com 19ch a composicao volta a 4 linhas:
        A inteligência de / marketing e tecnologia / por trás das marcas /
-       do Grupo FAJ. */
-  max-width: 19ch;
+       do Grupo FAJ.
+     O teto em vw impede o titulo de avancar sobre o rosto do banner, que
+     ocupa o terco direito da foto. */
+  max-width: min(19ch, 52vw);
 }
 .hero__title strong { font-weight: 700; }  /* palavras que carregam a mensagem */
 .hero__lead {
@@ -535,7 +563,9 @@ p { text-wrap: pretty; }
 .pilar__bg {
   width: 100%; height: 100%;
   object-fit: cover;
-  opacity: 0.05;
+  /* retratos: o rosto fica no terco superior, entao o recorte puxa para cima */
+  object-position: 50% 28%;
+  opacity: 0.38;
   transform: scale(1);
   transition: opacity 0.5s ease, transform 0.6s ease;
 }
@@ -543,17 +573,21 @@ p { text-wrap: pretty; }
   position: absolute; inset: 0; z-index: 1;
   background: linear-gradient(
     180deg,
-    rgba(8, 6, 5, 0.3) 0%,
-    rgba(8, 6, 5, 0.62) 46%,
-    rgba(8, 6, 5, 0.9) 100%);
+    rgba(8, 6, 5, 0.34) 0%,
+    rgba(8, 6, 5, 0.68) 46%,
+    rgba(8, 6, 5, 0.93) 100%);
+  transition: background 0.5s var(--ease-out);
 }
 .pilar__body { position: relative; z-index: 2; display: grid; gap: 0.5rem; }
 
 .pilar:hover { transform: translateY(-4px); border-color: var(--line-strong); box-shadow: var(--shadow-red); }
-.pilar:hover .pilar__bg { opacity: 0.6; transform: scale(1.05); }
-/* No hover o veu abre no topo (onde a imagem aparece) e continua fechado na
-   base, que e' onde o texto vive — o contraste do texto nao muda. */
-.pilar:hover .pilar__veu { background: linear-gradient(180deg, rgba(8, 6, 5, 0.14) 0%, rgba(8, 6, 5, 0.52) 44%, rgba(8, 6, 5, 0.93) 78%); }
+.pilar:hover .pilar__bg { opacity: 1; transform: scale(1.05); }
+/* Com a foto em 100% no hover, o veu abre no topo mas fecha mais na base, que
+   e' onde o texto vive — sem isso o titulo perderia contraste sobre o rosto. */
+.pilar:hover .pilar__veu {
+  background: linear-gradient(180deg,
+    rgba(8, 6, 5, 0.1) 0%, rgba(8, 6, 5, 0.46) 40%, rgba(8, 6, 5, 0.88) 66%, rgba(8, 6, 5, 0.96) 100%);
+}
 
 .pilar__n {
   font-family: var(--font-mono); font-size: 0.7rem;
@@ -572,9 +606,9 @@ p { text-wrap: pretty; }
   min-height: calc(3em * var(--lh-body));
 }
 
-/* Sem hover (toque), a imagem nunca apareceria: deixa parcialmente visivel. */
+/* Sem hover (toque) nao ha' estado ampliado: a foto ja' entra mais presente. */
 @media (hover: none) {
-  .pilar__bg { opacity: 0.3; }
+  .pilar__bg { opacity: 0.62; }
 }
 @media (prefers-reduced-motion: reduce) {
   .pilar__bg, .pilar { transition: opacity 0.5s ease; }
@@ -1256,6 +1290,19 @@ p { text-wrap: pretty; }
 /* abaixo disto a calha fica estreita demais para o indicador vertical */
 @media (max-width: 900px) {
   .scroll-cue { display: none; }
+}
+
+/* Abaixo disto a foto e' horizontal demais para caber ao lado do texto: o
+   banner vira atmosfera de fundo e o veu fecha mais. */
+/* Sem largura para o texto ficar ao lado da foto, o banner sobe para tras do
+   conteudo. A imagem continua em 100% — quem escurece e' o veu, que cobre a
+   area do texto e libera o topo, onde ela aparece. */
+@media (max-width: 860px) {
+  .hero__banner img { object-position: 68% top; }
+  .hero__veu {
+    background: linear-gradient(180deg,
+      rgba(11, 8, 7, 0.45) 0%, rgba(11, 8, 7, 0.72) 30%, rgba(11, 8, 7, 0.93) 52%, rgba(11, 8, 7, 0.97) 100%);
+  }
 }
 
 @media (max-width: 640px) {
