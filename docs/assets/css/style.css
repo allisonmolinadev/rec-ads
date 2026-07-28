@@ -640,14 +640,11 @@ p { text-wrap: pretty; }
   width: auto; height: auto;
   object-fit: contain;
   filter: brightness(0) invert(1);
-  opacity: 0.62;
   transition: filter var(--dur) var(--ease-out),
-              opacity var(--dur) var(--ease-out),
               transform var(--dur) var(--ease-out);
 }
 .brand:hover .brand__logo img {
   filter: none;
-  opacity: 1;
   transform: scale(1.04);
 }
 /* lockup empilhado (icone sobre texto): a 52px o texto ficava ilegivel */
