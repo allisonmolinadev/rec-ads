@@ -661,10 +661,14 @@ p { text-wrap: pretty; }
    sempre 100% da linha, os 6 continuam visiveis e nada quebra para a linha
    de baixo. Abaixo de 900px seis cards nao cabem e a secao vira carrossel
    manual (ver mais adiante). */
+/* Fora do .wrap: a fileira usa a largura toda da tela, com a calha como unica
+   margem. Em telas largas isso e' o que faz diferenca — a 1920px o .wrap
+   travaria os cards nos 1320px centrais e sobraria vazio dos dois lados. */
 .servicos {
   display: flex;
   gap: var(--sp-2);
   align-items: stretch;
+  padding-inline: var(--gutter);
 }
 
 .servico {
@@ -776,7 +780,7 @@ p { text-wrap: pretty; }
     overscroll-behavior-x: contain;
     scroll-snap-type: x mandatory;
     scroll-padding-inline: var(--gutter);
-    margin-inline: calc(var(--gutter) * -1);
+    /* sem margem negativa: a secao ja' esta' fora do .wrap */
     padding: 0 var(--gutter) var(--sp-2);
     scrollbar-width: thin;
     scrollbar-color: var(--n-700) transparent;
