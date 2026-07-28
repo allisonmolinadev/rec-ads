@@ -1458,7 +1458,10 @@ a.rede-btn:hover { background: var(--red); color: var(--white); transform: scale
 }
 .member__r { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.1em; color: var(--text-3); }
 
-.areas { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: var(--sp-6); }
+.areas {
+  display: flex; flex-wrap: wrap; justify-content: center;
+  gap: 0.5rem; margin-top: var(--sp-6);
+}
 
 /* ----------------------------------------------------------- manifesto --- */
 .manifesto {
@@ -1531,7 +1534,9 @@ a.rede-btn:hover { background: var(--red); color: var(--white); transform: scale
 .manifesto__assinatura { width: clamp(112px, 11vw, 152px); opacity: 0.92; }
 
 /* -------------------------------------------------------------- footer --- */
-.footer { background: var(--n-990); padding-block: var(--sp-10) var(--sp-4); }
+/* sem padding embaixo: a marca gigante e' o ultimo elemento e precisa encostar
+   no fim da pagina, senao sobra uma faixa preta abaixo dela */
+.footer { background: var(--n-990); padding-block: var(--sp-10) 0; }
 .footer__grid { display: grid; gap: var(--sp-6); }
 .footer__brand { display: grid; gap: var(--sp-3); align-content: start; }
 .footer__logo img { width: 150px; }
@@ -1556,16 +1561,25 @@ a.rede-btn:hover { background: var(--red); color: var(--white); transform: scale
    ampliada a 126,3% e recuada 13% para o desenho encostar nas bordas da tela.
    A altura do contentor mostra so' a parte de cima: o resto e' cortado, como
    na referencia. */
+/* A altura acompanha a largura da tela, nao um teto fixo: com clamp em px a
+   fracao visivel mudava com a viewport e em telas largas sobrava so' uma tira
+   do topo, ilegivel.
+   A ampliacao compensa a margem transparente do arquivo (o desenho ocupa 95,4%
+   da largura, com 2,3% de folga de cada lado), para o lockup encostar nas
+   bordas da tela sem ser cortado alem disso. */
+/* 19vw da' ~62% do desenho visivel: a imagem tem 32,15vw de altura e o
+   desenho ocupa de 11% a 89% dela. E' o corte do print de referencia — mostra
+   o topo das letras e some na base da pagina. */
 .footer__marca {
   margin-top: var(--sp-8);
-  height: clamp(52px, 17vw, 250px);
+  height: 19vw;
   overflow: hidden;
   line-height: 0;
 }
 .footer__marca img {
-  width: 126.3%;
+  width: 104.8%;
   max-width: none;
-  margin-left: -13.2%;
+  margin-left: -2.4%;
   display: block;
 }
 
