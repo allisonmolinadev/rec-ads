@@ -22,10 +22,16 @@ docs/                    <- o site (raiz de publicação)
     img/equipe/          fotos da equipe otimizadas
     og/recads-og.png     imagem de compartilhamento
 
-material/                <- NÃO publicado: manual de marca em PDF e fotos
-                            originais em alta. Não mover para dentro de docs/.
+material/                <- FORA do Git (ver .gitignore). Manual de marca,
+                            fotos originais em alta e logos do cliente. Existe
+                            só na máquina. Não versionar, não mover para docs/.
 scripts/optimize.js      reprocessa as fotos da equipe
 ```
+
+> **O repositório é público.** Só entra no Git o que pode ser lido por
+> qualquer pessoa. Material de origem — fotos em alta de pessoas reais, manual
+> de marca, arquivos do cliente — fica fora, e o site usa apenas os derivados
+> otimizados em `docs/assets/img/`.
 
 ---
 
@@ -211,6 +217,10 @@ No GitHub, em *Settings › Pages*:
 
 - **Source:** Deploy from a branch
 - **Branch:** `main` · pasta **`/docs`**
+
+⚠️ **A pasta precisa ser `/docs`, não `/ (root)`.** Apontada para a raiz, o
+Jekyll não encontra `index.html` lá e renderiza o `README.md` como se fosse a
+página — e ainda publica tudo que estiver na raiz do repositório.
 
 Não há build nem workflow: o GitHub serve `docs/` como está. O `404.html` é
 usado automaticamente em qualquer rota inexistente, e o `.nojekyll` impede o

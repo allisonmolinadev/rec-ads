@@ -1,3 +1,9 @@
+# Material de origem: manual de marca, fotos originais em alta dos integrantes
+# e logos enviados pelo cliente. O repositório é PÚBLICO — esses arquivos não
+# devem ser versionados. Ficam só na máquina; os derivados otimizados que o
+# site usa estão em docs/assets/img/.
+material/
+
 # dependências (o site não tem build; sharp só é usado pelo script de imagens)
 node_modules/
 package-lock.json
