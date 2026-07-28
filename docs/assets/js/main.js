@@ -306,9 +306,21 @@
         pista.appendChild(copia);
       });
 
-      // duracao proporcional a largura: itens maiores nao passam mais rapido
-      const largura = pista.scrollWidth / 2;
-      caixa.style.setProperty('--vel', `${Math.max(20, Math.round(largura / VELOCIDADE))}s`);
+      /* Largura fixa em px, nao max-content. Isso e' o que permite os itens
+         encolherem quando um deles cresce no hover: com max-content a pista
+         acompanharia o crescimento, o translateX(-50%) mudaria de referencia
+         e a fita saltaria. Recalculado no resize porque os cards usam clamp. */
+      const medir = () => {
+        pista.style.width = '';
+        const total = pista.scrollWidth;
+        pista.style.width = `${total}px`;
+        // duracao proporcional a largura: itens maiores nao passam mais rapido
+        caixa.style.setProperty('--vel', `${Math.max(20, Math.round(total / 2 / VELOCIDADE))}s`);
+      };
+      medir();
+      let t;
+      window.addEventListener('resize', () => { clearTimeout(t); t = setTimeout(medir, 180); });
+
       pista.dataset.pronta = '1';
       caixa.classList.add('is-loop');
     });

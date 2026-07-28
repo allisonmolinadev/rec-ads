@@ -653,43 +653,41 @@ p { text-wrap: pretty; }
 .brand:hover .brand__tag { opacity: 1; transform: none; }
 
 /* ---------------------------------------------------------- o que fazemos */
-/* --- vitrine de servicos --------------------------------------------------
-   Mobile: carrossel horizontal com snap (manual, nao automatico — a pagina ja'
-   tem duas fitas que andam sozinhas). Desktop: composicao editorial com
-   larguras, alturas e deslocamentos verticais variados. */
+/* --- vitrine de servicos: acordeao ----------------------------------------
+   Os 6 ficam fixos na tela, estreitos, e o que recebe o ponteiro abre espaco
+   enquanto os outros cedem.
+
+   flex-basis fica em 0 e toda a largura vem do flex-grow: assim a soma e'
+   sempre 100% da linha, os 6 continuam visiveis e nada quebra para a linha
+   de baixo. Abaixo de 900px seis cards nao cabem e a secao vira carrossel
+   manual (ver mais adiante). */
 .servicos {
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: min(82%, 330px);
+  display: flex;
   gap: var(--sp-2);
-  overflow-x: auto;
-  overscroll-behavior-x: contain;
-  scroll-snap-type: x mandatory;
-  scroll-padding-inline: var(--gutter);
-  margin-inline: calc(var(--gutter) * -1);
-  padding: 0 var(--gutter) var(--sp-2);
-  scrollbar-width: thin;
-  scrollbar-color: var(--n-700) transparent;
+  align-items: stretch;
 }
-.servicos > * { scroll-snap-align: start; }
-.servicos::-webkit-scrollbar { height: 4px; }
-.servicos::-webkit-scrollbar-thumb { background: var(--n-700); border-radius: 2px; }
-.servicos::-webkit-scrollbar-track { background: transparent; }
 
 .servico {
+  flex: 1 1 0;
+  min-width: 0;
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  min-height: var(--alt, 360px);
+  /* contexto de container para o titulo reagir a largura do card */
+  container: servico / inline-size;
+  min-height: var(--alt, 380px);
   display: flex; flex-direction: column; justify-content: space-between;
   padding: var(--sp-3);
   background: var(--n-900);
   border: 1px solid var(--line);
   border-radius: var(--radius-xl);
-  transition: border-color 0.5s var(--ease-out),
-              transform 0.5s var(--ease-out),
+  transition: flex-grow 0.55s var(--ease-out),
+              border-color 0.5s var(--ease-out),
               box-shadow 0.5s var(--ease-out);
 }
+/* :not(:hover) evita conflito de especificidade com .servico:hover */
+.servicos:hover .servico:not(:hover) { flex-grow: 0.78; }
+.servicos .servico:hover { flex-grow: 2.5; }
 .servico picture { position: absolute; inset: 0; z-index: 0; }
 .servico__bg {
   width: 100%; height: 100%;
@@ -709,7 +707,9 @@ p { text-wrap: pretty; }
 .servico__topo { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-2); }
 .servico__body { display: grid; gap: 0.5rem; }
 
-.servico:hover { transform: translateY(-5px); border-color: var(--line-strong); box-shadow: var(--shadow-red); }
+/* sem translateY aqui: numa fileira de cards do mesmo tamanho, levantar um
+   deles desalinha a linha — quem da' o destaque e' a largura */
+.servico:hover { border-color: var(--line-strong); box-shadow: var(--shadow-red); }
 .servico:hover .servico__bg { opacity: 0.62; transform: scale(1.06); }
 /* o veu fecha um pouco na base para o texto nao perder contraste */
 .servico:hover .servico__veu {
@@ -727,11 +727,33 @@ p { text-wrap: pretty; }
   backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
 }
 .servico__t {
-  font-family: var(--font-display); font-weight: 700; font-stretch: 110%;
-  font-size: var(--fs-xl); letter-spacing: var(--tr-snug); line-height: 1.08;
-  max-width: 15ch;
+  font-family: var(--font-display); font-weight: 700; font-stretch: 108%;
+  font-size: var(--fs-lg); letter-spacing: var(--tr-snug); line-height: 1.1;
+  /* palavras longas como "Performance" nao cabem no card encolhido e ficavam
+     cortadas no meio; com hifenizacao elas quebram em vez de sumir */
+  hyphens: auto;
+  overflow-wrap: break-word;
+  transition: font-size 0.45s var(--ease-out);
 }
-.servico__d { color: var(--text-2); font-size: var(--fs-sm); max-width: 42ch; }
+.servico:hover .servico__t { font-size: var(--fs-xl); }
+
+/* O titulo acompanha a largura do proprio card, nao a da viewport: quando um
+   vizinho expande, os outros encolhem e precisam de tipo menor. */
+@container servico (max-width: 210px) {
+  .servico__t { font-size: var(--fs-base); }
+}
+@container servico (max-width: 150px) {
+  .servico__t { font-size: var(--fs-sm); }
+  .servico__selo { display: none; }
+}
+
+/* a descricao nao caberia no card estreito: entra quando ele abre */
+.servico__d {
+  color: var(--text-2); font-size: var(--fs-sm); max-width: 44ch;
+  opacity: 0; max-height: 0; overflow: hidden;
+  transition: opacity 0.4s var(--ease-out), max-height 0.5s var(--ease-out);
+}
+.servico:hover .servico__d { opacity: 1; max-height: 9em; }
 .servico__seta {
   margin-top: var(--sp-1);
   width: 38px; height: 38px; border-radius: 50%;
@@ -746,12 +768,33 @@ p { text-wrap: pretty; }
 .servico:hover .servico__seta { background: var(--red); color: var(--white); box-shadow: none; }
 .servico:hover .servico__seta svg { transform: translate(2px, -2px); }
 
+/* Abaixo de 900px seis cards nao cabem lado a lado sem virar tira ilegivel:
+   a secao passa a ser carrossel manual, com o conteudo todo visivel. */
+@media (max-width: 899px) {
+  .servicos {
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--gutter);
+    margin-inline: calc(var(--gutter) * -1);
+    padding: 0 var(--gutter) var(--sp-2);
+    scrollbar-width: thin;
+    scrollbar-color: var(--n-700) transparent;
+  }
+  .servicos::-webkit-scrollbar { height: 4px; }
+  .servicos::-webkit-scrollbar-thumb { background: var(--n-700); border-radius: 2px; }
+  .servico { flex: 0 0 min(80%, 320px); scroll-snap-align: start; }
+  .servicos:hover .servico:not(:hover),
+  .servicos .servico:hover { flex-grow: 0; }
+  .servico__d { opacity: 1; max-height: none; }
+}
+
 /* Sem hover (toque), a imagem nunca ganharia presenca */
 @media (hover: none) {
   .servico__bg { opacity: 0.34; }
+  .servico__d { opacity: 1; max-height: none; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .servico:hover { transform: none; }
   .servico:hover .servico__bg { transform: none; }
 }
 
@@ -1163,41 +1206,6 @@ p { text-wrap: pretty; }
   .team { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .channels { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
-/* --- servicos: sai o carrossel, entra a composicao editorial --- */
-@media (min-width: 760px) {
-  .servicos {
-    grid-auto-flow: row;
-    grid-auto-columns: auto;
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    align-items: start;
-    overflow-x: visible;
-    scroll-snap-type: none;
-    margin-inline: 0;
-    padding: 0;
-    gap: var(--sp-3);
-  }
-  /* Altura unica para todos; o ritmo editorial vem das larguras variadas e do
-     deslocamento vertical, nao de alturas diferentes. O valor precisa caber o
-     card de texto mais longo (04 — Audiovisual e Eventos) na coluna mais
-     estreita. */
-  .servicos { --alt: 400px; }
-  .servico:nth-child(1) { grid-column: 1 / 8; }
-  .servico:nth-child(2) { grid-column: 8 / 13; margin-top: var(--sp-6); }
-  .servico:nth-child(3) { grid-column: 1 / 6; }
-  .servico:nth-child(4) { grid-column: 6 / 13; margin-top: var(--sp-4); }
-  .servico:nth-child(5) { grid-column: 1 / 7; }
-  .servico:nth-child(6) { grid-column: 7 / 13; margin-top: var(--sp-5); }
-}
-@media (min-width: 1080px) {
-  .servicos { --alt: 440px; }
-  .servico:nth-child(1) { grid-column: 1 / 6; }
-  .servico:nth-child(2) { grid-column: 6 / 10; margin-top: var(--sp-8); }
-  .servico:nth-child(3) { grid-column: 10 / 13; margin-top: var(--sp-3); }
-  .servico:nth-child(4) { grid-column: 1 / 4; }
-  .servico:nth-child(5) { grid-column: 4 / 9; margin-top: var(--sp-5); }
-  .servico:nth-child(6) { grid-column: 9 / 13; margin-top: var(--sp-2); }
-}
-
 @media (min-width: 860px) {
   .team { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .channels { grid-template-columns: repeat(3, minmax(0, 1fr)); }
