@@ -94,9 +94,13 @@
      `url` fica null ate os links oficiais serem enviados; sem link o botao
      e' renderizado como <span> inerte, nao como <a> quebrado.
      Para publicar, basta preencher a url — o botao vira link sozinho.     */
+  /* `arte` e' o caminho do fundo do card, sem extensao — o render monta o
+     .webp e o .jpg. Sao imagens provisorias que ja' existiam na pasta,
+     escolhidas por tema; para trocar por foto da empresa, mudar o caminho. */
   const CANAIS = [
     {
       empresa: 'Grupo FAJ',
+      arte: 'galeria/corporativos',
       redes: [
         { plataforma: 'Instagram', ico: 'instagram', url: null },
         { plataforma: 'YouTube',   ico: 'youtube',   url: null },
@@ -105,6 +109,7 @@
     },
     {
       empresa: 'FAJ Empreendimentos',
+      arte: 'galeria/lancamentos',
       redes: [
         { plataforma: 'Instagram', ico: 'instagram', url: null },
         { plataforma: 'TikTok',    ico: 'tiktok',    url: null },
@@ -112,18 +117,22 @@
     },
     {
       empresa: 'FAJ Invest',
+      arte: 'servicos/performance-midia',
       redes: [{ plataforma: 'Instagram', ico: 'instagram', url: null }],
     },
     {
       empresa: 'Utani',
+      arte: 'galeria/chaves',
       redes: [{ plataforma: 'Instagram', ico: 'instagram', url: null }],
     },
     {
       empresa: 'Energy Field',
+      arte: 'servicos/tecnologia-ia',
       redes: [{ plataforma: 'Instagram', ico: 'instagram', url: null }],
     },
     {
       empresa: 'Sites e landing pages',
+      arte: 'servicos/web-crm',
       redes: [{ plataforma: 'Web', ico: 'web', url: null }],
     },
   ];
@@ -385,28 +394,29 @@
     const wrap = $('#channels');
     if (!wrap) return;
 
+    /* Botao redondo so' com o icone: o nome da plataforma vai no aria-label e
+       no title, senao o botao ficaria sem nome acessivel. */
     const botao = (r, empresa) => {
-      const inner = `
-        <span class="rede-btn__ico">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">${ICONES[r.ico] || ''}</svg>
-        </span>
-        <span class="rede-btn__n">${esc(r.plataforma)}</span>
-        <svg class="rede-btn__seta" width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true">
-          <path d="M2 11 11 2M11 2H4M11 2v7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>`;
+      const ico = `<svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true">${ICONES[r.ico] || ''}</svg>`;
+      const rotulo = `${esc(r.plataforma)} de ${esc(empresa)}`;
       return r.url
         ? `<a class="rede-btn" href="${esc(r.url)}" target="_blank" rel="noopener"
-              aria-label="${esc(r.plataforma)} de ${esc(empresa)}">${inner}</a>`
-        : `<span class="rede-btn is-inerte">${inner}</span>`;
+              aria-label="${rotulo}" title="${rotulo}">${ico}</a>`
+        : `<span class="rede-btn is-inerte" role="img" aria-label="${rotulo}" title="${rotulo}">${ico}</span>`;
     };
 
     wrap.innerHTML = CANAIS.map((c) => `
       <article class="canal">
-        <div class="canal__cab">
+        <picture>
+          <source type="image/webp" srcset="assets/img/${c.arte}.webp">
+          <img class="canal__bg" src="assets/img/${c.arte}.jpg" alt="" aria-hidden="true"
+               loading="lazy" decoding="async">
+        </picture>
+        <span class="canal__veu" aria-hidden="true"></span>
+        <div class="canal__body">
           <h3 class="canal__empresa">${esc(c.empresa)}</h3>
-          <span class="canal__contagem">${c.redes.length} ${c.redes.length === 1 ? 'canal' : 'canais'}</span>
+          <div class="canal__redes">${c.redes.map((r) => botao(r, c.empresa)).join('')}</div>
         </div>
-        <div class="canal__redes">${c.redes.map((r) => botao(r, c.empresa)).join('')}</div>
       </article>`).join('');
   }
 

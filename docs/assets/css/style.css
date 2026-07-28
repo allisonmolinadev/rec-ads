@@ -633,8 +633,8 @@ p { text-wrap: pretty; }
   position: absolute; inset: 0;
   width: 100%; height: 100%;
   object-fit: cover;
-  /* retrato: o rosto fica no terco superior */
-  object-position: 50% 22%;
+  /* retrato 9:16 num quadro mais baixo: centra no capacete */
+  object-position: 50% 32%;
 }
 /* selo de vidro sobre a foto, como na referencia */
 .numeros__selo {
@@ -662,7 +662,7 @@ p { text-wrap: pretty; }
   background: var(--n-900);
   border: 1px solid var(--line);
   border-radius: var(--radius-xl);
-  padding: var(--sp-4) var(--sp-3);
+  padding: var(--sp-5) var(--sp-4);
   display: flex; flex-direction: column; justify-content: center;
   position: relative;
   min-width: 0;
@@ -679,7 +679,7 @@ p { text-wrap: pretty; }
 .stat__v {
   font-family: var(--font-display);
   font-weight: 700; font-stretch: 118%;
-  font-size: clamp(2rem, 18cqi, 4.6rem);
+  font-size: clamp(2rem, 18cqi, 5.5rem);
   line-height: 0.86;
   letter-spacing: -0.04em;
   display: flex; align-items: baseline;
@@ -696,13 +696,18 @@ p { text-wrap: pretty; }
 }
 
 /* -------------------------------------------------------------- marcas --- */
-/* Parede de marcas: fita continua, sem molduras de celula — os logos flutuam
-   lado a lado e a fita desliza sozinha. */
+/* Parede de marcas: fixa, sem molduras de celula — os logos ficam parados
+   lado a lado, distribuidos na largura da coluna de texto. */
 .brands { border-block: 1px solid var(--line); }
+.brands__linha {
+  display: flex; flex-wrap: wrap;
+  align-items: center; justify-content: space-between;
+  gap: var(--sp-3) clamp(1rem, 2.5vw, 2.5rem);
+  padding-block: var(--sp-2);
+}
 .brand {
-  flex: 0 0 clamp(170px, 18vw, 240px);
-  margin-right: clamp(2rem, 4vw, 4.5rem);
-  min-height: clamp(130px, 14vw, 168px);
+  flex: 1 1 clamp(120px, 12vw, 170px);
+  min-height: clamp(110px, 12vw, 150px);
   display: flex; flex-direction: column;
   align-items: center; justify-content: center; gap: 0.6rem;
   padding: var(--sp-2);
@@ -1247,80 +1252,65 @@ p { text-wrap: pretty; }
 .modal__k { font-family: var(--font-mono); font-size: var(--fs-mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-3); }
 
 /* -------------------------------------------------------------- canais --- */
-/* Um card por empresa, com os botoes das redes dela dentro. */
+/* Um card por empresa: foto de fundo, nome embaixo e os icones em circulo. */
 .channels { display: grid; gap: var(--sp-2); }
 
 .canal {
-  background: var(--n-900);
-  border: 1px solid var(--line);
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   border-radius: var(--radius-xl);
+  border: 1px solid var(--line);
+  /* sem min-height junto do aspect-ratio: a altura minima retropropaga para a
+     largura (240 x 5/4 = 300px) e o card estourava a coluna do grid */
+  aspect-ratio: 5 / 4;
+  display: flex; flex-direction: column; justify-content: flex-end;
   padding: var(--sp-3);
-  display: flex; flex-direction: column; gap: var(--sp-3);
+  background: var(--n-900);
   transition: border-color var(--dur) var(--ease-out),
-              background-color var(--dur) var(--ease-out);
+              transform var(--dur) var(--ease-out),
+              box-shadow var(--dur) var(--ease-out);
 }
-.canal:hover { border-color: var(--line-strong); background: var(--n-850); }
+.canal:hover { transform: translateY(-4px); border-color: var(--line-strong); box-shadow: var(--shadow-red); }
 
-.canal__cab {
-  display: flex; align-items: baseline; justify-content: space-between;
-  gap: var(--sp-2); flex-wrap: wrap;
-  padding-bottom: var(--sp-2);
-  border-bottom: 1px solid var(--line);
+.canal picture { position: absolute; inset: 0; z-index: 0; }
+.canal__bg {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  opacity: 0.62;
+  transform: scale(1);
+  transition: opacity 0.5s ease, transform 0.7s ease;
 }
+.canal:hover .canal__bg { opacity: 0.85; transform: scale(1.05); }
+/* fechado na base, onde ficam o nome e os botoes */
+.canal__veu {
+  position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(180deg,
+    rgba(7, 5, 5, 0.28) 0%, rgba(7, 5, 5, 0.58) 44%, rgba(7, 5, 5, 0.93) 100%);
+}
+
+.canal__body { position: relative; z-index: 2; display: grid; gap: var(--sp-2); }
 .canal__empresa {
   font-family: var(--font-display); font-weight: 700; font-stretch: 108%;
-  font-size: var(--fs-lg); letter-spacing: var(--tr-snug); line-height: 1.15;
-  display: flex; align-items: baseline; gap: 0.6em;
+  font-size: var(--fs-xl); letter-spacing: var(--tr-snug); line-height: 1.1;
 }
-.canal__empresa::before {
-  content: ""; width: 6px; height: 6px; border-radius: 50%;
-  background: var(--red); flex: none; align-self: center;
-}
-.canal__contagem {
-  font-family: var(--font-mono); font-size: var(--fs-mono);
-  letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-3);
-  white-space: nowrap;
-}
+.canal__redes { display: flex; flex-wrap: wrap; gap: 0.6rem; }
 
-/* margin-top auto: os botoes encostam na base, entao cards com 1 e com 3 redes
-   alinham a mesma linha de rodape */
-.canal__redes { display: grid; gap: 0.5rem; margin-top: auto; }
-
+/* botao redondo, so' icone — o nome vai no aria-label */
 .rede-btn {
-  display: flex; align-items: center; gap: 0.7rem;
-  padding: 0.7rem 0.9rem;
-  border-radius: var(--radius-lg);
-  background: rgba(255, 255, 255, 0.04);
-  box-shadow: inset 0 0 0 1px var(--line);
-  color: var(--text);
+  width: 42px; height: 42px; border-radius: 50%;
+  display: grid; place-items: center; flex: none;
+  background: rgba(255, 255, 255, 0.94);
+  color: var(--n-950);
   transition: background-color var(--dur) var(--ease-out),
-              box-shadow var(--dur) var(--ease-out),
+              color var(--dur) var(--ease-out),
               transform var(--dur) var(--ease-out);
 }
-.rede-btn__ico {
-  width: 30px; height: 30px; border-radius: var(--radius);
-  display: grid; place-items: center; flex: none;
-  background: rgba(255, 255, 255, 0.06); color: var(--text-2);
-  transition: background-color var(--dur) var(--ease-out), color var(--dur) var(--ease-out);
-}
-.rede-btn__n {
-  font-family: var(--font-mono); font-size: 0.68rem;
-  letter-spacing: 0.12em; text-transform: uppercase;
-}
-.rede-btn__seta { margin-left: auto; color: var(--text-3); transition: transform var(--dur) var(--ease-out), color var(--dur) var(--ease-out); }
-
 /* so' o botao com link se comporta como clicavel */
-a.rede-btn:hover {
-  background: rgba(210, 33, 16, 0.1);
-  box-shadow: inset 0 0 0 1px var(--red);
-  transform: translateX(3px);
-}
-a.rede-btn:hover .rede-btn__ico { background: var(--red); color: var(--white); }
-a.rede-btn:hover .rede-btn__seta { color: var(--red); transform: translate(2px, -2px); }
+a.rede-btn:hover { background: var(--red); color: var(--white); transform: scale(1.1); }
 
-/* sem URL ainda: fica visivel, mas sem afordancia de clique */
-.rede-btn.is-inerte { cursor: default; }
-.rede-btn.is-inerte .rede-btn__seta { opacity: 0.35; }
+/* sem URL ainda: continua visivel e legivel, mas sem afordancia de clique */
+.rede-btn.is-inerte { cursor: default; background: rgba(255, 255, 255, 0.8); }
 
 /* -------------------------------------------------------------- equipe --- */
 /* --- equipe, agrupada por area --- */
@@ -1458,9 +1448,10 @@ a.rede-btn:hover .rede-btn__seta { color: var(--red); transform: translate(2px, 
   .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .channels { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
-/* foto e numeros lado a lado; a foto ocupa um pouco menos que a metade */
+/* Foto estreita e alta a esquerda; os numeros ficam com o resto da largura,
+   o que permite tipo maior. */
 @media (min-width: 900px) {
-  .numeros { grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr); align-items: stretch; }
+  .numeros { grid-template-columns: minmax(0, 0.42fr) minmax(0, 1.58fr); align-items: stretch; }
   .numeros__foto { min-height: 0; }
 }
 @media (min-width: 860px) {
