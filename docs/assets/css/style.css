@@ -520,26 +520,22 @@ p { text-wrap: pretty; }
   -webkit-mask-image: linear-gradient(90deg, transparent, #000 var(--fade), #000 calc(100% - var(--fade)), transparent);
   mask-image: linear-gradient(90deg, transparent, #000 var(--fade), #000 calc(100% - var(--fade)), transparent);
 }
-.fita.is-loop .fita__pista {
-  padding-inline: 0;
-  animation: fita-desliza var(--vel, 72s) linear infinite;
+/* A posicao da pista vem do JS (transform), nao de @keyframes: o avanco
+   automatico e o arrasto precisam dividir o mesmo valor.
+   touch-action: pan-y deixa a rolagem vertical da pagina passar e reserva o
+   gesto horizontal para o arrasto. */
+.fita.is-loop {
+  cursor: grab;
+  touch-action: pan-y;
+  user-select: none; -webkit-user-select: none;
 }
-/* pausa para examinar: no ponteiro e tambem no teclado */
-.fita.is-loop:hover .fita__pista,
-.fita.is-loop:focus-within .fita__pista { animation-play-state: paused; }
+.fita.is-loop.is-arrastando { cursor: grabbing; }
+.fita.is-loop .fita__pista { padding-inline: 0; will-change: transform; }
+/* a imagem nao deve iniciar o arrasto nativo do navegador */
+.fita.is-loop img { -webkit-user-drag: none; user-drag: none; pointer-events: none; }
 
-@keyframes fita-desliza { to { transform: translateX(-50%); } }
-
-/* Movimento reduzido: nada desliza sozinho. Volta a ser uma faixa que a
-   pessoa rola quando quiser. */
-@media (prefers-reduced-motion: reduce) {
-  .fita.is-loop {
-    overflow-x: auto;
-    -webkit-mask-image: none;
-    mask-image: none;
-  }
-  .fita.is-loop .fita__pista { animation: none; padding-inline: var(--gutter); }
-}
+/* Movimento reduzido: o JS nao avanca sozinho, mas o arrasto continua
+   funcionando — a pessoa navega no proprio ritmo. */
 
 /* --- pilares na fita --- */
 .pilares { padding-bottom: var(--sp-2); }

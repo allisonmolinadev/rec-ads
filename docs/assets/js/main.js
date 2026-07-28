@@ -336,20 +336,68 @@
         pista.appendChild(copia);
       });
 
-      /* Largura fixa em px, nao max-content. Isso e' o que permite os itens
-         encolherem quando um deles cresce no hover: com max-content a pista
-         acompanharia o crescimento, o translateX(-50%) mudaria de referencia
-         e a fita saltaria. Recalculado no resize porque os cards usam clamp. */
+      /* Largura fixa em px, nao max-content: e' o que permite os itens
+         encolherem quando um cresce no hover — com max-content a pista
+         acompanharia o crescimento e a emenda do laco mudaria de lugar. */
+      let metade = 0;
       const medir = () => {
         pista.style.width = '';
         const total = pista.scrollWidth;
         pista.style.width = `${total}px`;
-        // duracao proporcional a largura: itens maiores nao passam mais rapido
-        caixa.style.setProperty('--vel', `${Math.max(20, Math.round(total / 2 / VELOCIDADE))}s`);
+        metade = total / 2;
       };
       medir();
       let t;
       window.addEventListener('resize', () => { clearTimeout(t); t = setTimeout(medir, 180); });
+
+      /* A posicao e' controlada aqui, e nao por animacao CSS, porque o avanco
+         automatico e o arrasto precisam dividir o mesmo valor. Com @keyframes
+         o transform seria da animacao e o arrasto brigaria com ele. */
+      let pos = 0, pausado = false, arrastando = false, ultimoX = 0, anterior = null, andou = 0;
+
+      const passo = (agora) => {
+        if (anterior === null) anterior = agora;
+        const dt = Math.min((agora - anterior) / 1000, 0.05); // trava saltos ao voltar de outra aba
+        anterior = agora;
+        if (!pausado && !arrastando && !reduced) pos -= VELOCIDADE * dt;
+        if (metade > 0) {
+          // mantem a posicao dentro de uma copia: o laco fica infinito nos dois sentidos
+          while (pos <= -metade) pos += metade;
+          while (pos > 0) pos -= metade;
+        }
+        pista.style.transform = `translate3d(${pos.toFixed(2)}px, 0, 0)`;
+        requestAnimationFrame(passo);
+      };
+      requestAnimationFrame(passo);
+
+      caixa.addEventListener('pointerenter', () => { pausado = true; });
+      caixa.addEventListener('pointerleave', () => { pausado = false; });
+      caixa.addEventListener('focusin', () => { pausado = true; });
+      caixa.addEventListener('focusout', () => { pausado = false; });
+
+      caixa.addEventListener('pointerdown', (e) => {
+        if (e.button !== 0 && e.pointerType === 'mouse') return;
+        arrastando = true; andou = 0; ultimoX = e.clientX;
+        caixa.setPointerCapture(e.pointerId);
+        caixa.classList.add('is-arrastando');
+      });
+      caixa.addEventListener('pointermove', (e) => {
+        if (!arrastando) return;
+        const d = e.clientX - ultimoX;
+        ultimoX = e.clientX;
+        andou += Math.abs(d);
+        pos += d;
+      });
+      const soltar = (e) => {
+        if (!arrastando) return;
+        arrastando = false;
+        caixa.classList.remove('is-arrastando');
+        if (caixa.hasPointerCapture?.(e.pointerId)) caixa.releasePointerCapture(e.pointerId);
+      };
+      caixa.addEventListener('pointerup', soltar);
+      caixa.addEventListener('pointercancel', soltar);
+      // um arrasto nao deve virar clique em algo dentro da fita
+      caixa.addEventListener('click', (e) => { if (andou > 6) { e.preventDefault(); e.stopPropagation(); } }, true);
 
       pista.dataset.pronta = '1';
       caixa.classList.add('is-loop');
