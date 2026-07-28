@@ -264,6 +264,30 @@
     });
   }
 
+  /* ======================================================== PILARES ===== */
+  /* A fita precisa de duas copias identicas para o translateX(-50%) emendar
+     sem salto. A copia e' escondida de leitores de tela. Sem JS, o CSS deixa
+     a pista rolavel na mao — nada some. */
+  function pilares() {
+    const caixa = $('#pilares');
+    const pista = $('.pilares__pista', caixa || document);
+    if (!caixa || !pista) return;
+
+    const originais = [...pista.children];
+    originais.forEach((card) => {
+      const copia = card.cloneNode(true);
+      copia.setAttribute('aria-hidden', 'true');
+      // a copia nao deve ser lida nem indexada como conteudo novo
+      copia.querySelectorAll('h3').forEach((h) => h.setAttribute('aria-hidden', 'true'));
+      pista.appendChild(copia);
+    });
+
+    // duracao proporcional a largura: cards maiores nao passam mais rapido
+    const largura = pista.scrollWidth / 2;
+    caixa.style.setProperty('--vel', `${Math.round(largura / 34)}s`);
+    caixa.classList.add('is-loop');
+  }
+
   /* ========================================================= EQUIPE ===== */
   function team() {
     const wrap = $('#team');
@@ -423,6 +447,7 @@
   function init() {
     $('#ano').textContent = new Date().getFullYear();
 
+    pilares();
     team();
     channels();
     gallery();
