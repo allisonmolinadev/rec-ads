@@ -200,8 +200,8 @@
   <!-- Vitrine dos pilares. As imagens de fundo sao provisorias: composicoes
        geradas na paleta da marca, em docs/assets/img/pilares/. Para trocar por
        foto real, substituir os arquivos de mesmo nome (proporcao 3:4). -->
-  <div class="pilares" id="pilares" data-reveal>
-    <div class="pilares__pista">
+  <div class="pilares fita" data-fita data-reveal>
+    <div class="fita__pista">
 
       <article class="pilar">
         <picture>
@@ -336,9 +336,11 @@
     </div>
   </div>
 
-  <!-- Logos oficiais das marcas do grupo. Em repouso aparecem em branco, para
-       a parede ler como um conjunto; no hover voltam a cor original da marca. -->
-  <div class="brands" data-reveal>
+  <!-- Logos oficiais das marcas do grupo, em fita continua. Em repouso
+       aparecem em branco, para a parede ler como um conjunto; no hover a fita
+       pausa e o logo volta a cor original da marca. -->
+  <div class="brands fita" data-fita data-reveal>
+    <div class="fita__pista">
     <div class="brand">
       <picture class="brand__logo">
         <source type="image/webp" srcset="assets/img/marcas/grupo-faj.webp">
@@ -380,6 +382,7 @@
         <img src="assets/img/marcas/energy-field.png" alt="Energy Field" width="166" height="150" loading="lazy" decoding="async">
       </picture>
       <span class="brand__tag">energia</span>
+    </div>
     </div>
   </div>
 </section>

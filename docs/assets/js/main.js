@@ -264,28 +264,33 @@
     });
   }
 
-  /* ======================================================== PILARES ===== */
-  /* A fita precisa de duas copias identicas para o translateX(-50%) emendar
-     sem salto. A copia e' escondida de leitores de tela. Sem JS, o CSS deixa
+  /* ========================================================== FITAS ===== */
+  /* Carrossel continuo, usado nos pilares e na parede de marcas.
+     A pista precisa de duas copias identicas para o translateX(-50%) emendar
+     sem salto; a copia e' escondida de leitores de tela. Sem JS, o CSS deixa
      a pista rolavel na mao — nada some. */
-  function pilares() {
-    const caixa = $('#pilares');
-    const pista = $('.pilares__pista', caixa || document);
-    if (!caixa || !pista) return;
+  const VELOCIDADE = 34; // px por segundo
 
-    const originais = [...pista.children];
-    originais.forEach((card) => {
-      const copia = card.cloneNode(true);
-      copia.setAttribute('aria-hidden', 'true');
-      // a copia nao deve ser lida nem indexada como conteudo novo
-      copia.querySelectorAll('h3').forEach((h) => h.setAttribute('aria-hidden', 'true'));
-      pista.appendChild(copia);
+  function fitas() {
+    $$('[data-fita]').forEach((caixa) => {
+      const pista = $('.fita__pista', caixa);
+      if (!pista || pista.dataset.pronta) return;
+
+      [...pista.children].forEach((item) => {
+        const copia = item.cloneNode(true);
+        copia.setAttribute('aria-hidden', 'true');
+        // a copia nao deve ser anunciada nem contada como conteudo novo
+        copia.querySelectorAll('h3, img').forEach((el) => el.setAttribute('aria-hidden', 'true'));
+        copia.querySelectorAll('img').forEach((el) => { el.alt = ''; });
+        pista.appendChild(copia);
+      });
+
+      // duracao proporcional a largura: itens maiores nao passam mais rapido
+      const largura = pista.scrollWidth / 2;
+      caixa.style.setProperty('--vel', `${Math.max(20, Math.round(largura / VELOCIDADE))}s`);
+      pista.dataset.pronta = '1';
+      caixa.classList.add('is-loop');
     });
-
-    // duracao proporcional a largura: cards maiores nao passam mais rapido
-    const largura = pista.scrollWidth / 2;
-    caixa.style.setProperty('--vel', `${Math.round(largura / 34)}s`);
-    caixa.classList.add('is-loop');
   }
 
   /* ========================================================= EQUIPE ===== */
@@ -447,7 +452,7 @@
   function init() {
     $('#ano').textContent = new Date().getFullYear();
 
-    pilares();
+    fitas();
     team();
     channels();
     gallery();

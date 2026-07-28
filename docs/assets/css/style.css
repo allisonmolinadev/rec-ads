@@ -460,55 +460,58 @@ p { text-wrap: pretty; }
    Cada card e' uma pilha: imagem (z 0), veu escuro (z 1), texto (z 2). O
    fundo do proprio .pilar pinta abaixo de tudo, entao nao precisa de
    z-index negativo. */
-/* Fita continua, sangrando de borda a borda. Sem JS a pista e' uma linha
-   rolavel na mao; o JS duplica os cards e adiciona .is-loop, que liga a
-   animacao. Assim o conteudo continua acessivel se o script falhar. */
-.pilares {
+/* --- fita: componente de carrossel continuo -------------------------------
+   Usado pelos pilares e pela parede de marcas.
+   Sem JS a pista e' apenas uma linha rolavel na mao. O JS duplica os itens e
+   adiciona .is-loop, que liga a animacao — assim nada some se o script
+   falhar. O espacamento dos itens e' margin-right, nunca gap: com gap o
+   translateX(-50%) nao cai exatamente no inicio da segunda copia e o loop
+   engasga a cada volta. */
+.fita {
   overflow-x: auto;
   overscroll-behavior-x: contain;
   scrollbar-width: thin;
   scrollbar-color: var(--n-700) transparent;
-  padding-bottom: var(--sp-2);
 }
-.pilares::-webkit-scrollbar { height: 4px; }
-.pilares::-webkit-scrollbar-thumb { background: var(--n-700); border-radius: 2px; }
-.pilares::-webkit-scrollbar-track { background: transparent; }
+.fita::-webkit-scrollbar { height: 4px; }
+.fita::-webkit-scrollbar-thumb { background: var(--n-700); border-radius: 2px; }
+.fita::-webkit-scrollbar-track { background: transparent; }
 
-.pilares__pista {
+.fita__pista {
   display: flex;
   width: max-content;
   padding-inline: var(--gutter);
 }
-/* espacamento por margem, nao por gap: com gap o translateX(-50%) nao cai
-   exatamente no inicio da segunda copia (sobra um espacamento) e o loop
-   engasga a cada volta */
-.pilares .pilar { flex: 0 0 clamp(250px, 24vw, 340px); margin-right: var(--sp-3); }
 
-.pilares.is-loop {
+.fita.is-loop {
   overflow: hidden;
   -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
   mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
 }
-.pilares.is-loop .pilares__pista {
+.fita.is-loop .fita__pista {
   padding-inline: 0;
-  animation: pilares-desliza var(--vel, 72s) linear infinite;
+  animation: fita-desliza var(--vel, 72s) linear infinite;
 }
 /* pausa para examinar: no ponteiro e tambem no teclado */
-.pilares.is-loop:hover .pilares__pista,
-.pilares.is-loop:focus-within .pilares__pista { animation-play-state: paused; }
+.fita.is-loop:hover .fita__pista,
+.fita.is-loop:focus-within .fita__pista { animation-play-state: paused; }
 
-@keyframes pilares-desliza { to { transform: translateX(-50%); } }
+@keyframes fita-desliza { to { transform: translateX(-50%); } }
 
-/* Movimento reduzido: nada desliza sozinho. Volta a ser uma fita que a
+/* Movimento reduzido: nada desliza sozinho. Volta a ser uma faixa que a
    pessoa rola quando quiser. */
 @media (prefers-reduced-motion: reduce) {
-  .pilares.is-loop {
+  .fita.is-loop {
     overflow-x: auto;
     -webkit-mask-image: none;
     mask-image: none;
   }
-  .pilares.is-loop .pilares__pista { animation: none; padding-inline: var(--gutter); }
+  .fita.is-loop .fita__pista { animation: none; padding-inline: var(--gutter); }
 }
+
+/* --- pilares na fita --- */
+.pilares { padding-bottom: var(--sp-2); }
+.pilares .pilar { flex: 0 0 clamp(250px, 24vw, 340px); margin-right: var(--sp-3); }
 
 .pilar {
   position: relative;
@@ -608,26 +611,18 @@ p { text-wrap: pretty; }
 }
 
 /* -------------------------------------------------------------- marcas --- */
-.brands { display: grid; gap: 1px; background: var(--line); border-block: 1px solid var(--line); }
-/* flex em vez de grid com place-content: center — numa area de grid
-   dimensionada pelo conteudo, o max-width percentual do logo resolvia contra
-   uma caixa encolhida e reduzia todos a 44% */
+/* Parede de marcas: fita continua, sem molduras de celula — os logos flutuam
+   lado a lado e a fita desliza sozinha. */
+.brands { border-block: 1px solid var(--line); }
 .brand {
-  background: var(--bg);
-  min-height: clamp(140px, 16vw, 200px);
+  flex: 0 0 clamp(170px, 18vw, 240px);
+  margin-right: clamp(2rem, 4vw, 4.5rem);
+  min-height: clamp(130px, 14vw, 168px);
   display: flex; flex-direction: column;
   align-items: center; justify-content: center; gap: 0.6rem;
-  padding: var(--sp-3);
-  position: relative; overflow: hidden;
-  transition: background-color var(--dur) var(--ease-out);
+  padding: var(--sp-2);
+  position: relative;
 }
-.brand::before {
-  content: ""; position: absolute; inset: auto 0 0 0; height: 2px;
-  background: var(--red); transform: scaleX(0); transform-origin: left;
-  transition: transform var(--dur) var(--ease-out);
-}
-.brand:hover::before { transform: scaleX(1); }
-.brand:hover { background: var(--surface); }
 /* Os logos chegam em cores diferentes (dois laranjas, um azul, tres brancos).
    Em repouso sao forcados a branco para a parede ler como um conjunto; no
    hover o filtro sai e a marca volta a cor original. */
@@ -993,14 +988,12 @@ p { text-wrap: pretty; }
    min-content, e com tipografia display grande isso estoura a linha. */
 @media (min-width: 560px) {
   .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .brands { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .team { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .channels { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (min-width: 860px) {
   .services { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .brands { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .team { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .channels { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .about__grid { grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); align-items: start; gap: var(--sp-6); }
