@@ -76,25 +76,26 @@ o card usa o símbolo da marca como arte de fundo.
 Em `CANAIS`, o campo `url` está `null` em todos. Com `null` o card é uma `<div>`
 inerte; assim que receber uma URL vira link com `target="_blank"`.
 
-### Imagens dos cards de pilares (seção Sobre)
+### Imagens de fundo dos cards (Sobre e O que fazemos)
 
-Em `docs/assets/img/pilares/` há seis imagens **provisórias**: composições
-abstratas geradas na paleta da marca, uma por pilar. Não são banco de imagens —
-foram geradas para não trazer dependência externa nem material de licença
-incerta para o repositório.
+Duas pastas com imagens **provisórias**: composições abstratas geradas na
+paleta da marca, uma por tema. Não são banco de imagens — foram geradas para
+não trazer dependência externa nem material de licença incerta ao repositório.
 
-Para trocar por foto real, substitua os arquivos mantendo os mesmos nomes e a
-proporção **3:4** (900×1200 é suficiente):
+| pasta | proporção | opacidade repouso → hover |
+|---|---|---|
+| `docs/assets/img/pilares/` | 3:4 (900×1200) | 5% → 60% |
+| `docs/assets/img/servicos/` | 4:3 (1000×750) | 14% → 62% |
 
 ```
-estrategia.webp / .jpg      criatividade.webp / .jpg
-tecnologia.webp / .jpg      dados.webp / .jpg
-producao.webp / .jpg        performance.webp / .jpg
+pilares/    estrategia · criatividade · tecnologia · dados · producao · performance
+servicos/   estrategia-branding · performance-midia · conteudo-social ·
+            audiovisual-eventos · tecnologia-ia · web-crm
 ```
 
-O HTML não precisa mudar. Vale lembrar que a imagem aparece a 5% em repouso e
-60% no hover, sob um véu escuro — então **fotos com bastante contraste e um
-ponto de luz funcionam melhor** do que fotos claras e uniformes.
+Para trocar por foto real, substitua os arquivos mantendo nome e proporção — o
+HTML não muda. Como a imagem aparece sob um véu escuro, **fotos contrastadas
+com um ponto de luz funcionam bem melhor** do que fotos claras e uniformes.
 
 ### Logos das marcas do grupo
 

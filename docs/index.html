@@ -395,87 +395,143 @@
       <h2 class="section-head__title" data-split>Da estratégia à execução. Do dado à criação.</h2>
     </div>
 
-    <div class="services" data-reveal>
-      <article class="service card--glow">
-        <div class="service__top">
-          <span class="service__n">01</span>
-          <svg class="service__icon" width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6"/>
-            <circle cx="12" cy="12" r="3.6" stroke="currentColor" stroke-width="1.6"/>
-            <path d="M12 3v3.4M12 17.6V21M3 12h3.4M17.6 12H21" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-          </svg>
+    <!-- Composicao editorial: larguras e alturas variadas com deslocamento
+         vertical, montada por nth-child no CSS. As imagens de fundo sao
+         provisorias, em docs/assets/img/servicos/ (4:3). -->
+    <div class="servicos" data-reveal>
+
+      <article class="servico">
+        <picture>
+          <source type="image/webp" srcset="assets/img/servicos/estrategia-branding.webp">
+          <img class="servico__bg" src="assets/img/servicos/estrategia-branding.jpg" alt="" aria-hidden="true"
+               width="1000" height="750" loading="lazy" decoding="async">
+        </picture>
+        <span class="servico__veu" aria-hidden="true"></span>
+        <div class="servico__topo">
+          <span class="servico__n">01</span>
+          <span class="servico__selo">Marca</span>
         </div>
-        <h3 class="service__t">Estratégia e Branding</h3>
-        <p class="service__d">Posicionamento, campanhas institucionais, arquitetura de marca, narrativas comerciais e construção de autoridade.</p>
-        <span class="service__bar"></span>
+        <div class="servico__body">
+          <h3 class="servico__t">Estratégia e Branding</h3>
+          <p class="servico__d">Posicionamento, campanhas institucionais, arquitetura de marca, narrativas comerciais e construção de autoridade.</p>
+          <span class="servico__seta" aria-hidden="true">
+            <svg width="15" height="15" viewBox="0 0 13 13" fill="none">
+              <path d="M2 11 11 2M11 2H4M11 2v7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+        </div>
       </article>
 
-      <article class="service card--glow">
-        <div class="service__top">
-          <span class="service__n">02</span>
-          <svg class="service__icon" width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M3 20h18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-            <path d="M6 20v-6M11 20V8M16 20v-9M21 20V4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-          </svg>
+      <article class="servico">
+        <picture>
+          <source type="image/webp" srcset="assets/img/servicos/performance-midia.webp">
+          <img class="servico__bg" src="assets/img/servicos/performance-midia.jpg" alt="" aria-hidden="true"
+               width="1000" height="750" loading="lazy" decoding="async">
+        </picture>
+        <span class="servico__veu" aria-hidden="true"></span>
+        <div class="servico__topo">
+          <span class="servico__n">02</span>
+          <span class="servico__selo">Mídia</span>
         </div>
-        <h3 class="service__t">Performance e Mídia</h3>
-        <p class="service__d">Planejamento de campanhas, tráfego pago, geração de leads, análise de funil, otimização de resultados e apoio à área comercial.</p>
-        <span class="service__bar"></span>
+        <div class="servico__body">
+          <h3 class="servico__t">Performance e Mídia</h3>
+          <p class="servico__d">Planejamento de campanhas, tráfego pago, geração de leads, análise de funil, otimização de resultados e apoio à área comercial.</p>
+          <span class="servico__seta" aria-hidden="true">
+            <svg width="15" height="15" viewBox="0 0 13 13" fill="none">
+              <path d="M2 11 11 2M11 2H4M11 2v7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+        </div>
       </article>
 
-      <article class="service card--glow">
-        <div class="service__top">
-          <span class="service__n">03</span>
-          <svg class="service__icon" width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <rect x="3" y="4" width="18" height="14" rx="3" stroke="currentColor" stroke-width="1.6"/>
-            <path d="M7 21h10M12 18v3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-            <path d="M7.5 9h9M7.5 13h5.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-          </svg>
+      <article class="servico">
+        <picture>
+          <source type="image/webp" srcset="assets/img/servicos/conteudo-social.webp">
+          <img class="servico__bg" src="assets/img/servicos/conteudo-social.jpg" alt="" aria-hidden="true"
+               width="1000" height="750" loading="lazy" decoding="async">
+        </picture>
+        <span class="servico__veu" aria-hidden="true"></span>
+        <div class="servico__topo">
+          <span class="servico__n">03</span>
+          <span class="servico__selo">Conteúdo</span>
         </div>
-        <h3 class="service__t">Conteúdo e Social Media</h3>
-        <p class="service__d">Calendários editoriais, roteiros, posts, carrosséis, Reels, cobertura em tempo real e gestão de presença digital.</p>
-        <span class="service__bar"></span>
+        <div class="servico__body">
+          <h3 class="servico__t">Conteúdo e Social Media</h3>
+          <p class="servico__d">Calendários editoriais, roteiros, posts, carrosséis, Reels, cobertura em tempo real e gestão de presença digital.</p>
+          <span class="servico__seta" aria-hidden="true">
+            <svg width="15" height="15" viewBox="0 0 13 13" fill="none">
+              <path d="M2 11 11 2M11 2H4M11 2v7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+        </div>
       </article>
 
-      <article class="service card--glow">
-        <div class="service__top">
-          <span class="service__n">04</span>
-          <svg class="service__icon" width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <rect x="2.5" y="6" width="13" height="12" rx="3" stroke="currentColor" stroke-width="1.6"/>
-            <path d="m15.5 11 6-3.2v8.4l-6-3.2z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
-          </svg>
+      <article class="servico">
+        <picture>
+          <source type="image/webp" srcset="assets/img/servicos/audiovisual-eventos.webp">
+          <img class="servico__bg" src="assets/img/servicos/audiovisual-eventos.jpg" alt="" aria-hidden="true"
+               width="1000" height="750" loading="lazy" decoding="async">
+        </picture>
+        <span class="servico__veu" aria-hidden="true"></span>
+        <div class="servico__topo">
+          <span class="servico__n">04</span>
+          <span class="servico__selo">Produção</span>
         </div>
-        <h3 class="service__t">Audiovisual e Eventos</h3>
-        <p class="service__d">Captação, edição, highlights, entrevistas, documentários institucionais, cobertura de lançamentos, entregas, eventos internos e ativações.</p>
-        <span class="service__bar"></span>
+        <div class="servico__body">
+          <h3 class="servico__t">Audiovisual e Eventos</h3>
+          <p class="servico__d">Captação, edição, highlights, entrevistas, documentários institucionais, cobertura de lançamentos, entregas, eventos internos e ativações.</p>
+          <span class="servico__seta" aria-hidden="true">
+            <svg width="15" height="15" viewBox="0 0 13 13" fill="none">
+              <path d="M2 11 11 2M11 2H4M11 2v7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+        </div>
       </article>
 
-      <article class="service card--glow">
-        <div class="service__top">
-          <span class="service__n">05</span>
-          <svg class="service__icon" width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <rect x="7" y="7" width="10" height="10" rx="2.4" stroke="currentColor" stroke-width="1.6"/>
-            <path d="M10 3v4M14 3v4M10 17v4M14 17v4M3 10h4M3 14h4M17 10h4M17 14h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-          </svg>
+      <article class="servico">
+        <picture>
+          <source type="image/webp" srcset="assets/img/servicos/tecnologia-ia.webp">
+          <img class="servico__bg" src="assets/img/servicos/tecnologia-ia.jpg" alt="" aria-hidden="true"
+               width="1000" height="750" loading="lazy" decoding="async">
+        </picture>
+        <span class="servico__veu" aria-hidden="true"></span>
+        <div class="servico__topo">
+          <span class="servico__n">05</span>
+          <span class="servico__selo">P&amp;D</span>
         </div>
-        <h3 class="service__t">Tecnologia, IA e P&amp;D</h3>
-        <p class="service__d">Desenvolvimento de soluções internas, automações, inteligência artificial, melhoria de processos, protótipos e ferramentas para ganho de escala.</p>
-        <span class="service__bar"></span>
+        <div class="servico__body">
+          <h3 class="servico__t">Tecnologia, IA e P&amp;D</h3>
+          <p class="servico__d">Desenvolvimento de soluções internas, automações, inteligência artificial, melhoria de processos, protótipos e ferramentas para ganho de escala.</p>
+          <span class="servico__seta" aria-hidden="true">
+            <svg width="15" height="15" viewBox="0 0 13 13" fill="none">
+              <path d="M2 11 11 2M11 2H4M11 2v7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+        </div>
       </article>
 
-      <article class="service card--glow">
-        <div class="service__top">
-          <span class="service__n">06</span>
-          <svg class="service__icon" width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <rect x="3" y="4" width="18" height="16" rx="3" stroke="currentColor" stroke-width="1.6"/>
-            <path d="M3 9h18" stroke="currentColor" stroke-width="1.6"/>
-            <path d="M7 13h6M7 16.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-          </svg>
+      <article class="servico">
+        <picture>
+          <source type="image/webp" srcset="assets/img/servicos/web-crm.webp">
+          <img class="servico__bg" src="assets/img/servicos/web-crm.jpg" alt="" aria-hidden="true"
+               width="1000" height="750" loading="lazy" decoding="async">
+        </picture>
+        <span class="servico__veu" aria-hidden="true"></span>
+        <div class="servico__topo">
+          <span class="servico__n">06</span>
+          <span class="servico__selo">Conversão</span>
         </div>
-        <h3 class="service__t">Web, Landing Pages e CRM</h3>
-        <p class="service__d">Páginas de campanha, formulários, captação de leads, integrações, jornadas digitais e estruturas de conversão.</p>
-        <span class="service__bar"></span>
+        <div class="servico__body">
+          <h3 class="servico__t">Web, Landing Pages e CRM</h3>
+          <p class="servico__d">Páginas de campanha, formulários, captação de leads, integrações, jornadas digitais e estruturas de conversão.</p>
+          <span class="servico__seta" aria-hidden="true">
+            <svg width="15" height="15" viewBox="0 0 13 13" fill="none">
+              <path d="M2 11 11 2M11 2H4M11 2v7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+        </div>
       </article>
+
     </div>
   </div>
 </section>
