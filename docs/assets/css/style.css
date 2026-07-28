@@ -1026,14 +1026,13 @@ p { text-wrap: pretty; }
   .rede__rot { text-align: left; font-size: var(--fs-sm); }
 }
 
-/* --- fecho da secao ---
-   Centrado para seguir o eixo do disco logo acima. */
+/* --- fecho da secao --- */
 .tech__fecho {
   margin: var(--sp-8) 0 0;
   padding-top: var(--sp-4);
   border-top: 1px solid var(--line);
   display: grid; gap: var(--sp-2);
-  justify-items: center; text-align: center;
+  justify-items: start; text-align: left;
 }
 .tech__quote {
   margin: 0;
@@ -1049,9 +1048,8 @@ p { text-wrap: pretty; }
   color: var(--text-3);
   display: inline-flex; align-items: center; gap: 0.7em;
 }
-/* fio dos dois lados, para o rotulo ficar simetrico quando centrado */
-.tech__fecho-cap::before,
-.tech__fecho-cap::after {
+/* fio so' a esquerda: alinhado a esquerda, o fio do outro lado ficaria solto */
+.tech__fecho-cap::before {
   content: ""; width: 26px; height: 2px; background: var(--red); flex: none;
 }
 
