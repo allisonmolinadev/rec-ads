@@ -483,10 +483,14 @@ p { text-wrap: pretty; }
   padding-inline: var(--gutter);
 }
 
+/* O esmaecimento nas pontas faz o item surgir e sumir em vez de ser cortado
+   na borda. Em px, nao em %, para a faixa de transicao ter o mesmo tamanho em
+   qualquer largura de tela. */
 .fita.is-loop {
   overflow: hidden;
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
-  mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+  --fade: clamp(48px, 8vw, 130px);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 var(--fade), #000 calc(100% - var(--fade)), transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 var(--fade), #000 calc(100% - var(--fade)), transparent);
 }
 .fita.is-loop .fita__pista {
   padding-inline: 0;
@@ -1112,10 +1116,25 @@ p { text-wrap: pretty; }
   letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-3);
 }
 
-/* 2 colunas ja' no mobile: em coluna unica os 14 retratos passavam de 8000px
-   de rolagem. A 390px cada card fica com ~165px, largura confortavel para o
-   recorte 4:5. */
-.team { display: grid; gap: var(--sp-2); grid-template-columns: repeat(2, minmax(0, 1fr)); }
+/* Flex com wrap em vez de grid: numa grade, a ultima fileira incompleta fica
+   encostada a esquerda com o vazio a direita — e os dois grupos terminam
+   assim (8 pessoas = 5+3, 6 pessoas = 5+1). Com flex + justify-content:
+   center, a fileira que sobra fica centralizada.
+   A base do item reproduz a largura que teria numa grade de --cols colunas;
+   o -0.5px cobre arredondamento de subpixel, que senao podia derrubar um
+   card para a linha de baixo.
+   2 colunas ja' no mobile: em coluna unica os 14 retratos passavam de 8000px
+   de rolagem. */
+.team {
+  --cols: 2;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--sp-2);
+}
+.member {
+  flex: 0 1 calc((100% - (var(--cols) - 1) * var(--sp-2)) / var(--cols) - 0.5px);
+}
 .member { position: relative; }
 .member__ph {
   position: relative; overflow: hidden;
@@ -1207,23 +1226,22 @@ p { text-wrap: pretty; }
    min-content, e com tipografia display grande isso estoura a linha. */
 @media (min-width: 560px) {
   .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .team { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .channels { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (min-width: 860px) {
-  .team { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .team { --cols: 3; }
   .channels { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .about__grid { grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); align-items: start; gap: var(--sp-6); }
   .tech__grid { grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr); align-items: center; }
   .footer__grid { grid-template-columns: minmax(0, 1.4fr) repeat(3, minmax(0, 1fr)); }
 }
 @media (min-width: 1080px) {
-  .team { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .team { --cols: 4; }
   .hero__grid { grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); align-items: end; }
   .hero__title { grid-column: 1 / -1; }
 }
 @media (min-width: 1240px) {
-  .team { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  .team { --cols: 5; }
 }
 
 /* colapsa a navegacao: 9 itens nao cabem com conforto abaixo disso */

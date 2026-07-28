@@ -336,11 +336,14 @@
     </div>
   </div>
 
-  <!-- Logos oficiais das marcas do grupo, em fita continua. Em repouso
-       aparecem em branco, para a parede ler como um conjunto; no hover a fita
-       pausa e o logo volta a cor original da marca. -->
-  <div class="brands fita" data-fita data-reveal>
-    <div class="fita__pista">
+  <!-- Dentro do .wrap para a fita comecar e terminar na mesma coluna do
+       titulo. O esmaecimento nas pontas faz os logos surgirem e sumirem em
+       vez de serem cortados na borda.
+       Em repouso os logos aparecem em branco, para a parede ler como um
+       conjunto; no hover a fita pausa e cada um volta a sua cor. -->
+  <div class="wrap">
+    <div class="brands fita" data-fita data-reveal>
+      <div class="fita__pista">
     <div class="brand">
       <picture class="brand__logo">
         <source type="image/webp" srcset="assets/img/marcas/grupo-faj.webp">
@@ -382,7 +385,8 @@
         <img src="assets/img/marcas/energy-field.png" alt="Energy Field" width="166" height="150" loading="lazy" decoding="async">
       </picture>
       <span class="brand__tag">energia</span>
-    </div>
+      </div>
+      </div>
     </div>
   </div>
 </section>
