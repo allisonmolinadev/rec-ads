@@ -98,18 +98,26 @@ ponto de luz funcionam melhor** do que fotos claras e uniformes.
 
 ### Logos das marcas do grupo
 
-Estão como cartões tipográficos em `docs/index.html`, na seção `#marcas`. Quando os
-arquivos chegarem, troque
+Ficam em `docs/assets/img/marcas/` (webp + png). Os originais enviados pelo
+cliente estão em `material/logos-marcas-originais/` — fora da pasta publicada,
+porque vinham em tamanhos como 13.932 px de largura e 380 KB.
 
-```html
-<span class="brand__name">Grupo FAJ</span>
+Na parede de marcas os logos aparecem **em branco** por padrão, para o conjunto
+ler como um bloco só, e **voltam à cor original no hover**. Isso é feito com
+`filter: brightness(0) invert(1)`, que só funciona porque todos têm fundo
+transparente — se um logo novo vier com fundo sólido, vai virar um retângulo
+branco.
+
+Para reprocessar depois de trocar um original:
+
+```bash
+node scripts/otimiza-logos.js material/logos-marcas-originais docs/assets/img/marcas
 ```
 
-por
-
-```html
-<img src="assets/img/marcas/grupo-faj.svg" alt="Grupo FAJ" style="max-height:44px">
-```
+O script apara a margem transparente e normaliza a altura. Logos empilhados
+(ícone sobre texto) precisam de mais altura para ler no mesmo tamanho óptico
+dos wordmarks horizontais — no HTML, esses recebem a classe
+`brand__logo--alto`.
 
 ---
 
@@ -224,7 +232,7 @@ o site funciona: todos os caminhos internos são relativos, inclusive os do 404.
 ## Pendências (dependem de material do cliente)
 
 - [ ] Cargos reais da equipe (hoje `Lorem ipsum`)
-- [ ] Arquivos de logo das 6 marcas do grupo
+- [x] ~~Arquivos de logo das 6 marcas do grupo~~ — recebidos e aplicados
 - [ ] URLs dos canais (Instagram, YouTube, LinkedIn, TikTok, sites)
 - [ ] Fotos e vídeos dos projetos da galeria
 - [ ] Domínio final (ver acima)
