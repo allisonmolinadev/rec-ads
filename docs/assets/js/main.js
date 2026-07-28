@@ -90,19 +90,42 @@
       descricao: 'Os bastidores da operação: captação, montagem e time em campo.' },
   ];
 
-  /* --- Canais ----------------------------------------------------------
-     `url` fica null ate os links oficiais serem enviados; sem link o card
-     e' renderizado como <div>, nao como <a> quebrado.                     */
+  /* --- Canais, um card por empresa --------------------------------------
+     `url` fica null ate os links oficiais serem enviados; sem link o botao
+     e' renderizado como <span> inerte, nao como <a> quebrado.
+     Para publicar, basta preencher a url — o botao vira link sozinho.     */
   const CANAIS = [
-    { nome: 'FAJ Empreendimentos', plataforma: 'Instagram', ico: 'instagram', url: null },
-    { nome: 'FAJ Invest',          plataforma: 'Instagram', ico: 'instagram', url: null },
-    { nome: 'Grupo FAJ',           plataforma: 'Instagram', ico: 'instagram', url: null },
-    { nome: 'Utani',               plataforma: 'Instagram', ico: 'instagram', url: null },
-    { nome: 'Energy Field',        plataforma: 'Instagram', ico: 'instagram', url: null },
-    { nome: 'Grupo FAJ',           plataforma: 'YouTube',   ico: 'youtube',   url: null },
-    { nome: 'Grupo FAJ',           plataforma: 'LinkedIn',  ico: 'linkedin',  url: null },
-    { nome: 'FAJ Empreendimentos', plataforma: 'TikTok',    ico: 'tiktok',    url: null },
-    { nome: 'Sites e landing pages', plataforma: 'Web',     ico: 'web',       url: null },
+    {
+      empresa: 'Grupo FAJ',
+      redes: [
+        { plataforma: 'Instagram', ico: 'instagram', url: null },
+        { plataforma: 'YouTube',   ico: 'youtube',   url: null },
+        { plataforma: 'LinkedIn',  ico: 'linkedin',  url: null },
+      ],
+    },
+    {
+      empresa: 'FAJ Empreendimentos',
+      redes: [
+        { plataforma: 'Instagram', ico: 'instagram', url: null },
+        { plataforma: 'TikTok',    ico: 'tiktok',    url: null },
+      ],
+    },
+    {
+      empresa: 'FAJ Invest',
+      redes: [{ plataforma: 'Instagram', ico: 'instagram', url: null }],
+    },
+    {
+      empresa: 'Utani',
+      redes: [{ plataforma: 'Instagram', ico: 'instagram', url: null }],
+    },
+    {
+      empresa: 'Energy Field',
+      redes: [{ plataforma: 'Instagram', ico: 'instagram', url: null }],
+    },
+    {
+      empresa: 'Sites e landing pages',
+      redes: [{ plataforma: 'Web', ico: 'web', url: null }],
+    },
   ];
 
   const ICONES = {
@@ -361,19 +384,30 @@
   function channels() {
     const wrap = $('#channels');
     if (!wrap) return;
-    wrap.innerHTML = CANAIS.map((c) => {
+
+    const botao = (r, empresa) => {
       const inner = `
-        <span class="channel__ico">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">${ICONES[c.ico] || ''}</svg>
+        <span class="rede-btn__ico">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">${ICONES[r.ico] || ''}</svg>
         </span>
-        <span>
-          <span class="channel__n">${esc(c.nome)}</span>
-          <span class="channel__p">${esc(c.plataforma)}</span>
-        </span>`;
-      return c.url
-        ? `<a class="channel" href="${esc(c.url)}" target="_blank" rel="noopener">${inner}</a>`
-        : `<div class="channel">${inner}</div>`;
-    }).join('');
+        <span class="rede-btn__n">${esc(r.plataforma)}</span>
+        <svg class="rede-btn__seta" width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true">
+          <path d="M2 11 11 2M11 2H4M11 2v7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>`;
+      return r.url
+        ? `<a class="rede-btn" href="${esc(r.url)}" target="_blank" rel="noopener"
+              aria-label="${esc(r.plataforma)} de ${esc(empresa)}">${inner}</a>`
+        : `<span class="rede-btn is-inerte">${inner}</span>`;
+    };
+
+    wrap.innerHTML = CANAIS.map((c) => `
+      <article class="canal">
+        <div class="canal__cab">
+          <h3 class="canal__empresa">${esc(c.empresa)}</h3>
+          <span class="canal__contagem">${c.redes.length} ${c.redes.length === 1 ? 'canal' : 'canais'}</span>
+        </div>
+        <div class="canal__redes">${c.redes.map((r) => botao(r, c.empresa)).join('')}</div>
+      </article>`).join('');
   }
 
   /* ======================================================== GALERIA ===== */

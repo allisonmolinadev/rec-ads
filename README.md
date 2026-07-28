@@ -89,8 +89,24 @@ o card usa o símbolo da marca como arte de fundo.
 
 ### Links dos canais
 
-Em `CANAIS`, o campo `url` está `null` em todos. Com `null` o card é uma `<div>`
-inerte; assim que receber uma URL vira link com `target="_blank"`.
+`CANAIS` é uma lista de empresas, cada uma com suas redes:
+
+```js
+{
+  empresa: 'Grupo FAJ',
+  redes: [
+    { plataforma: 'Instagram', ico: 'instagram', url: null },
+    ...
+  ],
+},
+```
+
+O campo `url` está `null` em todos. Com `null` o botão é um `<span>` inerte,
+sem afordância de clique; assim que receber uma URL vira link com
+`target="_blank"` — o HTML não precisa mudar.
+
+`ico` escolhe o ícone entre `instagram`, `youtube`, `linkedin`, `tiktok` e
+`web` (definidos em `ICONES`, no mesmo arquivo).
 
 ### Imagens de fundo dos cards (Sobre e O que fazemos)
 

@@ -1247,24 +1247,80 @@ p { text-wrap: pretty; }
 .modal__k { font-family: var(--font-mono); font-size: var(--fs-mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-3); }
 
 /* -------------------------------------------------------------- canais --- */
-.channels { display: grid; gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: var(--radius-lg); overflow: hidden; }
-.channel {
-  background: var(--n-950);
+/* Um card por empresa, com os botoes das redes dela dentro. */
+.channels { display: grid; gap: var(--sp-2); }
+
+.canal {
+  background: var(--n-900);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xl);
   padding: var(--sp-3);
-  display: flex; align-items: center; gap: var(--sp-2);
-  transition: background-color var(--dur) var(--ease-out);
+  display: flex; flex-direction: column; gap: var(--sp-3);
+  transition: border-color var(--dur) var(--ease-out),
+              background-color var(--dur) var(--ease-out);
 }
-.channel:hover { background: var(--n-900); }
-.channel__ico {
-  width: 40px; height: 40px; border-radius: var(--radius);
+.canal:hover { border-color: var(--line-strong); background: var(--n-850); }
+
+.canal__cab {
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: var(--sp-2); flex-wrap: wrap;
+  padding-bottom: var(--sp-2);
+  border-bottom: 1px solid var(--line);
+}
+.canal__empresa {
+  font-family: var(--font-display); font-weight: 700; font-stretch: 108%;
+  font-size: var(--fs-lg); letter-spacing: var(--tr-snug); line-height: 1.15;
+  display: flex; align-items: baseline; gap: 0.6em;
+}
+.canal__empresa::before {
+  content: ""; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--red); flex: none; align-self: center;
+}
+.canal__contagem {
+  font-family: var(--font-mono); font-size: var(--fs-mono);
+  letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-3);
+  white-space: nowrap;
+}
+
+/* margin-top auto: os botoes encostam na base, entao cards com 1 e com 3 redes
+   alinham a mesma linha de rodape */
+.canal__redes { display: grid; gap: 0.5rem; margin-top: auto; }
+
+.rede-btn {
+  display: flex; align-items: center; gap: 0.7rem;
+  padding: 0.7rem 0.9rem;
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.04);
+  box-shadow: inset 0 0 0 1px var(--line);
+  color: var(--text);
+  transition: background-color var(--dur) var(--ease-out),
+              box-shadow var(--dur) var(--ease-out),
+              transform var(--dur) var(--ease-out);
+}
+.rede-btn__ico {
+  width: 30px; height: 30px; border-radius: var(--radius);
   display: grid; place-items: center; flex: none;
-  background: rgba(255, 255, 255, 0.05); color: var(--text-2);
+  background: rgba(255, 255, 255, 0.06); color: var(--text-2);
   transition: background-color var(--dur) var(--ease-out), color var(--dur) var(--ease-out);
 }
-.channel:hover .channel__ico { background: var(--red); color: var(--white); }
-/* display:block — sao <span>, sem isto nome e plataforma ficam na mesma linha */
-.channel__n { display: block; font-weight: 600; font-size: var(--fs-sm); line-height: 1.25; }
-.channel__p { display: block; margin-top: 0.15rem; font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-3); }
+.rede-btn__n {
+  font-family: var(--font-mono); font-size: 0.68rem;
+  letter-spacing: 0.12em; text-transform: uppercase;
+}
+.rede-btn__seta { margin-left: auto; color: var(--text-3); transition: transform var(--dur) var(--ease-out), color var(--dur) var(--ease-out); }
+
+/* so' o botao com link se comporta como clicavel */
+a.rede-btn:hover {
+  background: rgba(210, 33, 16, 0.1);
+  box-shadow: inset 0 0 0 1px var(--red);
+  transform: translateX(3px);
+}
+a.rede-btn:hover .rede-btn__ico { background: var(--red); color: var(--white); }
+a.rede-btn:hover .rede-btn__seta { color: var(--red); transform: translate(2px, -2px); }
+
+/* sem URL ainda: fica visivel, mas sem afordancia de clique */
+.rede-btn.is-inerte { cursor: default; }
+.rede-btn.is-inerte .rede-btn__seta { opacity: 0.35; }
 
 /* -------------------------------------------------------------- equipe --- */
 /* --- equipe, agrupada por area --- */
