@@ -1322,6 +1322,31 @@ a.rede-btn:hover { background: var(--red); color: var(--white); transform: scale
 /* sem URL ainda: continua visivel e legivel, mas sem afordancia de clique */
 .rede-btn.is-inerte { cursor: default; background: rgba(255, 255, 255, 0.8); }
 
+/* --- ultimo card: chamada para a galeria ---
+   Sem foto e sem veu de proposito: assim ele se le como acao, e nao como mais
+   uma empresa da fileira. */
+.canal--cta {
+  flex-direction: row; align-items: center; gap: var(--sp-3);
+  justify-content: flex-start;
+  padding: var(--sp-4);
+  background:
+    radial-gradient(120% 90% at 15% 15%, rgba(210, 33, 16, 0.16), transparent 62%),
+    var(--n-900);
+}
+.canal__seta {
+  flex: none;
+  width: clamp(46px, 4.6vw, 64px);
+  color: var(--red);
+  transition: transform var(--dur) var(--ease-out);
+}
+.canal__seta svg { width: 100%; height: auto; display: block; }
+.canal__cta-t {
+  font-family: var(--font-display); font-weight: 700; font-stretch: 108%;
+  font-size: var(--fs-xl); letter-spacing: var(--tr-snug); line-height: 1.1;
+  max-width: 12ch;
+}
+.canal--cta:hover .canal__seta { transform: translate(6px, 6px); }
+
 /* -------------------------------------------------------------- equipe --- */
 /* --- equipe, agrupada por area --- */
 .equipe-grupo + .equipe-grupo { margin-top: var(--sp-8); }

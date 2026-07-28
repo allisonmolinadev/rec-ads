@@ -130,11 +130,9 @@
       arte: 'servicos/tecnologia-ia',
       redes: [{ plataforma: 'Instagram', ico: 'instagram', url: null }],
     },
-    {
-      empresa: 'Sites e landing pages',
-      arte: 'servicos/web-crm',
-      redes: [{ plataforma: 'Web', ico: 'web', url: null }],
-    },
+    /* Ultimo card e' uma chamada, nao uma empresa: leva para a galeria, que e'
+       o portfolio dentro do proprio site. */
+    { cta: true, texto: 'Conheça o portfólio completo', href: '#galeria' },
   ];
 
   const ICONES = {
@@ -405,7 +403,18 @@
         : `<span class="rede-btn is-inerte" role="img" aria-label="${rotulo}" title="${rotulo}">${ico}</span>`;
     };
 
-    wrap.innerHTML = CANAIS.map((c) => `
+    const cta = (c) => `
+      <a class="canal canal--cta" href="${esc(c.href)}">
+        <span class="canal__seta" aria-hidden="true">
+          <svg viewBox="0 0 40 40" fill="none">
+            <path d="M7 7 32 32M32 32V15M32 32H15" stroke="currentColor" stroke-width="2.6"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span class="canal__cta-t">${esc(c.texto)}</span>
+      </a>`;
+
+    const cartao = (c) => `
       <article class="canal">
         <picture>
           <source type="image/webp" srcset="assets/img/${c.arte}.webp">
@@ -417,7 +426,9 @@
           <h3 class="canal__empresa">${esc(c.empresa)}</h3>
           <div class="canal__redes">${c.redes.map((r) => botao(r, c.empresa)).join('')}</div>
         </div>
-      </article>`).join('');
+      </article>`;
+
+    wrap.innerHTML = CANAIS.map((c) => (c.cta ? cta(c) : cartao(c))).join('');
   }
 
   /* ======================================================== GALERIA ===== */
