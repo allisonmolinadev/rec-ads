@@ -756,14 +756,27 @@ p { text-wrap: pretty; }
 .servico__bg {
   width: 100%; height: 100%;
   object-fit: cover;
+  /* quando o card abre ele fica mais largo que alto e o cover corta pela
+     altura; puxando o enquadramento para cima, o rosto cai na faixa central --
+     a unica que o veu deixa aberta */
+  object-position: 50% 22%;
   opacity: 0.14;
   transform: scale(1);
   transition: opacity 0.5s ease, transform 0.6s ease;
 }
+/* As fotos tem o rosto no meio do quadro e fundo claro nas pontas, enquanto o
+   conteudo do card ocupa justamente as pontas: numero e selo no topo, titulo e
+   descricao na base. Por isso o veu nao e' um degrade de cima para baixo -- ele
+   fecha nas duas extremidades e abre uma janela no meio, na altura do rosto. */
 .servico__veu {
   position: absolute; inset: 0; z-index: 1;
   background: linear-gradient(180deg,
-    rgba(8, 6, 5, 0.28) 0%, rgba(8, 6, 5, 0.58) 42%, rgba(8, 6, 5, 0.92) 100%);
+    rgba(8, 6, 5, 0.94) 0%,
+    rgba(8, 6, 5, 0.86) 13%,
+    rgba(8, 6, 5, 0.46) 24%,
+    rgba(8, 6, 5, 0.48) 44%,
+    rgba(8, 6, 5, 0.90) 58%,
+    rgba(8, 6, 5, 0.97) 100%);
   transition: background 0.5s var(--ease-out);
 }
 .servico__topo,
@@ -775,10 +788,16 @@ p { text-wrap: pretty; }
    deles desalinha a linha — quem da' o destaque e' a largura */
 .servico:hover { border-color: var(--line-strong); box-shadow: var(--shadow-red); }
 .servico:hover .servico__bg { opacity: 0.62; transform: scale(1.06); }
-/* o veu fecha um pouco na base para o texto nao perder contraste */
+/* no hover a janela do meio abre mais -- e' o rosto que ganha presenca -- mas
+   as duas pontas seguram, porque e' onde o texto esta' */
 .servico:hover .servico__veu {
   background: linear-gradient(180deg,
-    rgba(8, 6, 5, 0.12) 0%, rgba(8, 6, 5, 0.5) 42%, rgba(8, 6, 5, 0.94) 100%);
+    rgba(8, 6, 5, 0.94) 0%,
+    rgba(8, 6, 5, 0.86) 13%,
+    rgba(8, 6, 5, 0.30) 24%,
+    rgba(8, 6, 5, 0.34) 44%,
+    rgba(8, 6, 5, 0.88) 58%,
+    rgba(8, 6, 5, 0.97) 100%);
 }
 
 .servico__n { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.16em; color: var(--red); }
@@ -809,6 +828,11 @@ p { text-wrap: pretty; }
 @container servico (max-width: 150px) {
   .servico__t { font-size: var(--fs-sm); }
   .servico__selo { display: none; }
+}
+/* em 900px exatos -- a largura em que os seis passam a caber lado a lado -- o
+   card chega a 123px e "Performance" vaza mesmo hifenizada */
+@container servico (max-width: 132px) {
+  .servico__t { font-size: var(--fs-xs); }
 }
 
 /* a descricao nao caberia no card estreito: entra quando ele abre */
@@ -1462,34 +1486,6 @@ a.rede-btn:hover { background: var(--red); color: var(--white); transform: scale
   color: rgba(255, 255, 255, 0.88);
   margin: 0;
 }
-
-.manifesto__fecho {
-  display: grid; justify-items: center; gap: var(--sp-3);
-  margin-top: var(--sp-4);
-  padding-top: var(--sp-6);
-  position: relative;
-  width: 100%;
-}
-/* losango no lugar da regua cheia: fecha a secao sem cortar a largura toda */
-.manifesto__losango {
-  position: absolute; top: 0; left: 50%;
-  translate: -50% -50%;
-  width: 10px; height: 10px;
-  background: var(--white);
-  rotate: 45deg;
-}
-.manifesto__fecho::before {
-  content: ""; position: absolute; top: 0; left: 50%; translate: -50% 0;
-  width: min(340px, 60%); height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
-}
-.manifesto__end {
-  font-family: var(--font-display); font-weight: 700; font-stretch: 112%;
-  font-size: var(--fs-xl); letter-spacing: var(--tr-snug);
-  max-width: 34ch;
-  margin: 0;
-}
-.manifesto__assinatura { width: clamp(112px, 11vw, 152px); opacity: 0.92; }
 
 /* -------------------------------------------------------------- footer --- */
 /* sem padding embaixo: a marca gigante e' o ultimo elemento e precisa encostar

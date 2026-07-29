@@ -110,15 +110,21 @@ sem afordância de clique; assim que receber uma URL vira link com
 
 ### Imagens de fundo dos cards (Sobre e O que fazemos)
 
-Duas pastas com imagens **provisórias**: composições abstratas geradas na
-paleta da marca, uma por tema. Não são banco de imagens — foram geradas para
-não trazer dependência externa nem material de licença incerta ao repositório.
+| pasta | proporção | opacidade repouso → hover | origem |
+|---|---|---|---|
+| `docs/assets/img/pilares/` | 3:4 (900×1200) | 5% → 60% | provisória |
+| `docs/assets/img/servicos/` | retrato (800×949) | 14% → 62% | **foto real** |
+| `docs/assets/img/galeria/` | 8:11 (800×1100) | 50% → 90% | provisória |
 
-| pasta | proporção | opacidade repouso → hover |
-|---|---|---|
-| `docs/assets/img/pilares/` | 3:4 (900×1200) | 5% → 60% |
-| `docs/assets/img/servicos/` | 4:3 (1000×750) | 14% → 62% |
-| `docs/assets/img/galeria/` | 8:11 (800×1100) | 50% → 90% |
+As pastas marcadas como provisórias trazem composições abstratas geradas na
+paleta da marca, uma por tema — não são banco de imagens, foram geradas para não
+trazer dependência externa nem material de licença incerta ao repositório.
+
+`servicos/` já são as fotos da empresa. Os originais estão em
+`material/originais-cliente/servicos/` (fora do Git) em paisagem 2200×1200, com
+a pessoa à esquerda e muito fundo vazio à direita. O que vai para o site é o
+recorte dos 46% da esquerda, feito por `scripts/recorta-servicos.js` — num card
+estreito o enquadramento original não mostraria nada além do fundo.
 
 ```
 pilares/    estrategia · criatividade · tecnologia · dados · producao · performance
