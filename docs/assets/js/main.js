@@ -94,41 +94,41 @@
      `url` fica null ate os links oficiais serem enviados; sem link o botao
      e' renderizado como <span> inerte, nao como <a> quebrado.
      Para publicar, basta preencher a url — o botao vira link sozinho.     */
-  /* `arte` e' o caminho do fundo do card, sem extensao — o render monta o
-     .webp e o .jpg. Sao imagens provisorias que ja' existiam na pasta,
-     escolhidas por tema; para trocar por foto da empresa, mudar o caminho. */
+  /* `arte` e' o caminho da arte do card, sem extensao — o render monta o
+     .webp e o .jpg. Sao os lockups de cada marca, enviados pelo cliente e
+     recortados por scripts/otimiza-canais.js. */
   const CANAIS = [
     {
       empresa: 'Grupo FAJ',
-      arte: 'galeria/corporativos',
+      arte: 'canais/grupo-faj',
       redes: [
-        { plataforma: 'Instagram', ico: 'instagram', url: null },
-        { plataforma: 'YouTube',   ico: 'youtube',   url: null },
-        { plataforma: 'LinkedIn',  ico: 'linkedin',  url: null },
+        { plataforma: 'Instagram', ico: 'instagram', url: 'https://www.instagram.com/fajgrupo/' },
+        { plataforma: 'YouTube',   ico: 'youtube',   url: 'https://www.youtube.com/@grupofaj' },
+        { plataforma: 'LinkedIn',  ico: 'linkedin',  url: 'https://br.linkedin.com/company/grupofaj' },
       ],
     },
     {
       empresa: 'FAJ Empreendimentos',
-      arte: 'galeria/lancamentos',
+      arte: 'canais/faj-empreendimentos',
       redes: [
-        { plataforma: 'Instagram', ico: 'instagram', url: null },
-        { plataforma: 'TikTok',    ico: 'tiktok',    url: null },
+        { plataforma: 'Instagram', ico: 'instagram', url: 'https://www.instagram.com/fajempreendimentos/' },
+        { plataforma: 'TikTok',    ico: 'tiktok',    url: 'https://www.tiktok.com/@fajempreendimentos' },
       ],
     },
     {
       empresa: 'FAJ Invest',
-      arte: 'servicos/performance-midia',
-      redes: [{ plataforma: 'Instagram', ico: 'instagram', url: null }],
+      arte: 'canais/faj-invest',
+      redes: [{ plataforma: 'Instagram', ico: 'instagram', url: 'https://www.instagram.com/fajinvest/' }],
     },
     {
       empresa: 'Utani',
-      arte: 'galeria/chaves',
-      redes: [{ plataforma: 'Instagram', ico: 'instagram', url: null }],
+      arte: 'canais/utani',
+      redes: [{ plataforma: 'Instagram', ico: 'instagram', url: 'https://www.instagram.com/utani.imoveis/' }],
     },
     {
       empresa: 'Energy Field',
-      arte: 'servicos/tecnologia-ia',
-      redes: [{ plataforma: 'Instagram', ico: 'instagram', url: null }],
+      arte: 'canais/energy-field',
+      redes: [{ plataforma: 'Instagram', ico: 'instagram', url: 'https://www.instagram.com/energyfield.brasil/' }],
     },
     /* Ultimo card e' uma chamada, nao uma empresa: leva para a galeria, que e'
        o portfolio dentro do proprio site. */

@@ -1323,27 +1323,70 @@ p { text-wrap: pretty; }
 }
 
 .canal__body { position: relative; z-index: 2; display: grid; gap: var(--sp-2); }
+/* --fs-lg, nao --fs-xl: em tres colunas o card tem ~270px uteis e "FAJ
+   Empreendimentos" quebrava em duas linhas. E' o mesmo corpo dos outros
+   titulos de card do site (.servico__t). */
 .canal__empresa {
   font-family: var(--font-display); font-weight: 700; font-stretch: 108%;
-  font-size: var(--fs-xl); letter-spacing: var(--tr-snug); line-height: 1.1;
+  font-size: var(--fs-lg); letter-spacing: var(--tr-snug); line-height: 1.1;
 }
 .canal__redes { display: flex; flex-wrap: wrap; gap: 0.6rem; }
 
-/* botao redondo, so' icone — o nome vai no aria-label */
+/* botao redondo, so' icone — o nome vai no aria-label.
+   Vidro: branco quase transparente sobre a arte, com o icone em branco. O
+   contorno e' o que segura a forma do circulo onde o fundo e' claro. */
 .rede-btn {
+  position: relative;
   width: 42px; height: 42px; border-radius: 50%;
   display: grid; place-items: center; flex: none;
-  background: rgba(255, 255, 255, 0.94);
-  color: var(--n-950);
+  background-color: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  backdrop-filter: blur(6px);
+  color: var(--white);
   transition: background-color var(--dur) var(--ease-out),
+              border-color var(--dur) var(--ease-out),
               color var(--dur) var(--ease-out),
               transform var(--dur) var(--ease-out);
 }
+/* O vermelho do hover e' uma camada propria, nao o background do botao:
+   gradiente nao aceita transition, entao o que anima e' a opacidade dela.
+   Fica sob o icone porque o svg e' posicionado logo abaixo. */
+.rede-btn::before {
+  content: ''; position: absolute; inset: 0; border-radius: inherit;
+  background-image: linear-gradient(115deg,
+    var(--red-lo), var(--red), var(--red-hi), var(--red), var(--red-lo));
+  background-size: 260% 100%;
+  opacity: 0;
+  transition: opacity var(--dur) var(--ease-out);
+}
+.rede-btn svg { position: relative; }
+
 /* so' o botao com link se comporta como clicavel */
-a.rede-btn:hover { background: var(--red); color: var(--white); transform: scale(1.1); }
+a.rede-btn:hover {
+  background-color: var(--red); border-color: var(--red);
+  color: var(--white); transform: scale(1.1);
+}
+/* alternate: a faixa vai e volta dentro do circulo, sem o salto que um loop
+   em direcao unica daria no fim de cada volta. */
+a.rede-btn:hover::before {
+  opacity: 1;
+  animation: rede-btn-fluxo 2.6s var(--ease-out) infinite alternate;
+}
+@keyframes rede-btn-fluxo {
+  from { background-position: 0% 50%; }
+  to   { background-position: 100% 50%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  a.rede-btn:hover::before { animation: none; }
+}
 
 /* sem URL ainda: continua visivel e legivel, mas sem afordancia de clique */
-.rede-btn.is-inerte { cursor: default; background: rgba(255, 255, 255, 0.8); }
+.rede-btn.is-inerte {
+  cursor: default;
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.16);
+  color: rgba(255, 255, 255, 0.6);
+}
 
 /* --- ultimo card: chamada para a galeria ---
    Sem foto e sem veu de proposito: assim ele se le como acao, e nao como mais
@@ -1363,9 +1406,11 @@ a.rede-btn:hover { background: var(--red); color: var(--white); transform: scale
   transition: transform var(--dur) var(--ease-out);
 }
 .canal__seta svg { width: 100%; height: auto; display: block; }
+/* acompanha o .canal__empresa: o card da chamada divide o grid com os outros
+   e ficaria com o tipo maior que o nome das empresas. */
 .canal__cta-t {
   font-family: var(--font-display); font-weight: 700; font-stretch: 108%;
-  font-size: var(--fs-xl); letter-spacing: var(--tr-snug); line-height: 1.1;
+  font-size: var(--fs-lg); letter-spacing: var(--tr-snug); line-height: 1.1;
   max-width: 12ch;
 }
 .canal--cta:hover .canal__seta { transform: translate(6px, 6px); }
