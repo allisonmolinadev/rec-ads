@@ -1451,10 +1451,12 @@ a.rede-btn:hover { background: var(--red); color: var(--white); transform: scale
   color: var(--white);
   position: relative; overflow: hidden;
 }
-/* centrada e bem apagada: vira o eixo da composicao, nao um adorno de canto */
+/* a' direita e bem apagada: com o texto a' esquerda ela vira o contrapeso da
+   composicao. Centrada -- como era quando o texto tambem era centrado -- ela
+   agora deixaria a coluna da direita vazia */
 .manifesto__mark {
-  position: absolute; left: 50%; top: 50%;
-  transform: translate(-50%, -50%);
+  position: absolute; right: -6%; top: 50%;
+  transform: translateY(-50%);
   width: min(78vw, 820px);
   opacity: 0.07;
   filter: brightness(0) invert(1);
@@ -1463,8 +1465,10 @@ a.rede-btn:hover { background: var(--red); color: var(--white); transform: scale
 
 .manifesto__conteudo {
   position: relative; z-index: 1;
-  text-align: center;
-  display: grid; justify-items: center;
+  text-align: left;
+  /* start, nao stretch: sem isso os blocos ocupariam a linha toda e o max-width
+     de cada um deixaria de definir onde o texto quebra */
+  display: grid; justify-items: start;
   gap: var(--sp-4);
 }
 .manifesto__eyebrow { color: rgba(255, 255, 255, 0.78); }
