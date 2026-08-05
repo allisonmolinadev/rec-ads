@@ -520,6 +520,43 @@ p { text-wrap: pretty; }
 /* Movimento reduzido: o JS nao avanca sozinho, mas o arrasto continua
    funcionando — a pessoa navega no proprio ritmo. */
 
+/* --- setas da fita ---
+   Controle discreto: a fita anda sozinha, as setas so' apressam. Por isso o
+   tamanho miudo e o contorno fino, que nao competem com o titulo da area. */
+.fita-setas { display: flex; gap: 0.3rem; }
+.fita-seta {
+  width: 26px; height: 26px; flex: none;
+  display: grid; place-items: center;
+  padding: 0;
+  background: transparent;
+  color: var(--text-3);
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: color var(--dur) var(--ease-out),
+              border-color var(--dur) var(--ease-out),
+              background var(--dur) var(--ease-out);
+}
+.fita-seta svg { width: 11px; height: 11px; display: block; }
+.fita-seta:hover {
+  color: var(--white);
+  border-color: var(--red);
+  background: rgba(210, 33, 16, 0.16);
+}
+.fita-seta:active { transform: scale(0.94); }
+
+/* linha de controle de uma fita: regua ocupando a largura e as setas na ponta
+   direita. E' o mesmo par de botoes da equipe (.fita-setas), so' que aqui sem
+   cabecalho para acompanhar. */
+.fita-cab {
+  display: flex; align-items: center; gap: var(--sp-3);
+  margin-bottom: var(--sp-3);
+}
+.fita-cab__r {
+  height: 1px; flex: 1;
+  background: linear-gradient(90deg, var(--line), rgba(255, 255, 255, 0.02));
+}
+
 /* --- pilares na fita --- */
 .pilares { padding-bottom: var(--sp-2); }
 .pilares .pilar { flex: 0 0 clamp(250px, 24vw, 340px); margin-right: var(--sp-3); }
@@ -921,133 +958,440 @@ p { text-wrap: pretty; }
   background: rgba(210, 33, 16, 0.1);
   box-shadow: inset 0 0 0 1px var(--red);
 }
-/* --- rede das frentes de P&D ---
-   Disco escuro com halo, aneis tracejados e 7 nos sobre a circunferencia. As
-   posicoes chegam por --x/--y; como o disco e' quadrado, o viewBox 0-100 do
-   SVG mapeia 1:1 e os aneis saem redondos de verdade. */
-.rede {
-  position: relative;
+/* --- VITRINE DAS 7 FRENTES DE P&D ----------------------------------------
+   Sete cards de mesmo tamanho, cada um com uma cena 3D montada em CSS.
+   Materiais: uma rampa cromada (--cromo) que imita metal escovado, vidro
+   translucido (--vidro) e luz fria azulada, com o vermelho da marca entrando
+   so' em brasa — halo, reflexo, um nucleo. Sem imagem e sem canvas: as cenas
+   sao poucos elementos com gradiente, e todo o movimento e' transform e
+   opacity, que a GPU resolve sem repintar. */
+.frentes__cab {
+  display: flex; align-items: center; gap: var(--sp-3);
   margin-top: var(--sp-6);
-  display: grid; place-items: center;
-  padding-block: var(--sp-4);
+  margin-bottom: var(--sp-3);
 }
-.rede__disco {
-  position: relative;
-  width: min(100%, clamp(340px, 52vw, 660px));
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background: radial-gradient(circle at 50% 50%, #100c0a 58%, #1a100e 100%);
-  /* halo: e' o que da' o volume do disco, como na referencia */
-  box-shadow:
-    0 0 0 1px rgba(210, 33, 16, 0.28),
-    0 0 90px 10px rgba(210, 33, 16, 0.3),
-    0 0 220px 60px rgba(210, 33, 16, 0.16);
+.frentes__cab-t {
+  font-family: var(--font-display); font-weight: 700; font-stretch: 110%;
+  font-size: var(--fs-xl); letter-spacing: var(--tr-snug); line-height: 1.05;
+  flex: none;
+}
+/* mesmo contraste de peso do hero e do manifesto: a parte de apoio em light */
+.frentes__cab-t em { font-style: normal; font-weight: 300; color: var(--text-2); }
+/* a regua come o resto da linha e esmaece — costura o rotulo com a grade */
+.frentes__cab-r {
+  height: 1px; flex: 1;
+  background: linear-gradient(90deg, var(--red), rgba(210, 33, 16, 0.15) 22%, var(--line) 60%, transparent);
 }
 
-.rede__linhas {
+/* Flex com wrap, nao grid: com 7 cards e 4 colunas a ultima fileira fica
+   incompleta, e no grid ela encostaria a esquerda com o vazio a direita. Com
+   justify-content: center os 3 que sobram ficam centrados, e todos os cards
+   mantem exatamente a mesma largura (a base reproduz a largura que teriam
+   numa grade de --cols colunas; o -0.5px cobre arredondamento de subpixel). */
+.frentes {
+  --cols: 1;
+  --cromo: linear-gradient(147deg,
+    #ffffff 0%, #c2cbd8 13%, #f6f9fd 27%, #7f8a99 44%,
+    #e9eef5 58%, #939eae 74%, #fbfcfe 90%, #aab4c2 100%);
+  --cromo-fosco: linear-gradient(147deg,
+    rgba(255, 255, 255, 0.88), rgba(163, 176, 194, 0.34) 38%,
+    rgba(255, 255, 255, 0.62) 60%, rgba(126, 138, 158, 0.3));
+  --vidro: linear-gradient(158deg,
+    rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.045) 44%, rgba(255, 255, 255, 0.13));
+  --frio: rgba(150, 190, 255, 0.3);
+
+  display: flex; flex-wrap: wrap; justify-content: center;
+  gap: var(--sp-2);
+}
+@media (min-width: 560px)  { .frentes { --cols: 2; } }
+@media (min-width: 900px)  { .frentes { --cols: 3; } }
+@media (min-width: 1180px) { .frentes { --cols: 4; } }
+
+/* ---------------------------------------------------------------- card --- */
+.frente {
+  flex: 0 0 calc((100% - (var(--cols) - 1) * var(--sp-2)) / var(--cols) - 0.5px);
+  position: relative; isolation: isolate; overflow: hidden;
+  display: flex; flex-direction: column;
+  padding: var(--sp-3);
+  border-radius: 18px;
+  /* fundo em tres camadas: luz fria caindo do alto, brasa vermelha subindo do
+     rodape e o corpo escuro por baixo. E' o que da' a profundidade de vitrine
+     sem precisar de imagem. */
+  background:
+    radial-gradient(120% 82% at 50% -14%, rgba(126, 158, 200, 0.16), transparent 60%),
+    radial-gradient(96% 58% at 50% 116%, rgba(210, 33, 16, 0.13), transparent 64%),
+    linear-gradient(180deg, #15110f 0%, #0c0a09 62%, #090707 100%);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.055),
+    inset 0 1px 0 rgba(255, 255, 255, 0.09),
+    0 22px 48px -30px #000;
+  transition: transform 0.55s var(--ease-out), box-shadow 0.55s var(--ease-out);
+}
+/* granulado finissimo: tira o aspecto chapado do degrade sem pesar — e' um
+   SVG de ruido de ~200 bytes, embutido, sem requisicao */
+.frente::before {
+  content: ""; position: absolute; inset: 0; z-index: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.035;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+.frente:hover {
+  transform: translateY(-5px);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    0 30px 60px -32px #000,
+    0 0 34px -8px rgba(210, 33, 16, 0.3);
+}
+
+.frente__n {
+  position: absolute; top: var(--sp-3); left: var(--sp-3); z-index: 2;
+  font-family: var(--font-mono); font-size: 0.68rem;
+  letter-spacing: 0.18em; color: var(--text-3);
+  transition: color var(--dur) var(--ease-out);
+}
+.frente:hover .frente__n { color: var(--red); }
+
+.frente__t {
+  position: relative; z-index: 2;
+  font-family: var(--font-display); font-weight: 700; font-stretch: 108%;
+  font-size: var(--fs-lg); letter-spacing: var(--tr-snug); line-height: 1.12;
+  /* duas linhas reservadas: sem isso o card de titulo curto ("Dashboards")
+     ficaria mais baixo que os de titulo longo e a grade perderia o alinhamento */
+  min-height: calc(2em * 1.12);
+  display: flex; align-items: flex-end;
+}
+
+/* --------------------------------------------------------------- palco --- */
+.frente__palco {
+  position: relative; z-index: 1;
+  flex: 1;
+  min-height: 168px;
+  display: grid; place-items: center;
+  perspective: 760px;
+  perspective-origin: 50% 44%;
+}
+/* A cena inteira gira no hover; como tudo dentro dela e' preserve-3d, o
+   paralaxe entre as camadas sai de graca. */
+.frente__cena {
+  position: relative;
+  width: 118px; height: 118px;
+  transform-style: preserve-3d;
+  transform: rotateX(var(--tx, 15deg)) rotateY(var(--ty, -18deg)) scale(var(--sc, 1));
+  transition: transform 0.7s var(--ease-out);
+}
+.frente:hover .frente__cena { --tx: 8deg; --ty: 10deg; --sc: 1.07; }
+
+.obj {
+  position: absolute; inset: 0;
+  transform-style: preserve-3d;
+  animation: obj-flutua 6.5s ease-in-out infinite;
+}
+@keyframes obj-flutua {
+  0%, 100% { transform: translate3d(0, -5px, 0); }
+  50%      { transform: translate3d(0, 5px, 0); }
+}
+
+/* sombra/reflexo no chao, respirando junto com o objeto */
+.frente__piso {
+  position: absolute; left: 50%; bottom: 8%;
+  width: 104px; height: 20px;
+  transform: translateX(-50%);
+  background: radial-gradient(50% 50% at 50% 50%, rgba(150, 190, 255, 0.24), transparent 72%);
+  filter: blur(4px);
+  animation: piso-respira 6.5s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes piso-respira {
+  0%, 100% { opacity: 0.8; transform: translateX(-50%) scale(1.06); }
+  50%      { opacity: 0.45; transform: translateX(-50%) scale(0.88); }
+}
+
+/* Economia: as cenas so' animam enquanto o card esta' na tela (classe posta
+   pelo JS). Sete cenas girando em segundo plano gastariam bateria a' toa. */
+.frente__palco * { animation-play-state: paused; }
+.frente__palco.is-vivo * { animation-play-state: running; }
+
+/* == 01 — INTELIGENCIA ARTIFICIAL =========================================
+   Orb de vidro com tres aneis cromados em orbita. O anel e' um disco com
+   gradiente conico mascarado no miolo: sobra so' a borda, e o brilho do
+   conico girando junto e' o que da' a leitura de metal em movimento. */
+.ia__anel {
+  position: absolute; inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg,
+    rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.05) 22%,
+    rgba(205, 225, 255, 0.8) 48%, rgba(255, 255, 255, 0.06) 74%,
+    rgba(255, 255, 255, 0.95));
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 2px));
+          mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 2px));
+}
+.ia__anel--a { animation: ia-orbita-a 9s linear infinite; }
+.ia__anel--b { inset: 7%;  animation: ia-orbita-b 12s linear infinite; }
+.ia__anel--c { inset: 13%; animation: ia-orbita-c 16s linear infinite; }
+/* o giro precisa carregar a inclinacao junto: um transform novo apagaria o
+   anterior, e o anel voltaria a ficar de frente */
+@keyframes ia-orbita-a {
+  from { transform: rotateX(74deg) rotateZ(0deg); }
+  to   { transform: rotateX(74deg) rotateZ(360deg); }
+}
+@keyframes ia-orbita-b {
+  from { transform: rotateX(64deg) rotateY(58deg) rotateZ(360deg); }
+  to   { transform: rotateX(64deg) rotateY(58deg) rotateZ(0deg); }
+}
+@keyframes ia-orbita-c {
+  from { transform: rotateX(70deg) rotateY(-54deg) rotateZ(0deg); }
+  to   { transform: rotateX(70deg) rotateY(-54deg) rotateZ(360deg); }
+}
+
+.ia__orb {
+  position: absolute; inset: 29%;
+  border-radius: 50%;
+  /* dois pontos de luz: o especular branco em cima a esquerda e a brasa
+     vermelha rebatendo embaixo a direita */
+  background:
+    radial-gradient(circle at 34% 26%,
+      #fff 0%, rgba(228, 238, 252, 0.85) 8%, rgba(150, 172, 205, 0.5) 26%, rgba(26, 30, 40, 0.94) 68%),
+    radial-gradient(circle at 70% 78%, rgba(210, 33, 16, 0.6), transparent 54%);
+  box-shadow:
+    inset 0 0 14px rgba(255, 255, 255, 0.3),
+    0 0 24px rgba(150, 190, 255, 0.3);
+}
+.ia__orb::after {
+  content: ""; position: absolute; inset: -32%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(210, 33, 16, 0.34), transparent 62%);
+  animation: ia-brasa 4.2s ease-in-out infinite;
+}
+@keyframes ia-brasa { 0%, 100% { opacity: 0.45; } 50% { opacity: 0.95; } }
+
+/* == 02 — AUTOMACOES INTERNAS =============================================
+   Disco dentado sobre um nucleo cromado. Os dentes sao um conico repetido,
+   mascarado numa faixa; os dois aros giram em sentidos opostos, que e' o que
+   da' a leitura de engrenagem em vez de disco solto. */
+.auto__aro {
+  position: absolute;
+  border-radius: 50%;
+  background: repeating-conic-gradient(from 0deg,
+    rgba(255, 255, 255, 0.92) 0 4deg, rgba(255, 255, 255, 0.05) 4deg 13deg);
+}
+.auto__aro--a {
+  inset: 2%;
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 11px), #000 calc(100% - 11px));
+          mask: radial-gradient(farthest-side, transparent calc(100% - 11px), #000 calc(100% - 11px));
+  animation: auto-gira-a 16s linear infinite;
+}
+.auto__aro--b {
+  inset: 24%;
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 7px), #000 calc(100% - 7px));
+          mask: radial-gradient(farthest-side, transparent calc(100% - 7px), #000 calc(100% - 7px));
+  animation: auto-gira-b 9s linear infinite;
+}
+@keyframes auto-gira-a {
+  from { transform: rotateX(58deg) rotateZ(0deg); }
+  to   { transform: rotateX(58deg) rotateZ(360deg); }
+}
+@keyframes auto-gira-b {
+  from { transform: rotateX(58deg) rotateZ(360deg); }
+  to   { transform: rotateX(58deg) rotateZ(0deg); }
+}
+.auto__nucleo {
+  position: absolute; inset: 39%;
+  border-radius: 50%;
+  background: var(--cromo);
+  transform: translateZ(10px);
+  box-shadow:
+    inset 0 1px 2px rgba(255, 255, 255, 0.9),
+    inset 0 -3px 6px rgba(10, 12, 16, 0.6),
+    0 0 20px rgba(150, 190, 255, 0.28);
+}
+.auto__nucleo::after {
+  content: ""; position: absolute; inset: 32%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 34%, rgba(255, 255, 255, 0.9), rgba(210, 33, 16, 0.85) 70%);
+  box-shadow: 0 0 12px rgba(210, 33, 16, 0.7);
+}
+
+/* == 03 e 07 — MODULOS EMPILHADOS =========================================
+   Placas isometricas, uma por camada. O tamanho vem de --s e a altura de --z;
+   cada uma respira com o proprio atraso, entao a pilha nunca fica rigida. */
+.mod {
+  position: absolute; left: 50%; top: 50%;
+  width: 78px; height: 78px; margin: -39px 0 0 -39px;
+  border-radius: 12px;
+  background: var(--cromo-fosco);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.4),
+    inset 0 2px 6px rgba(255, 255, 255, 0.28),
+    0 12px 26px -14px #000;
+  transform: rotateX(56deg) rotateZ(45deg) translateZ(var(--z)) scale(var(--s));
+  animation: mod-respira 6s ease-in-out infinite;
+  animation-delay: var(--d);
+}
+@keyframes mod-respira {
+  0%, 100% { transform: rotateX(56deg) rotateZ(45deg) translateZ(var(--z)) scale(var(--s)); }
+  50%      { transform: rotateX(56deg) rotateZ(45deg) translateZ(calc(var(--z) + 9px)) scale(var(--s)); }
+}
+/* fio de luz vermelho na aresta: e' o detalhe da marca dentro do metal */
+.mod::after {
+  content: ""; position: absolute; inset: auto 12% 8% 12%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(210, 33, 16, 0.75), transparent);
+}
+/* na piramide as placas ficam mais fechadas e sem o fio, para o degrau ler
+   como volume solido */
+.mod--base { border-radius: 8px; }
+.mod--base::after { content: none; }
+
+.subida__seta {
+  position: absolute; left: 50%; top: 50%;
+  width: 26px; height: 26px; margin: -13px 0 0 -13px;
+  border-right: 3px solid transparent;
+  border-top: 3px solid transparent;
+  /* a seta e' um canto: bordas com gradiente via border-image mantem o cromado */
+  border-image: var(--cromo) 1;
+  transform: rotate(-45deg) translateZ(58px);
+  animation: subida 3.4s ease-in-out infinite;
+  filter: drop-shadow(0 0 8px rgba(150, 190, 255, 0.5));
+}
+@keyframes subida {
+  0%   { transform: rotate(-45deg) translateZ(46px); opacity: 0; }
+  30%  { opacity: 1; }
+  100% { transform: rotate(-45deg) translateZ(78px); opacity: 0; }
+}
+
+/* == 04 — DASHBOARDS ======================================================
+   Placa quadriculada com quatro barras cromadas crescendo em tempos
+   diferentes. As barras ficam de frente para a camera: na cena inclinada elas
+   leem como colunas plantadas na placa. */
+.dados__placa {
+  position: absolute; left: 50%; top: 54%;
+  width: 104px; height: 104px; margin: -52px 0 0 -52px;
+  border-radius: 10px;
+  background:
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.13) 0 1px, transparent 1px 13px),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.13) 0 1px, transparent 1px 13px),
+    linear-gradient(160deg, rgba(120, 150, 190, 0.22), rgba(10, 12, 16, 0.5));
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.22), 0 14px 30px -16px #000;
+  transform: rotateX(66deg) rotateZ(45deg);
+}
+.dados__barra {
+  position: absolute; left: 50%; bottom: 46%;
+  width: 13px; height: var(--h);
+  margin-left: -6.5px;
+  border-radius: 3px 3px 1px 1px;
+  background: var(--cromo);
+  transform-origin: 50% 100%;
+  box-shadow: 0 0 14px rgba(150, 190, 255, 0.28);
+  animation: barra-pulsa 3.8s ease-in-out infinite;
+  animation-delay: var(--d);
+}
+@keyframes barra-pulsa {
+  0%, 100% { transform: translateX(var(--x)) translateZ(20px) scaleY(0.72); }
+  50%      { transform: translateX(var(--x)) translateZ(20px) scaleY(1.16); }
+}
+/* topo da barra em brasa: da' o ponto de cor sem sujar o cromado */
+.dados__barra::after {
+  content: ""; position: absolute; inset: 0 0 auto 0; height: 3px;
+  border-radius: 3px 3px 0 0;
+  background: var(--red);
+  box-shadow: 0 0 10px rgba(210, 33, 16, 0.9);
+}
+
+/* == 05 — LANDING PAGES ===================================================
+   Tres telas de vidro empilhadas em profundidade. Cada uma tem a barra do
+   topo e duas linhas de conteudo desenhadas por gradiente — sem elemento
+   extra. O paralaxe aparece quando a cena gira no hover. */
+.tela {
+  position: absolute; left: 50%; top: 50%;
+  width: 88px; height: 60px; margin: -30px 0 0 -44px;
+  border-radius: 9px;
+  opacity: var(--o);
+  background:
+    linear-gradient(90deg, transparent 12px, rgba(255, 255, 255, 0.5) 12px 34px, transparent 34px) 0 26px / 100% 3px no-repeat,
+    linear-gradient(90deg, transparent 12px, rgba(255, 255, 255, 0.28) 12px 58px, transparent 58px) 0 36px / 100% 3px no-repeat,
+    linear-gradient(90deg, rgba(210, 33, 16, 0.9) 0 3px, transparent 3px) 12px 12px / 100% 3px no-repeat,
+    var(--vidro);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.26),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    0 16px 28px -18px #000;
+  transform: translate3d(0, var(--y), var(--z));
+  animation: tela-flutua 7s ease-in-out infinite;
+  animation-delay: var(--d);
+}
+@keyframes tela-flutua {
+  0%, 100% { transform: translate3d(0, var(--y), var(--z)); }
+  50%      { transform: translate3d(0, calc(var(--y) - 6px), var(--z)); }
+}
+/* a da frente ganha o brilho do vidro de verdade */
+.tela--frente {
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+
+/* == 06 — FLUXOS DIGITAIS =================================================
+   Nos ligados por linhas, com dois pulsos correndo em sentidos opostos. As
+   linhas sao SVG (tracado preciso); os nos sao elementos com --z proprio,
+   entao a rede tem profundidade de verdade. */
+.fluxo__linhas {
   position: absolute; inset: 0;
   width: 100%; height: 100%;
-  z-index: 0; pointer-events: none;
   overflow: visible;
 }
-.rede__linhas circle {
+.fluxo__linhas path {
   fill: none;
-  stroke: rgba(255, 255, 255, 0.13);
-  stroke-width: 0.9;
+  stroke: rgba(255, 255, 255, 0.22);
+  stroke-width: 1.4;
   vector-effect: non-scaling-stroke;
-  stroke-dasharray: 1.4 2.6;
 }
-.rede__raios line {
-  stroke: rgba(210, 33, 16, 0.5);
-  stroke-width: 0.9;
-  vector-effect: non-scaling-stroke;
-  stroke-dasharray: 3 4;
-  animation: rede-fluxo 3.6s linear infinite;
+.fluxo__pulso {
+  stroke: var(--red);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-dasharray: 16 200;
+  filter: drop-shadow(0 0 4px rgba(210, 33, 16, 0.9));
+  animation: fluxo-corre 3.2s linear infinite;
 }
-@keyframes rede-fluxo { to { stroke-dashoffset: -14; } }
-.rede__brilhos path {
-  stroke: var(--red); stroke-width: 1; stroke-linecap: round;
-  vector-effect: non-scaling-stroke; opacity: 0.8;
-}
+.fluxo__pulso--b { animation-duration: 4.1s; animation-direction: reverse; }
+@keyframes fluxo-corre { from { stroke-dashoffset: 216; } to { stroke-dashoffset: 0; } }
 
-.rede__nucleo {
+.fluxo__no {
   position: absolute; left: 50%; top: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 2;
-  display: grid; justify-items: center; gap: 0.1rem;
-  text-align: center;
+  width: 15px; height: 15px; margin: -7.5px 0 0 -7.5px;
+  border-radius: 50%;
+  background: var(--cromo);
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.9),
+    0 0 12px rgba(150, 190, 255, 0.45);
+  transform: translate3d(var(--x), var(--y), var(--z));
+  animation: no-respira 5s ease-in-out infinite;
+  animation-delay: var(--d);
 }
-.rede__nucleo-t {
-  font-family: var(--font-display); font-weight: 700; font-stretch: 108%;
-  font-size: var(--fs-lg); letter-spacing: var(--tr-snug);
+@keyframes no-respira {
+  0%, 100% { transform: translate3d(var(--x), var(--y), var(--z)) scale(1); }
+  50%      { transform: translate3d(var(--x), var(--y), var(--z)) scale(1.18); }
 }
-.rede__nucleo-d {
-  font-family: var(--font-display); font-weight: 300; font-stretch: 108%;
-  font-size: var(--fs-lg); letter-spacing: var(--tr-snug);
-  color: var(--text-2);
+/* o no do meio e' o eixo: maior e em brasa */
+.fluxo__no--eixo {
+  width: 21px; height: 21px; margin: -10.5px 0 0 -10.5px;
+  background: radial-gradient(circle at 36% 30%, #fff, rgba(210, 33, 16, 0.92) 62%);
+  box-shadow: 0 0 18px rgba(210, 33, 16, 0.7);
 }
 
-.rede__itens { position: absolute; inset: 0; z-index: 1; margin: 0; }
-/* o item e' ancorado no ponto do no; o rotulo desce logo abaixo dele */
-.rede__item {
-  position: absolute;
-  left: var(--x); top: var(--y);
-  transform: translate(-50%, -50%);
-  display: grid; justify-items: center; gap: 0.5rem;
-  width: max-content; max-width: 13ch;
-}
-.rede__no {
-  width: 15px; height: 15px; border-radius: 50%;
-  background: var(--n-950);
-  box-shadow: inset 0 0 0 1.5px var(--red);
-  transition: background-color var(--dur) var(--ease-out),
-              box-shadow var(--dur) var(--ease-out),
-              transform var(--dur) var(--ease-out);
-}
-.rede__rot {
-  font-family: var(--font-mono); font-size: 0.66rem;
-  letter-spacing: 0.06em; line-height: 1.35;
-  color: var(--text-2);
-  text-align: center;
-  text-decoration: underline;
-  text-decoration-color: rgba(255, 255, 255, 0.28);
-  text-underline-offset: 4px;
-  transition: color var(--dur) var(--ease-out), text-decoration-color var(--dur) var(--ease-out);
-}
-.rede__rot sup {
-  font-size: 0.7em; color: var(--red);
-  margin-right: 0.45em; vertical-align: super;
-  text-decoration: none;
-}
-.rede__item:hover .rede__no { background: var(--red); box-shadow: 0 0 0 5px rgba(210, 33, 16, 0.22); transform: scale(1.12); }
-.rede__item:hover .rede__rot { color: var(--text); text-decoration-color: var(--red); }
-
+/* ------------------------------------------------------------ respeito --- */
+/* Sem movimento a vitrine continua de pe': as cenas ficam paradas na pose,
+   que ja' e' a composicao final de cada objeto. */
 @media (prefers-reduced-motion: reduce) {
-  .rede__raios line { animation: none; }
-  .rede__item:hover .rede__no { transform: none; }
+  .frente__palco * { animation: none !important; }
+  .frente:hover { transform: none; }
+  .frente:hover .frente__cena { --tx: 15deg; --ty: -18deg; --sc: 1; }
 }
-
-/* Abaixo de 780px a elipse fica apertada demais e os chips se sobrepoem:
-   vira lista vertical com uma linha guia. */
-@media (max-width: 779px) {
-  .rede { padding-block: 0; }
-  .rede__disco {
-    width: 100%; aspect-ratio: auto; border-radius: 0;
-    background: none; box-shadow: none;
-    padding-left: var(--sp-3);
-  }
-  .rede__linhas, .rede__nucleo { display: none; }
-  .rede__itens {
-    position: static; display: grid; gap: var(--sp-3);
-    border-left: 1px solid var(--line-strong);
-    padding-left: var(--sp-3);
-  }
-  .rede__item {
-    position: static; transform: none; max-width: none;
-    grid-template-columns: auto 1fr; align-items: center;
-    justify-items: start; gap: 0.8rem;
-  }
-  .rede__rot { text-align: left; font-size: var(--fs-sm); }
+/* No toque nao ha' hover: a cena ja' entra num angulo mais aberto, para o
+   volume aparecer sem depender do cursor. */
+@media (hover: none) {
+  .frente__cena { --ty: -12deg; }
 }
 
 /* --- fecho da secao --- */
@@ -1251,20 +1595,27 @@ p { text-wrap: pretty; }
 }
 .modal.is-open .modal__scrim { opacity: 1; }
 .modal__panel {
+  /* o topo reserva a faixa do botao de fechar: recuo + botao + recuo. Assim o
+     conteudo comeca abaixo dele, com folga — o X nao passa por cima da foto
+     nem por baixo dela */
+  --fechar: 40px;
   position: relative;
   width: min(100%, 760px); max-height: min(86svh, 900px);
   overflow-y: auto;
   background: var(--n-900);
   border: 1px solid var(--line);
   border-radius: var(--radius-xl);
-  padding: var(--sp-5) var(--sp-4) var(--sp-4);
+  padding: calc(var(--sp-2) * 2 + var(--fechar)) var(--sp-4) var(--sp-4);
   transform: translateY(24px) scale(0.98); opacity: 0;
   transition: transform var(--dur) var(--ease-out), opacity var(--dur) var(--ease-out);
 }
 .modal.is-open .modal__panel { transform: none; opacity: 1; }
+/* z-index alto por garantia: .modal__media, que vem depois no corpo do modal,
+   e' position: relative e passaria por cima do botao se as duas camadas se
+   encontrassem. Quem separa de fato e' o recuo do painel. */
 .modal__close {
-  position: absolute; top: var(--sp-2); right: var(--sp-2);
-  width: 40px; height: 40px; border-radius: 50%;
+  position: absolute; z-index: 3; top: var(--sp-2); right: var(--sp-2);
+  width: var(--fechar); height: var(--fechar); border-radius: 50%;
   display: grid; place-items: center;
   box-shadow: inset 0 0 0 1px var(--line-strong);
   transition: background-color var(--dur-fast), transform var(--dur-fast);
@@ -1279,6 +1630,158 @@ p { text-wrap: pretty; }
   display: grid; place-items: center;
 }
 .modal__media img.ph { width: 26%; opacity: 0.12; }
+
+/* --- carrossel de fotos do projeto ---
+   Quem rola e' a pista: scroll nativo com snap, entao arrastar no celular ja'
+   funciona e as setas so' empurram esse mesmo scroll. */
+.carrossel { position: relative; margin-bottom: var(--sp-3); }
+.carrossel__pista {
+  display: flex;
+  overflow-x: auto; overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  border-radius: var(--radius);
+  scrollbar-width: none;
+}
+.carrossel__pista::-webkit-scrollbar { display: none; }
+/* o slide e' um botao (abre o visor), mas some como botao: sem padding, sem
+   fundo, e o cursor conta o que ele faz */
+.carrossel__slide {
+  flex: 0 0 100%; scroll-snap-align: center;
+  padding: 0; cursor: zoom-in;
+}
+.carrossel__img {
+  display: block; width: 100%;
+  aspect-ratio: 3 / 2; object-fit: cover;
+  background: var(--n-950);
+  transition: opacity var(--dur) var(--ease-out);
+}
+/* Foto em pe' na moldura deitada: encaixa inteira em vez de ser recortada.
+   Sem isso sobraria uma tira do meio da imagem, que nao conta a cena. O fundo
+   e' o mesmo da moldura, entao as laterais leem como respiro, nao como falha. */
+.carrossel__img--retrato { object-fit: contain; }
+.carrossel__slide:hover .carrossel__img { opacity: 0.86; }
+
+.carrossel__seta {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  width: 44px; height: 44px; border-radius: 50%;
+  display: grid; place-items: center;
+  background: rgba(7, 5, 5, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+  color: var(--white);
+  transition: background-color var(--dur) var(--ease-out),
+              border-color var(--dur) var(--ease-out),
+              transform var(--dur) var(--ease-out);
+}
+.carrossel__seta:hover {
+  background: var(--red); border-color: var(--red);
+  transform: translateY(-50%) scale(1.08);
+}
+.carrossel__seta--ant { left: var(--sp-2); }
+.carrossel__seta--prox { right: var(--sp-2); }
+/* uma foto so': a pista nao vai a lugar nenhum, as setas saem de cena */
+.carrossel.is-unica .carrossel__seta,
+.carrossel.is-unica .carrossel__conta { display: none; }
+
+.carrossel__conta {
+  position: absolute; left: var(--sp-2); bottom: var(--sp-2);
+  padding: 0.2rem 0.6rem; border-radius: 999px;
+  font-family: var(--font-mono); font-size: var(--fs-mono);
+  letter-spacing: 0.08em; color: var(--text-2);
+  background: rgba(7, 5, 5, 0.62);
+  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+  pointer-events: none;   /* nao rouba o clique que abre o visor */
+}
+
+/* --------------------------------------------------------------- visor --- */
+/* A foto ampliada. Ocupa a tela toda por cima do modal do projeto; o limite
+   e' a propria tela, entao a foto cresce ate' caber e para. */
+.visor {
+  /* O recuo de cima reserva a faixa do botao de fechar (recuo + botao +
+     recuo). O botao e' absoluto, entao se ancora na borda da tela; a foto
+     vive na area de conteudo, que comeca depois dessa faixa — os dois nunca
+     se encostam, em nenhum formato de imagem. */
+  --fechar: 44px;
+  position: fixed; inset: 0; z-index: var(--z-visor);
+  display: grid; place-items: center;
+  padding: calc(var(--sp-3) * 2 + var(--fechar)) clamp(1rem, 4vw, 3rem) clamp(1rem, 4vw, 3rem);
+  visibility: hidden;
+}
+.visor.is-open { visibility: visible; }
+/* Camadas explicitas do visor. Sem elas todos os filhos ficam com z-index
+   auto e a ordem de pintura vira a ordem do HTML: o quadro, que vem depois,
+   cobria o botao de fechar. */
+.visor__scrim {
+  position: absolute; inset: 0; z-index: 0;
+  background: rgba(4, 3, 3, 0.92);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  opacity: 0; transition: opacity var(--dur) var(--ease-out);
+  cursor: zoom-out;
+}
+.visor.is-open .visor__scrim { opacity: 1; }
+
+.visor__quadro {
+  position: relative; z-index: 1; margin: 0;
+  display: grid; gap: var(--sp-2); justify-items: center;
+  max-width: 100%;
+  transform: scale(0.97); opacity: 0;
+  transition: transform var(--dur) var(--ease-out), opacity var(--dur) var(--ease-out);
+}
+.visor.is-open .visor__quadro { transform: none; opacity: 1; }
+.visor__img {
+  display: block;
+  /* menor que antes porque a faixa do botao agora ocupa o topo: a foto mais a
+     legenda precisam caber no que sobra, sem empurrar nada para fora */
+  max-width: 100%; max-height: 70svh;
+  width: auto; height: auto;
+  border-radius: var(--radius);
+}
+.visor__legenda {
+  display: flex; align-items: baseline; gap: var(--sp-2); flex-wrap: wrap;
+  justify-content: center; text-align: center;
+  max-width: 62ch;
+  font-size: var(--fs-sm); color: var(--text-2);
+}
+.visor__conta {
+  font-family: var(--font-mono); font-size: var(--fs-mono);
+  letter-spacing: 0.08em; color: var(--text-3);
+}
+
+.visor__fechar {
+  position: absolute; z-index: 2; top: var(--sp-3); right: var(--sp-3);
+  width: 44px; height: 44px; border-radius: 50%;
+  display: grid; place-items: center;
+  color: var(--white);
+  box-shadow: inset 0 0 0 1px var(--line-strong);
+  transition: background-color var(--dur-fast), transform var(--dur-fast);
+}
+.visor__fechar:hover { background: var(--red); transform: rotate(90deg); }
+
+.visor__seta {
+  position: absolute; z-index: 2; top: 50%; transform: translateY(-50%);
+  width: 52px; height: 52px; border-radius: 50%;
+  display: grid; place-items: center;
+  color: var(--white);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+  transition: background-color var(--dur) var(--ease-out),
+              border-color var(--dur) var(--ease-out),
+              transform var(--dur) var(--ease-out);
+}
+.visor__seta:hover {
+  background: var(--red); border-color: var(--red);
+  transform: translateY(-50%) scale(1.08);
+}
+.visor__seta--ant { left: clamp(0.5rem, 2vw, 2rem); }
+.visor__seta--prox { right: clamp(0.5rem, 2vw, 2rem); }
+
+/* na tela estreita as setas nao cabem ao lado da foto: descem para a base */
+@media (max-width: 560px) {
+  .visor__seta { top: auto; bottom: var(--sp-3); transform: none; }
+  .visor__seta:hover { transform: scale(1.08); }
+  .visor__img { max-height: 62svh; }
+}
 .modal__t { font-size: var(--fs-2xl); font-stretch: 112%; margin-bottom: var(--sp-2); }
 .modal__meta { display: grid; gap: var(--sp-2); margin-top: var(--sp-3); }
 .modal__row { display: grid; grid-template-columns: minmax(96px, 140px) 1fr; gap: var(--sp-2); padding-top: var(--sp-2); border-top: 1px solid var(--line); }
@@ -1438,52 +1941,90 @@ a.rede-btn:hover::before {
   font-family: var(--font-mono); font-size: var(--fs-mono);
   letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-3);
 }
+/* contagem e setas juntas na ponta direita do cabecalho */
+.equipe-grupo__meta { display: flex; align-items: center; gap: var(--sp-2); }
 
-/* Flex com wrap em vez de grid: numa grade, a ultima fileira incompleta fica
-   encostada a esquerda com o vazio a direita — e os dois grupos terminam
-   assim (8 pessoas = 5+3, 6 pessoas = 5+1). Com flex + justify-content:
-   center, a fileira que sobra fica centralizada.
-   A base do item reproduz a largura que teria numa grade de --cols colunas;
-   o -0.5px cobre arredondamento de subpixel, que senao podia derrubar um
-   card para a linha de baixo.
-   2 colunas ja' no mobile: em coluna unica os 14 retratos passavam de 8000px
-   de rolagem. */
-.team {
-  --cols: 2;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: var(--sp-2);
+
+/* Cada area anda numa fita continua, como os pilares: uma linha so', que passa
+   sozinha e aceita arrasto. Antes era uma grade que quebrava em fileiras e
+   deixava a ultima incompleta (8 pessoas = 5+3, 6 pessoas = 5+1).
+   O espacamento e' margin-right, nunca gap — a fita mede a pista em px e o gap
+   deslocaria a emenda do laco. */
+/* a folga em cima e' para o card poder subir no hover: a fita corta o que
+   passa da borda (overflow hidden), e sem ela o topo do card sumiria */
+.team { padding: 8px 0 var(--sp-2); }
+.team .member {
+  flex: 0 0 clamp(180px, 17vw, 250px);
+  margin-right: var(--sp-2);
 }
+/* O nome vive sobre a foto, como no card de pilar: mesma pilha de foto (z 0),
+   veu (z 1) e texto (z 2). O veu nao e' decoracao — e' o que garante o
+   contraste do nome em cima de retratos de fundo claro ou escuro. */
 .member {
-  flex: 0 1 calc((100% - (var(--cols) - 1) * var(--sp-2)) / var(--cols) - 0.5px);
-}
-.member { position: relative; }
-.member__ph {
-  position: relative; overflow: hidden;
-  border-radius: var(--radius-lg);
+  position: relative; isolation: isolate; overflow: hidden;
   aspect-ratio: 4 / 5;
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding: var(--sp-3) var(--sp-2) var(--sp-2);
   background: var(--n-900);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  transition: border-color 0.5s var(--ease-out),
+              transform 0.5s var(--ease-out),
+              box-shadow 0.5s var(--ease-out);
 }
-.member__ph img {
+.member picture { position: absolute; inset: 0; z-index: 0; }
+.member__bg {
   width: 100%; height: 100%; object-fit: cover;
+  /* retrato: o rosto vive no terco de cima, entao o recorte puxa para la' e
+     sobra foto embaixo, que e' onde o nome entra */
+  object-position: 50% 18%;
+  filter: saturate(0.9);
   transition: transform 900ms var(--ease-out), filter var(--dur) var(--ease-out);
-  filter: saturate(0.88);
 }
-.member:hover .member__ph img { transform: scale(1.05); filter: saturate(1.08); }
-/* varredura vermelha no hover — mesmo contraluz da foto */
-.member__ph::after {
-  content: ""; position: absolute; inset: 0;
-  background: linear-gradient(180deg, transparent 46%, rgba(210, 33, 16, 0.34));
-  opacity: 0; transition: opacity var(--dur) var(--ease-out);
+/* O veu comeca a existir so' na metade de baixo: o rosto fica limpo, sem
+   nenhuma sombra por cima, e embaixo fecha em preto solido — nao e' estilo,
+   e' o que sustenta a leitura do nome sobre qualquer foto.
+   As paradas usam rgba(8,6,5,0) e nao `transparent`: transparent e' preto
+   transparente em alguns motores e sujaria o meio do degrade de cinza. */
+.member__veu {
+  position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(180deg,
+    rgba(8, 6, 5, 0) 0%,
+    rgba(8, 6, 5, 0) 44%,
+    rgba(8, 6, 5, 0.5) 62%,
+    rgba(8, 6, 5, 0.9) 73%,
+    rgb(8, 6, 5) 80%,
+    rgb(8, 6, 5) 100%);
+  transition: background 0.5s var(--ease-out);
 }
-.member:hover .member__ph::after { opacity: 1; }
-.member__body { padding-top: var(--sp-2); display: grid; gap: 0.15rem; }
+.member__body { position: relative; z-index: 2; display: grid; gap: 0.15rem; }
 .member__n {
   font-family: var(--font-display); font-weight: 700; font-stretch: 106%;
-  font-size: var(--fs-base); letter-spacing: var(--tr-snug);
+  font-size: var(--fs-base); letter-spacing: var(--tr-snug); line-height: 1.1;
 }
-.member__r { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.1em; color: var(--text-3); }
+.member__r {
+  font-family: var(--font-mono); font-size: 0.66rem;
+  letter-spacing: 0.1em; color: var(--text-2);
+}
+
+.member:hover { transform: translateY(-4px); border-color: var(--line-strong); box-shadow: var(--shadow-red); }
+.member:hover .member__bg { transform: scale(1.05); filter: saturate(1.06); }
+/* no hover a base continua preta — o vermelho entra so' como rebatimento na
+   faixa de transicao, sem chegar na altura do nome */
+.member:hover .member__veu {
+  background: linear-gradient(180deg,
+    rgba(8, 6, 5, 0) 0%,
+    rgba(8, 6, 5, 0) 42%,
+    rgba(126, 20, 10, 0.45) 60%,
+    rgba(8, 6, 5, 0.92) 73%,
+    rgb(8, 6, 5) 80%,
+    rgb(8, 6, 5) 100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .member:hover { transform: none; }
+  .member:hover .member__bg { transform: none; }
+}
 
 .areas {
   display: flex; flex-wrap: wrap; justify-content: center;
@@ -1496,20 +2037,11 @@ a.rede-btn:hover::before {
   color: var(--white);
   position: relative; overflow: hidden;
 }
-/* a' direita e bem apagada: com o texto a' esquerda ela vira o contrapeso da
-   composicao. Centrada -- como era quando o texto tambem era centrado -- ela
-   agora deixaria a coluna da direita vazia */
-.manifesto__mark {
-  position: absolute; right: -6%; top: 50%;
-  transform: translateY(-50%);
-  width: min(78vw, 820px);
-  opacity: 0.07;
-  filter: brightness(0) invert(1);
-  pointer-events: none;
-}
+/* A marca apagada que ficava a' direita saiu: o contrapeso da composicao agora
+   e' a Zoe, e as duas no mesmo canto so' embolavam o desenho. */
 
 .manifesto__conteudo {
-  position: relative; z-index: 1;
+  position: relative; z-index: 2;
   text-align: left;
   /* start, nao stretch: sem isso os blocos ocupariam a linha toda e o max-width
      de cada um deixaria de definir onde o texto quebra */
@@ -1534,6 +2066,69 @@ a.rede-btn:hover::before {
   max-width: 60ch;
   color: rgba(255, 255, 255, 0.88);
   margin: 0;
+}
+
+/* --- a Zoe fechando o manifesto pela direita ---
+   O PNG e' recortado, entao ela pousa direto no vermelho, sem moldura nem
+   emenda. O arquivo ja' vem espelhado de proposito: ela olha para dentro do
+   texto, e nao para fora da pagina.
+   No estreito ela sai de cena — o texto do manifesto ocupa a largura inteira e
+   a foto viraria uma tarja atras das letras, sem lugar proprio. */
+.manifesto__zoe { display: none; }
+
+@media (min-width: 1200px) {
+  .manifesto { --zoe-w: min(44vw, 820px); }
+
+  /* Um corpo abaixo do titulo de secao normal, e a medida mais curta: em duas
+     colunas o titulo vive numa faixa estreita e, no corpo cheio, quebrava em
+     cinco linhas. Isso deixava a coluna do texto mais alta que a foto, e a
+     sobra toda ia parar acima dela — era o vao que aparecia no topo.
+     Com tres linhas, quem manda na altura da fileira volta a ser a foto. */
+  .manifesto__t { font-size: var(--fs-2xl); max-width: 16ch; }
+
+  /* Duas colunas de verdade: a do texto e' 1fr e a da foto se dimensiona pelo
+     proprio conteudo. Como sao colunas irmas, o texto nao tem como invadir a
+     faixa da foto — antes as duas eram camadas soltas e a folga dependia de eu
+     acertar a largura do paragrafo no calculo, que muda com o corpo do texto a
+     cada largura de tela. */
+  .manifesto__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--sp-5);
+  }
+
+  .manifesto__zoe {
+    display: block;
+    align-self: end;
+    width: var(--zoe-w);
+    line-height: 0;
+    pointer-events: none;
+    /* Sangra ate' a borda da tela: o recuo negativo e' a calha que sobra de cada
+       lado do .wrap. A conta repete a largura do .wrap em vez de usar 100%
+       porque, num item de grade, a porcentagem se resolve contra a area da
+       celula — que e' menor que o .wrap e ainda depende desta propria margem.
+       Com 100% aqui, o recuo saia' varias vezes maior e jogava a foto para fora
+       da tela.
+       De quebra, a coluna passa a medir --zoe-w menos essa calha, que e' o que
+       a foto de fato ocupa dentro do .wrap; o texto recebe o resto. */
+    margin-right: calc((min(100vw - var(--gutter) * 2, var(--wrap)) - 100vw) / 2);
+    /* Desce por dentro do padding da secao, mas nao ate' o fim: em -1 ela
+       encostava na base e ficava baixa demais na composicao. Este fator e' o
+       ajuste fino da altura dela — quanto menor, mais alta ela fica; em 0 ela
+       para na base do .wrap e sobra vermelho embaixo. */
+    margin-bottom: calc(var(--section-y) * -0.55);
+  }
+  /* Mesmo enquadramento que ela tinha no rodape: sai a traseira, que so' enchia
+     linguica. Sao os mesmos 300px de 1400 (21,4%), mas agora pela direita, ja'
+     que o arquivo foi espelhado — dai object-position 0%, ancorando a esquerda.
+     O corte fica no CSS para o original continuar inteiro. */
+  .manifesto__zoe img {
+    width: 100%; display: block;
+    aspect-ratio: 1100 / 804;
+    object-fit: cover;
+    object-position: 0% 50%;
+  }
 }
 
 /* -------------------------------------------------------------- footer --- */
@@ -1609,18 +2204,13 @@ a.rede-btn:hover::before {
   .numeros__foto { min-height: 0; }
 }
 @media (min-width: 860px) {
-  .team { --cols: 3; }
   .channels { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .about__grid { grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); align-items: start; gap: var(--sp-6); }
   .footer__grid { grid-template-columns: minmax(0, 1.4fr) repeat(3, minmax(0, 1fr)); }
 }
 @media (min-width: 1080px) {
-  .team { --cols: 4; }
   .hero__grid { grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); align-items: end; }
   .hero__title { grid-column: 1 / -1; }
-}
-@media (min-width: 1240px) {
-  .team { --cols: 5; }
 }
 
 /* colapsa a navegacao: 9 itens nao cabem com conforto abaixo disso */

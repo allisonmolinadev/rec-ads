@@ -122,6 +122,7 @@
   --z-header: 100;
   --z-menu: 200;
   --z-modal: 300;
+  --z-visor: 400;   /* a foto ampliada, que abre por cima do modal */
 }
 
 /* ---- o site tem animacao de scroll pesada; quem pediu menos, recebe menos ---- */

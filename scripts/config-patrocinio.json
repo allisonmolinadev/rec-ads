@@ -1,0 +1,15 @@
+{
+  "origem": "material/originais-cliente/eventos-de-patrocinio",
+  "destino": "docs/assets/img",
+  "pasta": "patrocinio",
+  "capa": { "arquivo": "Evento FAJ Rodeio - 08-07-26-12.jpg", "id": "patrocinio" },
+  "fotos": {
+    "Evento FAJ Rodeio - 08-07-26-12.jpg": "portal-mudamos-o-jogo",
+    "Evento FAJ Rodeio - 08-07-26-13.jpg": "portal-soho",
+    "Evento FAJ Rodeio - 08-07-26-10.jpg": "fachada-stand",
+    "Evento FAJ Rodeio - 08-07-26-32.jpg": "corredor-led",
+    "Evento FAJ Rodeio - 08-07-26-27.jpg": "lounge-unidades",
+    "Evento FAJ Rodeio - 08-07-26-31.jpg": "lounge-sonhos",
+    "Evento FAJ Rodeio - 08-07-26-1.jpg": "painel-grupo-faj"
+  }
+}

@@ -4,6 +4,11 @@
 # site usa estão em docs/assets/img/.
 material/
 
+# arquivos abertos de arte (PSD e afins) — mesma regra do material/: sao fonte,
+# nao entregavel do site, e pesam dezenas de MB num repositorio publico
+*.psd
+*.ai
+
 # dependências (o site não tem build; sharp só é usado pelo script de imagens)
 node_modules/
 package-lock.json

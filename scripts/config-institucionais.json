@@ -1,0 +1,15 @@
+{
+  "origem": "material/originais-cliente/campanhas-institucionais",
+  "destino": "docs/assets/img",
+  "pasta": "institucionais",
+  "capa": { "arquivo": "3U9A4281.jpg", "id": "institucionais" },
+  "fotos": {
+    "3U9A4281.jpg": "apresentacao-time",
+    "Apresentação programa-9.jpg": "dupla-apresentadores",
+    "Apresentação programa-2.jpg": "apresentacao-programa",
+    "Apresentação programa.jpg": "programa-plateia",
+    "3U9A4276.jpg": "plateia-atenta",
+    "3U9A4377.jpg": "plateia-perguntas",
+    "3U9A4384.jpg": "maos-levantadas"
+  }
+}

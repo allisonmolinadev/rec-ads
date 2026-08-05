@@ -1,0 +1,13 @@
+{
+  "origem": "material/originais-cliente/bastidores",
+  "destino": "docs/assets/img",
+  "pasta": "bastidores",
+  "ext": ".JPG",
+  "capa": { "arquivo": "3U9A0422", "id": "bastidores" },
+  "fotos": {
+    "3U9A0422": "edicao-notebook",
+    "3U9A0540": "equipe-monitores",
+    "3U9A0406": "arte-na-tela",
+    "3U9A0710": "dupla-operacao"
+  }
+}

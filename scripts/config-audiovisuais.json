@@ -1,0 +1,11 @@
+{
+  "origem": "material/originais-cliente/producoes-audiovisuais",
+  "destino": "docs/assets/img",
+  "pasta": "audiovisual",
+  "capa": { "arquivo": "IMG-20250411-WA0003.jpg", "id": "audiovisual" },
+  "fotos": {
+    "IMG-20250411-WA0001.jpg": "camera-feicon",
+    "IMG-20250411-WA0002.jpg": "gravacao-estande",
+    "IMG-20250411-WA0003.jpg": "captacao-publico"
+  }
+}

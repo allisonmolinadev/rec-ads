@@ -1,0 +1,14 @@
+{
+  "origem": "material/originais-cliente/eventos-corporativos",
+  "destino": "docs/assets/img",
+  "pasta": "corporativos",
+  "ext": ".JPG",
+  "capa": { "arquivo": "DSC03656", "id": "corporativos" },
+  "fotos": {
+    "DSC03656": "feira-equipe",
+    "3U9A1032": "time-comemora",
+    "3U9A9729": "treinamento-sala",
+    "IMG_5650.jpeg": "gravacao-depoimento",
+    "3U9A9736": "acao-mulheres"
+  }
+}
