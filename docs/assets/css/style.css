@@ -1477,24 +1477,33 @@ p { text-wrap: pretty; }
 }
 
 .shot picture { position: absolute; inset: 0; z-index: 0; }
+/* A foto aparece inteira, sem esmaecimento: antes ela ficava em 50% de
+   opacidade e o veu cobria o card de ponta a ponta. */
 .shot__img {
   position: absolute; inset: 0; z-index: 0;
   width: 100%; height: 100%; object-fit: cover;
-  opacity: 0.5;
   transform: scale(1);
-  transition: opacity 0.5s ease, transform 0.7s ease;
+  transition: transform 0.7s ease;
 }
-.shot:hover .shot__img { opacity: 0.9; transform: scale(1.05); }
+.shot:hover .shot__img { transform: scale(1.05); }
 
+/* Duas faixas, e nao um veu inteiro: uma no topo, atras do rotulo da
+   categoria, e outra na base, atras do titulo e da chamada. O miolo fica
+   limpo — e' ali que a foto tem que aparecer.
+   Sao dois gradientes empilhados em vez de um so' com muitas paradas: assim
+   cada faixa e' ajustada sem mexer na outra. */
 .shot__veu {
   position: absolute; inset: 0; z-index: 1;
-  background: linear-gradient(180deg,
-    rgba(7, 5, 5, 0.42) 0%, rgba(7, 5, 5, 0.62) 40%, rgba(7, 5, 5, 0.93) 100%);
+  background:
+    linear-gradient(180deg, rgba(7, 5, 5, 0.85), rgba(7, 5, 5, 0.42) 9%, rgba(7, 5, 5, 0) 22%),
+    linear-gradient(0deg, rgba(7, 5, 5, 0.95), rgba(7, 5, 5, 0.78) 14%, rgba(7, 5, 5, 0.34) 28%, rgba(7, 5, 5, 0) 42%);
   transition: background 0.5s var(--ease-out);
 }
+/* no hover a descricao entra e o texto cresce: a faixa de baixo sobe junto */
 .shot:hover .shot__veu {
-  background: linear-gradient(180deg,
-    rgba(7, 5, 5, 0.24) 0%, rgba(7, 5, 5, 0.5) 38%, rgba(7, 5, 5, 0.94) 100%);
+  background:
+    linear-gradient(180deg, rgba(7, 5, 5, 0.85), rgba(7, 5, 5, 0.42) 9%, rgba(7, 5, 5, 0) 22%),
+    linear-gradient(0deg, rgba(7, 5, 5, 0.96), rgba(7, 5, 5, 0.86) 20%, rgba(7, 5, 5, 0.45) 38%, rgba(7, 5, 5, 0) 56%);
 }
 
 .shot__topo,
@@ -1507,9 +1516,12 @@ p { text-wrap: pretty; }
 }
 .shot:hover .shot__body { transform: none; }
 
+/* branco, e nao vermelho: agora que a foto aparece em 100%, o vermelho disputa
+   com as cores da imagem e some em capa quente; o branco se segura em qualquer
+   uma, apoiado na faixa escura do topo */
 .shot__cat {
   font-family: var(--font-mono); font-size: 0.6rem;
-  letter-spacing: 0.14em; text-transform: uppercase; color: var(--red);
+  letter-spacing: 0.14em; text-transform: uppercase; color: var(--white);
 }
 .shot__t {
   font-family: var(--font-display); font-weight: 700; font-stretch: 108%;
@@ -2032,9 +2044,16 @@ a.rede-btn:hover::before {
 }
 
 /* ----------------------------------------------------------- manifesto --- */
+/* Secao clara entre duas escuras: o corte de contraste que antes vinha do
+   vermelho agora vem do branco. O recorte da Zoe tem borda clara — pelo —,
+   entao ele assenta melhor aqui do que assentava no vermelho. */
 .manifesto {
-  background: var(--red);
-  color: var(--white);
+  --m-txt: var(--n-950);
+  --m-txt-2: rgba(11, 8, 7, 0.78);
+  --m-txt-3: rgba(11, 8, 7, 0.62);
+
+  background: var(--white);
+  color: var(--m-txt);
   position: relative; overflow: hidden;
 }
 /* A marca apagada que ficava a' direita saiu: o contrapeso da composicao agora
@@ -2048,8 +2067,10 @@ a.rede-btn:hover::before {
   display: grid; justify-items: start;
   gap: var(--sp-4);
 }
-.manifesto__eyebrow { color: rgba(255, 255, 255, 0.78); }
-.manifesto__eyebrow::before { background: var(--white); }
+/* no vermelho o rotulo e o ponto viravam brancos; no claro voltam ao tom de
+   apoio e ao ponto vermelho da marca, como no resto da pagina */
+.manifesto__eyebrow { color: var(--m-txt-3); }
+.manifesto__eyebrow::before { background: var(--red); }
 
 .manifesto__t {
   font-size: var(--fs-3xl); font-stretch: 118%;
@@ -2064,7 +2085,7 @@ a.rede-btn:hover::before {
 .manifesto__p {
   font-size: var(--fs-lg);
   max-width: 60ch;
-  color: rgba(255, 255, 255, 0.88);
+  color: var(--m-txt-2);
   margin: 0;
 }
 
@@ -2135,10 +2156,19 @@ a.rede-btn:hover::before {
 /* sem padding embaixo: a marca gigante e' o ultimo elemento e precisa encostar
    no fim da pagina, senao sobra uma faixa preta abaixo dela */
 .footer { background: var(--n-990); padding-block: var(--sp-10) 0; }
-.footer__grid { display: grid; gap: var(--sp-6); }
-.footer__brand { display: grid; gap: var(--sp-3); align-content: start; }
-.footer__logo img { width: 150px; }
-.footer__desc { color: var(--text-2); font-size: var(--fs-sm); max-width: 38ch; }
+/* Uma coluna so', com a largura do filho mais largo — na pratica, a linha da
+   assinatura. E' o que faz as colunas de links comecarem e terminarem nas
+   mesmas bordas do texto de baixo, sem eu fixar um numero: se a assinatura
+   mudar de tamanho, a faixa inteira acompanha. */
+.footer__fim {
+  display: grid;
+  grid-template-columns: auto;
+  justify-content: center;
+}
+.footer__grid {
+  display: grid; gap: var(--sp-6);
+  justify-content: center;
+}
 .footer__col h3 {
   font-family: var(--font-mono); font-size: var(--fs-mono); font-weight: 500;
   letter-spacing: var(--tr-mono); text-transform: uppercase;
@@ -2185,7 +2215,7 @@ a.rede-btn:hover::before {
   margin-top: var(--sp-8); padding-top: var(--sp-3);
   border-top: 1px solid var(--line);
   display: flex; flex-wrap: wrap; gap: var(--sp-2) var(--sp-4);
-  justify-content: space-between; align-items: center;
+  justify-content: center; align-items: center; text-align: center;
   font-family: var(--font-mono); font-size: 0.66rem;
   letter-spacing: 0.06em; color: var(--text-3);
 }
@@ -2206,7 +2236,15 @@ a.rede-btn:hover::before {
 @media (min-width: 860px) {
   .channels { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .about__grid { grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); align-items: start; gap: var(--sp-6); }
-  .footer__grid { grid-template-columns: minmax(0, 1.4fr) repeat(3, minmax(0, 1fr)); }
+  /* space-between espalha as tres colunas na largura da faixa, que vem da
+     assinatura: a primeira encosta na borda esquerda dela e a ultima na
+     direita. Com as colunas em 1fr o alinhamento seria com o .wrap, e nao com
+     o texto de baixo. */
+  .footer__grid {
+    grid-template-columns: repeat(3, auto);
+    justify-content: space-between;
+    gap: var(--sp-8);
+  }
 }
 @media (min-width: 1080px) {
   .hero__grid { grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); align-items: end; }

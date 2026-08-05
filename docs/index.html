@@ -853,19 +853,13 @@
 <!-- ======================================================= FOOTER ======= -->
 <footer class="footer">
   <div class="wrap">
+    <!-- Sem o bloco de marca: a marca gigante logo abaixo ja' assina a pagina.
+         As colunas e a assinatura vivem na mesma faixa — o .footer__fim e' uma
+         coluna so', larga o quanto for o mais largo dos dois. Como a assinatura
+         e' a mais larga, e' ela quem define a faixa, e as colunas se espalham
+         exatamente entre as mesmas bordas. Muda a assinatura, muda tudo junto. -->
+    <div class="footer__fim">
     <div class="footer__grid">
-      <div class="footer__brand">
-        <a class="footer__logo" href="#inicio" aria-label="rec.ads — início">
-          <picture>
-            <source type="image/webp" srcset="assets/logo/logotipo-rec-ads.webp">
-            <img src="assets/logo/logotipo-rec-ads.png" alt="rec.ads" width="949" height="246" loading="lazy">
-          </picture>
-        </a>
-        <p class="footer__desc">
-          Inteligência criativa, estratégica e tecnológica por trás das marcas do Grupo FAJ.
-        </p>
-      </div>
-
       <div class="footer__col">
         <h3>Navegar</h3>
         <ul>
@@ -900,9 +894,10 @@
       </div>
     </div>
 
-    <div class="footer__bot">
-      <p>rec.ads — estratégia, tecnologia e criatividade a serviço do crescimento do Grupo FAJ.</p>
-      <p>&copy; <span id="ano">2026</span> rec.ads · Grupo FAJ. Todos os direitos reservados.</p>
+      <div class="footer__bot">
+        <p>rec.ads — estratégia, tecnologia e criatividade a serviço do crescimento do Grupo FAJ.</p>
+        <p>&copy; <span id="ano">2026</span> rec.ads · Grupo FAJ. Todos os direitos reservados.</p>
+      </div>
     </div>
   </div>
 

@@ -491,6 +491,10 @@
     $$('[data-fita]').forEach((caixa) => {
       const pista = $('.fita__pista', caixa);
       if (!pista || pista.dataset.pronta) return;
+      /* data-fita="manual": a fita nao anda sozinha, so' pelas setas e pelo
+         arrasto. O laco infinito continua valendo — as setas seguem podendo
+         girar sem fim, nos dois sentidos. */
+      const manual = caixa.dataset.fita === 'manual';
 
       [...pista.children].forEach((item) => {
         const copia = item.cloneNode(true);
@@ -528,7 +532,7 @@
         if (anterior === null) anterior = agora;
         const dt = Math.min((agora - anterior) / 1000, 0.05); // trava saltos ao voltar de outra aba
         anterior = agora;
-        if (!pausado && !arrastando && !reduced) pos -= VELOCIDADE * dt;
+        if (!pausado && !arrastando && !reduced && !manual) pos -= VELOCIDADE * dt;
         if (resta !== 0 && !arrastando) {
           const avanco = resta * Math.min(1, dt * 9);
           pos += avanco;
@@ -653,7 +657,7 @@
             </div>
           </div>
         </div>
-        <div class="team fita" id="${id}" data-fita data-reveal>
+        <div class="team fita" id="${id}" data-fita="manual" data-reveal>
           <div class="fita__pista">${g.pessoas.map(cartao).join('')}</div>
         </div>
       </section>`;
