@@ -640,7 +640,8 @@
       </button>`;
 
     /* O cabecalho fica no .wrap para acompanhar o resto da pagina; a fita corre
-       de ponta a ponta da tela, fora dele. */
+       de ponta a ponta da tela, fora dele. As setas ficam abaixo da fita e
+       alinhadas com o comeco dos cartoes — nao dentro do cabecalho. */
     wrap.innerHTML = EQUIPE.map((g, gi) => {
       const id = `fita-equipe-${gi}`;
       return `
@@ -648,17 +649,17 @@
         <div class="wrap">
           <div class="equipe-grupo__cab" data-reveal>
             <h3 class="equipe-grupo__t">${esc(g.area)}</h3>
-            <div class="equipe-grupo__meta">
-              <span class="equipe-grupo__n">${String(g.pessoas.length).padStart(2, '0')} ${g.pessoas.length === 1 ? 'pessoa' : 'pessoas'}</span>
-              <div class="fita-setas">
-                ${seta(id, 'prev', `Voltar em ${esc(g.area)}`)}
-                ${seta(id, 'next', `Avançar em ${esc(g.area)}`)}
-              </div>
-            </div>
+            <span class="equipe-grupo__n">${String(g.pessoas.length).padStart(2, '0')} ${g.pessoas.length === 1 ? 'pessoa' : 'pessoas'}</span>
           </div>
         </div>
         <div class="team fita" id="${id}" data-fita="manual" data-reveal>
           <div class="fita__pista">${g.pessoas.map(cartao).join('')}</div>
+        </div>
+        <div class="fita-controle" data-reveal>
+          <div class="fita-setas">
+            ${seta(id, 'prev', `Voltar em ${esc(g.area)}`)}
+            ${seta(id, 'next', `Avançar em ${esc(g.area)}`)}
+          </div>
         </div>
       </section>`;
     }).join('');

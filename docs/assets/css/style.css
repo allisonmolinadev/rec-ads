@@ -66,6 +66,10 @@ p { text-wrap: pretty; }
   width: min(100% - var(--gutter) * 2, var(--wrap));
   margin-inline: auto;
 }
+/* A linha onde o conteudo do .wrap comeca. Serve para quem precisa alinhar com
+   ele estando fora dele — as fitas de largura total e os controles delas. E' a
+   mesma conta do .wrap acima, isolada para nao ser repetida em cada uso. */
+:root { --inicio: calc((100vw - min(100vw - var(--gutter) * 2, var(--wrap))) / 2); }
 .section { padding-block: var(--section-y); position: relative; }
 .section--deep { background: var(--n-990); }
 .section--surface { background: var(--n-900); }
@@ -520,41 +524,54 @@ p { text-wrap: pretty; }
 /* Movimento reduzido: o JS nao avanca sozinho, mas o arrasto continua
    funcionando — a pessoa navega no proprio ritmo. */
 
-/* --- setas da fita ---
-   Controle discreto: a fita anda sozinha, as setas so' apressam. Por isso o
-   tamanho miudo e o contorno fino, que nao competem com o titulo da area. */
-.fita-setas { display: flex; gap: 0.3rem; }
-.fita-seta {
-  width: 26px; height: 26px; flex: none;
+/* --- seta de carrossel ---
+   Um controle so' para os tres carrosseis do site: as fitas (pilares e
+   equipe), o carrossel do modal e o visor de foto ampliada. Antes cada um
+   tinha o seu tamanho e a sua cor.
+   Seta branca em repouso, vermelha no hover — o disco escuro com desfoque
+   segura a leitura tanto sobre o fundo da pagina quanto sobre foto. */
+.fita-setas { display: flex; gap: 0.6rem; }
+
+.fita-seta,
+.carrossel__seta,
+.visor__seta {
+  width: 52px; height: 52px; flex: none;
   display: grid; place-items: center;
   padding: 0;
-  background: transparent;
-  color: var(--text-3);
-  border: 1px solid var(--line);
   border-radius: 50%;
+  color: var(--white);
+  background: rgba(7, 5, 5, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.26);
+  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
   cursor: pointer;
   transition: color var(--dur) var(--ease-out),
               border-color var(--dur) var(--ease-out),
-              background var(--dur) var(--ease-out);
+              background-color var(--dur) var(--ease-out),
+              box-shadow var(--dur) var(--ease-out),
+              transform var(--dur) var(--ease-out);
 }
-.fita-seta svg { width: 11px; height: 11px; display: block; }
-.fita-seta:hover {
-  color: var(--white);
+.fita-seta svg,
+.carrossel__seta svg,
+.visor__seta svg { width: 17px; height: 17px; display: block; }
+
+/* o icone vira vermelho, entao o disco precisa continuar escuro: preenchendo
+   de vermelho, a seta sumiria dentro dele */
+.fita-seta:hover,
+.carrossel__seta:hover,
+.visor__seta:hover {
+  color: var(--red);
   border-color: var(--red);
-  background: rgba(210, 33, 16, 0.16);
+  background: rgba(210, 33, 16, 0.14);
+  box-shadow: 0 0 24px -6px rgba(210, 33, 16, 0.7);
 }
 .fita-seta:active { transform: scale(0.94); }
 
-/* linha de controle de uma fita: regua ocupando a largura e as setas na ponta
-   direita. E' o mesmo par de botoes da equipe (.fita-setas), so' que aqui sem
-   cabecalho para acompanhar. */
-.fita-cab {
-  display: flex; align-items: center; gap: var(--sp-3);
-  margin-bottom: var(--sp-3);
-}
-.fita-cab__r {
-  height: 1px; flex: 1;
-  background: linear-gradient(90deg, var(--line), rgba(255, 255, 255, 0.02));
+/* Linha de controle de uma fita: fica abaixo dela e comeca alinhada com o texto
+   da pagina, mesmo a fita correndo de ponta a ponta da tela. O recuo vem do
+   --inicio, a calha do .wrap. */
+.fita-controle {
+  padding-left: var(--inicio);
+  margin-top: var(--sp-3);
 }
 
 /* --- pilares na fita --- */
@@ -1673,22 +1690,11 @@ p { text-wrap: pretty; }
 .carrossel__img--retrato { object-fit: contain; }
 .carrossel__slide:hover .carrossel__img { opacity: 0.86; }
 
+/* forma e cor vem do controle compartilhado; aqui so' a posicao sobre a foto */
 .carrossel__seta {
   position: absolute; top: 50%; transform: translateY(-50%);
-  width: 44px; height: 44px; border-radius: 50%;
-  display: grid; place-items: center;
-  background: rgba(7, 5, 5, 0.55);
-  border: 1px solid rgba(255, 255, 255, 0.28);
-  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
-  color: var(--white);
-  transition: background-color var(--dur) var(--ease-out),
-              border-color var(--dur) var(--ease-out),
-              transform var(--dur) var(--ease-out);
 }
-.carrossel__seta:hover {
-  background: var(--red); border-color: var(--red);
-  transform: translateY(-50%) scale(1.08);
-}
+.carrossel__seta:hover { transform: translateY(-50%) scale(1.06); }
 .carrossel__seta--ant { left: var(--sp-2); }
 .carrossel__seta--prox { right: var(--sp-2); }
 /* uma foto so': a pista nao vai a lugar nenhum, as setas saem de cena */
@@ -1769,22 +1775,11 @@ p { text-wrap: pretty; }
 }
 .visor__fechar:hover { background: var(--red); transform: rotate(90deg); }
 
+/* forma e cor vem do controle compartilhado; aqui so' a posicao na tela cheia */
 .visor__seta {
   position: absolute; z-index: 2; top: 50%; transform: translateY(-50%);
-  width: 52px; height: 52px; border-radius: 50%;
-  display: grid; place-items: center;
-  color: var(--white);
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.24);
-  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
-  transition: background-color var(--dur) var(--ease-out),
-              border-color var(--dur) var(--ease-out),
-              transform var(--dur) var(--ease-out);
 }
-.visor__seta:hover {
-  background: var(--red); border-color: var(--red);
-  transform: translateY(-50%) scale(1.08);
-}
+.visor__seta:hover { transform: translateY(-50%) scale(1.06); }
 .visor__seta--ant { left: clamp(0.5rem, 2vw, 2rem); }
 .visor__seta--prox { right: clamp(0.5rem, 2vw, 2rem); }
 
@@ -1953,8 +1948,6 @@ a.rede-btn:hover::before {
   font-family: var(--font-mono); font-size: var(--fs-mono);
   letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-3);
 }
-/* contagem e setas juntas na ponta direita do cabecalho */
-.equipe-grupo__meta { display: flex; align-items: center; gap: var(--sp-2); }
 
 
 /* Cada area anda numa fita continua, como os pilares: uma linha so', que passa
@@ -1962,9 +1955,22 @@ a.rede-btn:hover::before {
    deixava a ultima incompleta (8 pessoas = 5+3, 6 pessoas = 5+1).
    O espacamento e' margin-right, nunca gap — a fita mede a pista em px e o gap
    deslocaria a emenda do laco. */
-/* a folga em cima e' para o card poder subir no hover: a fita corta o que
-   passa da borda (overflow hidden), e sem ela o topo do card sumiria */
-.team { padding: 8px 0 var(--sp-2); }
+/* A fita comeca alinhada com o texto da secao e corre ate' a borda direita da
+   tela. O recuo da esquerda repete a calha do .wrap — e' o que poe o primeiro
+   cartao embaixo do titulo, em vez de nascer colado na borda.
+   A folga de cima e' para o card poder subir no hover: a fita corta o que passa
+   da borda (overflow hidden), e sem ela o topo do card sumiria. */
+.team { padding: 8px 0 var(--sp-2) var(--inicio); }
+
+/* Esmaecimento so' na entrada: a rampa termina exatamente na linha de inicio,
+   entao o primeiro cartao nasce nitido e quem sai de cena e' que se dissolve.
+   A direita nao ha' mascara — a fita vai ate' o fim da tela. */
+.team.fita.is-loop {
+  -webkit-mask-image: linear-gradient(90deg,
+    transparent calc(var(--inicio) - var(--fade)), #000 var(--inicio), #000 100%);
+          mask-image: linear-gradient(90deg,
+    transparent calc(var(--inicio) - var(--fade)), #000 var(--inicio), #000 100%);
+}
 .team .member {
   flex: 0 0 clamp(180px, 17vw, 250px);
   margin-right: var(--sp-2);

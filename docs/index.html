@@ -204,31 +204,6 @@
     </div>
   </div>
 
-  <!-- Controle da fita. Fica no .wrap, alinhado com o texto da secao, enquanto
-       a fita corre de ponta a ponta da tela. A regua a esquerda ancora as setas
-       na linha; sem ela o par ficaria solto no meio do vazio. -->
-  <div class="wrap">
-    <div class="fita-cab" data-reveal>
-      <span class="fita-cab__r" aria-hidden="true"></span>
-      <div class="fita-setas">
-        <button class="fita-seta" type="button" data-fita-nav="prev" data-alvo="fita-pilares"
-                aria-controls="fita-pilares" aria-label="Voltar nos pilares">
-          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-            <path d="M15 4l-8 8 8 8" fill="none" stroke="currentColor" stroke-width="2.4"
-                  stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </button>
-        <button class="fita-seta" type="button" data-fita-nav="next" data-alvo="fita-pilares"
-                aria-controls="fita-pilares" aria-label="Avançar nos pilares">
-          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-            <path d="M9 4l8 8-8 8" fill="none" stroke="currentColor" stroke-width="2.4"
-                  stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </button>
-      </div>
-    </div>
-  </div>
-
   <!-- Vitrine dos pilares. As imagens de fundo sao provisorias: composicoes
        geradas na paleta da marca, em docs/assets/img/pilares/. Para trocar por
        foto real, substituir os arquivos de mesmo nome (proporcao 3:4). -->
@@ -319,6 +294,27 @@
         </div>
       </article>
 
+    </div>
+  </div>
+
+  <!-- Controle da fita: abaixo dela e alinhado com o texto da secao, mesmo a
+       fita correndo de ponta a ponta da tela. -->
+  <div class="fita-controle" data-reveal>
+    <div class="fita-setas">
+      <button class="fita-seta" type="button" data-fita-nav="prev" data-alvo="fita-pilares"
+              aria-controls="fita-pilares" aria-label="Voltar nos pilares">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M15 4l-8 8 8 8" fill="none" stroke="currentColor" stroke-width="2.4"
+                stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <button class="fita-seta" type="button" data-fita-nav="next" data-alvo="fita-pilares"
+              aria-controls="fita-pilares" aria-label="Avançar nos pilares">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M9 4l8 8-8 8" fill="none" stroke="currentColor" stroke-width="2.4"
+                stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
     </div>
   </div>
 </section>
