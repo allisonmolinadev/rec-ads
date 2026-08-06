@@ -2086,9 +2086,11 @@ a.rede-btn:hover::before {
   max-width: 20ch;
   margin: 0;
 }
-/* a segunda frase e' o ponto de virada: fica em light para o contraste de peso
-   destacar a primeira, como no titulo do hero */
-.manifesto__t em { font-style: normal; font-weight: 300; }
+/* A segunda frase e' o ponto de virada: fica em light para o contraste de peso
+   destacar a primeira, como no titulo do hero.
+   Em bloco, e nao inline: assim ela sempre abre uma linha propria, em vez de
+   comecar grudada no fim de "apenas marcas." quando sobra espaco na linha. */
+.manifesto__t em { font-style: normal; font-weight: 300; display: block; }
 
 .manifesto__p {
   font-size: var(--fs-lg);
@@ -2128,15 +2130,22 @@ a.rede-btn:hover::before {
     background-repeat: no-repeat;
   }
 
-  /* Um corpo abaixo do titulo de secao normal, e a medida mais curta: na faixa
-     estreita da esquerda o titulo em corpo cheio quebrava em cinco linhas. */
-  .manifesto__t { font-size: var(--fs-2xl); max-width: 16ch; }
+  /* Um corpo abaixo do titulo de secao normal: na faixa estreita da esquerda o
+     titulo em corpo cheio quebrava em cinco linhas.
+     A medida e' 22ch — o suficiente para "Construimos presenca." caber numa
+     linha so'. Em 16ch, como estava, ela partia em duas. */
+  .manifesto__t { font-size: var(--fs-2xl); max-width: 22ch; }
 
-  /* a segunda coluna nao tem elemento: existe so' para reservar a faixa onde a
-     Zoe esta' no banner */
+  /* A segunda coluna nao tem elemento: existe so' para reservar a faixa onde a
+     Zoe esta' no banner.
+     A largura desconta o --inicio porque as duas medidas partem de origens
+     diferentes: a Zoe ocupa 44vw contados da borda da TELA, e a coluna comeca
+     na borda do .wrap. Sem o desconto, a calha entrava duas vezes na conta e a
+     coluna do texto encolhia justamente nas telas largas — em 1920 ela ficava
+     com 460px, menos do que tinha em 1440. */
   .manifesto__grid {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) min(44vw, 820px);
+    grid-template-columns: minmax(0, 1fr) max(0px, calc(min(44vw, 820px) - var(--inicio)));
     align-items: center;
     gap: var(--sp-5);
   }
