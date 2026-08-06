@@ -2051,14 +2051,16 @@ a.rede-btn:hover::before {
 
 /* ----------------------------------------------------------- manifesto --- */
 /* Secao clara entre duas escuras: o corte de contraste que antes vinha do
-   vermelho agora vem do branco. O recorte da Zoe tem borda clara — pelo —,
-   entao ele assenta melhor aqui do que assentava no vermelho. */
+   vermelho agora vem do claro.
+   A cor de fundo e' o cinza do proprio banner (amostrado do arquivo): no
+   estreito, onde o banner nao entra, a secao mantem o mesmo tom, sem degrau
+   de cor entre um tamanho de tela e outro. */
 .manifesto {
   --m-txt: var(--n-950);
   --m-txt-2: rgba(11, 8, 7, 0.78);
   --m-txt-3: rgba(11, 8, 7, 0.62);
 
-  background: var(--white);
+  background: #eeecec;
   color: var(--m-txt);
   position: relative; overflow: hidden;
 }
@@ -2095,66 +2097,48 @@ a.rede-btn:hover::before {
   margin: 0;
 }
 
-/* --- a Zoe fechando o manifesto pela direita ---
-   O PNG e' recortado, entao ela pousa direto no vermelho, sem moldura nem
-   emenda. O arquivo ja' vem espelhado de proposito: ela olha para dentro do
-   texto, e nao para fora da pagina.
-   No estreito ela sai de cena — o texto do manifesto ocupa a largura inteira e
-   a foto viraria uma tarja atras das letras, sem lugar proprio. */
-.manifesto__zoe { display: none; }
+/* --- o banner como fundo da secao ---
+   A Zoe deixou de ser um PNG por cima e passou a vir no proprio banner. O
+   arquivo tem 1920x831 e a arte foi feita para esta secao: a esquerda e' area
+   limpa, onde o texto vive, e ela ocupa a direita.
 
+   Tres decisoes que sustentam isso:
+
+   1. A altura minima acompanha a proporcao do banner (831/1920 = 0,4328), com
+      teto de 900px. Sem ela a secao teria so' a altura do texto, e o cover
+      cortaria a Zoe na vertical; com o teto, telas muito largas nao viram uma
+      faixa alta demais.
+   2. O enquadramento ancora a direita. Quando a proporcao da tela nao bate com
+      a do arquivo, o cover corta as laterais — ancorado a direita, o corte sai
+      da area vazia da esquerda e a Zoe nunca perde um pedaco.
+   3. A segunda coluna da grade fica vazia, reservando a faixa dela. E' o que
+      impede o texto de correr por cima da imagem.
+
+   O webp tem 37 KB contra 452 KB do jpg; a primeira declaracao e' o jpg puro,
+   que atende quem nao entende image-set. */
 @media (min-width: 1200px) {
-  .manifesto { --zoe-w: min(44vw, 820px); }
+  .manifesto {
+    min-height: min(calc(100vw * 0.4328), 900px);
+    background-image: url("../img/banner-full-zoe-tech.jpg");
+    background-image: image-set(
+      url("../img/banner-full-zoe-tech.webp") type("image/webp"),
+      url("../img/banner-full-zoe-tech.jpg") type("image/jpeg"));
+    background-size: cover;
+    background-position: right center;
+    background-repeat: no-repeat;
+  }
 
-  /* Um corpo abaixo do titulo de secao normal, e a medida mais curta: em duas
-     colunas o titulo vive numa faixa estreita e, no corpo cheio, quebrava em
-     cinco linhas. Isso deixava a coluna do texto mais alta que a foto, e a
-     sobra toda ia parar acima dela — era o vao que aparecia no topo.
-     Com tres linhas, quem manda na altura da fileira volta a ser a foto. */
+  /* Um corpo abaixo do titulo de secao normal, e a medida mais curta: na faixa
+     estreita da esquerda o titulo em corpo cheio quebrava em cinco linhas. */
   .manifesto__t { font-size: var(--fs-2xl); max-width: 16ch; }
 
-  /* Duas colunas de verdade: a do texto e' 1fr e a da foto se dimensiona pelo
-     proprio conteudo. Como sao colunas irmas, o texto nao tem como invadir a
-     faixa da foto — antes as duas eram camadas soltas e a folga dependia de eu
-     acertar a largura do paragrafo no calculo, que muda com o corpo do texto a
-     cada largura de tela. */
+  /* a segunda coluna nao tem elemento: existe so' para reservar a faixa onde a
+     Zoe esta' no banner */
   .manifesto__grid {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-columns: minmax(0, 1fr) min(44vw, 820px);
     align-items: center;
     gap: var(--sp-5);
-  }
-
-  .manifesto__zoe {
-    display: block;
-    align-self: end;
-    width: var(--zoe-w);
-    line-height: 0;
-    pointer-events: none;
-    /* Sangra ate' a borda da tela: o recuo negativo e' a calha que sobra de cada
-       lado do .wrap. A conta repete a largura do .wrap em vez de usar 100%
-       porque, num item de grade, a porcentagem se resolve contra a area da
-       celula — que e' menor que o .wrap e ainda depende desta propria margem.
-       Com 100% aqui, o recuo saia' varias vezes maior e jogava a foto para fora
-       da tela.
-       De quebra, a coluna passa a medir --zoe-w menos essa calha, que e' o que
-       a foto de fato ocupa dentro do .wrap; o texto recebe o resto. */
-    margin-right: calc((min(100vw - var(--gutter) * 2, var(--wrap)) - 100vw) / 2);
-    /* Desce por dentro do padding da secao, mas nao ate' o fim: em -1 ela
-       encostava na base e ficava baixa demais na composicao. Este fator e' o
-       ajuste fino da altura dela — quanto menor, mais alta ela fica; em 0 ela
-       para na base do .wrap e sobra vermelho embaixo. */
-    margin-bottom: calc(var(--section-y) * -0.55);
-  }
-  /* Mesmo enquadramento que ela tinha no rodape: sai a traseira, que so' enchia
-     linguica. Sao os mesmos 300px de 1400 (21,4%), mas agora pela direita, ja'
-     que o arquivo foi espelhado — dai object-position 0%, ancorando a esquerda.
-     O corte fica no CSS para o original continuar inteiro. */
-  .manifesto__zoe img {
-    width: 100%; display: block;
-    aspect-ratio: 1100 / 804;
-    object-fit: cover;
-    object-position: 0% 50%;
   }
 }
 
