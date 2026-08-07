@@ -2110,10 +2110,21 @@ a.rede-btn:hover::before {
       teto de 900px. Sem ela a secao teria so' a altura do texto, e o cover
       cortaria a Zoe na vertical; com o teto, telas muito largas nao viram uma
       faixa alta demais.
-   2. O enquadramento ancora a direita. Quando a proporcao da tela nao bate com
-      a do arquivo, o cover corta as laterais — ancorado a direita, o corte sai
-      da area vazia da esquerda e a Zoe nunca perde um pedaco.
-   3. A segunda coluna da grade fica vazia, reservando a faixa dela. E' o que
+   2. A largura e' 100%, nao cover. O cover parece a escolha obvia, mas ele
+      cobre a caixa pelo lado que falta: assim que o texto deixa a secao mais
+      alta do que a proporcao do arquivo — e deixa, porque o padding da secao
+      sozinho ja' passa de 300px —, ele passa a escalar pela ALTURA e corta as
+      laterais. O corte sai da esquerda, que e' area vazia, mas arrasta a Zoe
+      junto: numa tela de 1474px ela saia dos 58,2% do arquivo para 54,8% da
+      tela, ~50px por cima da coluna do texto. Com 100% a imagem so' depende da
+      largura da tela, e a faixa reservada na grade vale sempre.
+      O teto de 2079px e' onde a imagem alcanca os 900px de altura do
+      min-height; passando dai' ela cresceria para fora da secao.
+   3. A ancora e' embaixo, nao no centro. Sobrando altura, a folga tem de ficar
+      em cima: a primeira linha do arquivo e' rgb(240,236,237), igual ao fundo
+      da secao, e a emenda desaparece. Embaixo a linha e' rgb(222,221,222) — a
+      sombra da mesa — e apareceria como um risco.
+   4. A segunda coluna da grade fica vazia, reservando a faixa dela. E' o que
       impede o texto de correr por cima da imagem.
 
    O webp tem 37 KB contra 452 KB do jpg; a primeira declaracao e' o jpg puro,
@@ -2125,8 +2136,8 @@ a.rede-btn:hover::before {
     background-image: image-set(
       url("../img/banner-full-zoe-tech.webp") type("image/webp"),
       url("../img/banner-full-zoe-tech.jpg") type("image/jpeg"));
-    background-size: cover;
-    background-position: right center;
+    background-size: min(100%, 2079px) auto;
+    background-position: right bottom;
     background-repeat: no-repeat;
   }
 
@@ -2145,14 +2156,21 @@ a.rede-btn:hover::before {
      diferentes: a Zoe ocupa 44vw contados da borda da TELA, e a coluna comeca
      na borda do .wrap. Sem o desconto, a calha entrava duas vezes na conta e a
      coluna do texto encolhia justamente nas telas largas — em 1920 ela ficava
-     com 460px, menos do que tinha em 1440. */
+     com 460px, menos do que tinha em 1440.
+
+     A medida da faixa sai do proprio arquivo: varrendo as colunas do banner, a
+     primeira que tem desenho e' a 1118 de 1920 — 58,2%. Sobra 41,8vw de arte a
+     direita, e os 44vw daqui sao essa faixa mais um respiro. O teto de 920px
+     acompanha o teto do background-size: acima de 2079px a imagem para de
+     crescer, e a faixa dela congela em 869px.
+
      A calha e' menor do que a das outras grades porque a coluna da direita nao
      tem conteudo: ela ja' e' espaco vazio, e o que a calha faz e' descontar
      duas vezes a mesma folga do lado do texto. Em 1300px isso custava 40px de
      medida — o bastante para o titulo quebrar uma palavra antes do desenho. */
   .manifesto__grid {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) max(0px, calc(min(44vw, 820px) - var(--inicio)));
+    grid-template-columns: minmax(0, 1fr) max(0px, calc(min(44vw, 920px) - var(--inicio)));
     align-items: center;
     gap: var(--sp-3);
   }
