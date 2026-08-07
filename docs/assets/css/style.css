@@ -2132,9 +2132,12 @@ a.rede-btn:hover::before {
 
   /* Um corpo abaixo do titulo de secao normal: na faixa estreita da esquerda o
      titulo em corpo cheio quebrava em cinco linhas.
-     A medida e' 22ch — o suficiente para "Construimos presenca." caber numa
-     linha so'. Em 16ch, como estava, ela partia em duas. */
-  .manifesto__t { font-size: var(--fs-2xl); max-width: 22ch; }
+     A medida e' 24ch, com folga dos dois lados: cabe "Nos nao comunicamos"
+     inteiro na primeira linha (era o que 16ch cortava, jogando "comunicamos"
+     para baixo) e ainda esta' longe de caber "apenas" junto, que e' onde a
+     linha tem de virar. Em 22ch a primeira linha passava raspando — bastava a
+     fonte carregar um fio mais larga para ela quebrar errado de novo. */
+  .manifesto__t { font-size: var(--fs-2xl); max-width: 24ch; }
 
   /* A segunda coluna nao tem elemento: existe so' para reservar a faixa onde a
      Zoe esta' no banner.
@@ -2143,11 +2146,15 @@ a.rede-btn:hover::before {
      na borda do .wrap. Sem o desconto, a calha entrava duas vezes na conta e a
      coluna do texto encolhia justamente nas telas largas — em 1920 ela ficava
      com 460px, menos do que tinha em 1440. */
+     A calha e' menor do que a das outras grades porque a coluna da direita nao
+     tem conteudo: ela ja' e' espaco vazio, e o que a calha faz e' descontar
+     duas vezes a mesma folga do lado do texto. Em 1300px isso custava 40px de
+     medida — o bastante para o titulo quebrar uma palavra antes do desenho. */
   .manifesto__grid {
     display: grid;
     grid-template-columns: minmax(0, 1fr) max(0px, calc(min(44vw, 820px) - var(--inicio)));
     align-items: center;
-    gap: var(--sp-5);
+    gap: var(--sp-3);
   }
 }
 

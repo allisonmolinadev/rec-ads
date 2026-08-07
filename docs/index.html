@@ -32,8 +32,12 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Instrument+Sans:wght@400..700&family=JetBrains+Mono:wght@400;500&display=swap">
 
-<link rel="stylesheet" href="assets/css/tokens.css">
-<link rel="stylesheet" href="assets/css/style.css">
+<!-- O ?v= nao e' enfeite: o Pages manda o css com cache de 10 minutos, mas o
+     navegador de quem ja' visitou guarda por muito mais. Sem a marca de versao
+     a pagina continuava desenhando com a folha antiga depois de um ajuste.
+     Subiu o numero, o arquivo e' outro endereco e todo mundo rebaixa. -->
+<link rel="stylesheet" href="assets/css/tokens.css?v=3">
+<link rel="stylesheet" href="assets/css/style.css?v=3">
 
 <script type="application/ld+json">
 {
@@ -932,6 +936,6 @@
   </button>
 </div>
 
-<script src="assets/js/main.js" defer></script>
+<script src="assets/js/main.js?v=3" defer></script>
 </body>
 </html>
